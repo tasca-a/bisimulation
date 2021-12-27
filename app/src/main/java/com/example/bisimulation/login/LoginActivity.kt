@@ -1,13 +1,8 @@
 package com.example.bisimulation.login
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModel
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.ActivityLoginBinding
@@ -22,9 +17,12 @@ class LoginActivity : AppCompatActivity() {
 
         binding.loginButton.setOnClickListener{
             if (logInChecks()){
-                Toast.makeText(this, "Accesso in corso..", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this , R.string.logginIn_Toast, Toast.LENGTH_SHORT).show()
                 viewModel.logIn()
             }
+        }
+        viewModel.logInStatus.observe(this) { message ->
+            Toast.makeText(this , message, Toast.LENGTH_SHORT).show()
         }
 
         setContentView(binding.root)

@@ -8,4 +8,7 @@
     <string name="forgotPw_textView">Forgot password?</string>
     <string name="clickHere_textView">Click here.</string>
     <string name="notRegisteres_textView">Not registered yet?</string>
+    <string name="logginIn_Toast">Logging in..</string>
+    <string name="logInSuccessful_Toast">Log in successful!</string>
+    <string name="logInFailed_Toast">Log in failed.</string>
 </resources>
