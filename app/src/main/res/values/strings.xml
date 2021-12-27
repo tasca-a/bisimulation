@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Bisimulation</string>
+    <string name="login_textView">LOGIN</string>
+    <string name="email_textView">Email address</string>
+    <string name="password_textView">Password</string>
+    <string name="rememberMe_checkBox">Remember me</string>
+    <string name="login_button">Log in</string>
+    <string name="forgotPw_textView">Forgot password?</string>
+    <string name="clickHere_textView">Click here.</string>
+    <string name="notRegisteres_textView">Not registered yet?</string>
+</resources>

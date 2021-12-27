@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.bisimulation.login.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".login.LoginActivity">
+
+        <TextView
+            android:id="@+id/login_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="@string/login_textView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/email_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/email_textView"
+            app:layout_constraintStart_toStartOf="@+id/login_textView"
+            app:layout_constraintTop_toBottomOf="@+id/login_textView" />
+
+        <EditText
+            android:id="@+id/email_editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autofillHints="emailAddress"
+            android:ems="10"
+            android:hint="@string/email_editTextTextEmailAddress"
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            android:text="@={viewModel.email}"
+            app:layout_constraintEnd_toEndOf="@+id/login_textView"
+            app:layout_constraintStart_toStartOf="@+id/email_textView"
+            app:layout_constraintTop_toBottomOf="@+id/email_textView"
+            tools:ignore="TextContrastCheck" />
+
+        <TextView
+            android:id="@+id/password_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/password_textView"
+            app:layout_constraintStart_toStartOf="@+id/email_textView"
+            app:layout_constraintTop_toBottomOf="@+id/email_editText" />
+
+        <EditText
+            android:id="@+id/password_editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autofillHints="password"
+            android:ems="10"
+            android:hint="@string/password_editTextTextPassword"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:text="@={viewModel.password}"
+            app:layout_constraintEnd_toEndOf="@+id/email_editText"
+            app:layout_constraintStart_toStartOf="@+id/password_textView"
+            app:layout_constraintTop_toBottomOf="@+id/password_textView"
+            tools:ignore="TextContrastCheck" />
+
+        <CheckBox
+            android:id="@+id/rememberMe_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rememberMe_checkBox"
+            app:layout_constraintStart_toStartOf="@+id/password_editText"
+            app:layout_constraintTop_toBottomOf="@+id/password_editText" />
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_button"
+            app:layout_constraintBottom_toBottomOf="@+id/rememberMe_checkBox"
+            app:layout_constraintEnd_toEndOf="@+id/password_editText"
+            app:layout_constraintTop_toBottomOf="@+id/password_editText" />
+
+        <TextView
+            android:id="@+id/forgotPw_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgotPw_textView"
+            app:layout_constraintStart_toStartOf="@+id/rememberMe_checkBox"
+            app:layout_constraintTop_toBottomOf="@+id/rememberMe_checkBox" />
+
+        <TextView
+            android:id="@+id/clickHere_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/clickHere_textView"
+            android:textColor="#00838F"
+            app:layout_constraintBottom_toBottomOf="@+id/forgotPw_textView"
+            app:layout_constraintStart_toEndOf="@+id/forgotPw_textView" />
+
+        <TextView
+            android:id="@+id/notRegistered_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/notRegisteres_textView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/registerClickHere_textView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/registerClickHere_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clickHere_textView"
+            android:textColor="#00838F"
+            app:layout_constraintBottom_toBottomOf="@+id/notRegistered_textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/notRegistered_textView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

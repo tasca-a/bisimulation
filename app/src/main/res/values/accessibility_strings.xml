@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email_editTextTextEmailAddress"> Enter your e-mail address</string>
+    <string name="password_editTextTextPassword"> Enter your password</string>
+</resources>
