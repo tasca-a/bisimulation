@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "181789891597",
+    "project_id": "bisimulation",
+    "storage_bucket": "bisimulation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181789891597:android:1bec1e946efbb875b34944",
+        "android_client_info": {
+          "package_name": "com.example.bisimulation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181789891597-jj93lob36q0qi5hul9l4bd1doea2b5m8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bisimulation",
+            "certificate_hash": "4b45a76e6c9d71730477af9c1c2ab2fc436e0cf5"
+          }
+        },
+        {
+          "client_id": "181789891597-ujkrqvuq18iofks2ju397bitmaihpljc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGc_4xrKp4ARK2RbutvkKXnV30_w-u52w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181789891597-ujkrqvuq18iofks2ju397bitmaihpljc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
