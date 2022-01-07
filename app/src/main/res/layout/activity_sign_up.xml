@@ -46,6 +46,7 @@
             android:hint="@string/name_editText"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:text="@={viewModel.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/insertYourName_textView"
             app:layout_constraintTop_toBottomOf="@+id/insertYourName_textView"
@@ -69,6 +70,7 @@
             android:hint="@string/surname_editText"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:text="@={viewModel.surname}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/insertYourSurname_textView"
             app:layout_constraintTop_toBottomOf="@+id/insertYourSurname_textView" />
@@ -90,6 +92,7 @@
             android:hint="@string/email_textView"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
+            android:text="@={viewModel.email}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/insertYourEmail_textView"
             app:layout_constraintTop_toBottomOf="@+id/insertYourEmail_textView"
@@ -113,6 +116,7 @@
             android:hint="@string/username_editText"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:text="@={viewModel.username}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/username_textView"
             app:layout_constraintTop_toBottomOf="@+id/username_textView"
@@ -135,6 +139,7 @@
             android:hint="@string/passwordSignUp_editText"
             android:inputType="textPassword"
             android:minHeight="48dp"
+            android:text="@={viewModel.password}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/passwordSignUp_textView"
             app:layout_constraintTop_toBottomOf="@+id/passwordSignUp_textView"
@@ -157,11 +162,22 @@
             android:hint="@string/confirmPassword_editText"
             android:inputType="textPassword"
             android:minHeight="48dp"
+            android:text="@={viewModel.confirmPassword}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/confirmPassword_textView"
             app:layout_constraintTop_toBottomOf="@+id/confirmPassword_textView"
             tools:ignore="TextContrastCheck"
             android:importantForAutofill="no" />
+
+        <Button
+            android:id="@+id/signUp_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/signUp_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

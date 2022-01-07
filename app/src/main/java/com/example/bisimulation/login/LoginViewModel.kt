@@ -15,19 +15,19 @@ class LoginViewModel : ViewModel() {
 
     private var auth: FirebaseAuth = Firebase.auth
 
-    private var _logInStatus = MutableLiveData<Int>()
-    val logInStatus: LiveData<Int> = _logInStatus
+    private var _logInStatus = MutableLiveData<Boolean>()
+    val logInStatus: LiveData<Boolean> = _logInStatus
     fun logIn(){
         Log.i("LoginViewModel", "Sign in triggered.")
 
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful){
                 Log.d(TAG, "Log In successful.")
-                _logInStatus.value = R.string.logInSuccessful_Toast
+                _logInStatus.value = true
             }
             else {
                 Log.e(TAG, "Log In failed.")
-                _logInStatus.value = R.string.logInFailed_Toast
+                _logInStatus.value = false
             }
         }
     }

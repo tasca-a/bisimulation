@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.CheckBox
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -28,7 +26,13 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.logIn()
             }
         }
-        viewModel.logInStatus.observe(this) { message ->
+        viewModel.logInStatus.observe(this) { logged ->
+            val message: String
+            if (logged)
+                message = resources.getString(R.string.logInSuccessful_Toast)
+            else
+                message = resources.getString(R.string.logInFailed_Toast)
+
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
@@ -83,18 +87,32 @@ class LoginActivity : AppCompatActivity() {
     private fun logInChecks(): Boolean {
         var passed = true
 
+        // Clear previous errors
+        binding.emailEditText.error = null
+        binding.passwordEditText.error = null
+
+        // Email check
         if (!isEmail(binding.emailEditText.text)) {
-            binding.emailEditText.error = "Please insert a valid email address."
+            binding.emailEditText.error = resources.getString(R.string.invalidEmailError)
             passed = false
         }
+
+        // Password checks
         if (binding.passwordEditText.text.isBlank()) {
-            binding.passwordEditText.error = "Please insert a password."
+            binding.passwordEditText.error = resources.getString(R.string.emptyPasswordError)
+            passed = false
+        }
+        if(binding.passwordEditText.text.contains(" ")){
+            binding.passwordEditText.error = resources.getString(R.string.invalidPasswordError)
+            passed = false
+        }
+        if (binding.passwordEditText.text.length < 6) {
+            binding.passwordEditText.error = resources.getString(R.string.lengthPasswordError)
             passed = false
         }
 
         return passed
     }
-
     private fun isEmail(email: CharSequence): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }

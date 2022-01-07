@@ -9,8 +9,11 @@
     <string name="clickHere_textView">Click here.</string>
     <string name="notRegisteres_textView">Not registered yet?</string>
     <string name="logginIn_Toast">Logging in..</string>
+    <string name="signinUp_Toast">Signing up..</string>
     <string name="logInSuccessful_Toast">Log in successful!</string>
     <string name="logInFailed_Toast">Log in failed.</string>
+    <string name="signUpSuccessful_Toast">Sign up successful!</string>
+    <string name="signUpFailed_Toast">Sign up failed.</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -32,4 +35,14 @@
     <string name="confirmPassword_textView">Confirm your password</string>
     <string name="passwordSignUp_editText">Password</string>
     <string name="confirmPassword_editText">Your password again</string>
+    <string name="signUp_button">Sign up!</string>
+
+    <string name="invalidEmailError">Please insert a valid email address.</string>
+    <string name="emptyPasswordError">Please insert a password.</string>
+    <string name="invalidPasswordError">Password is invalid.</string>
+    <string name="lengthPasswordError">Password must be at least 6 characters long.</string>
+    <string name="invalidNameError">The name is invalid.</string>
+    <string name="invalidSurnameError">The surname is invalid.</string>
+    <string name="invalidUsernameError">The username is invalid.</string>
+    <string name="pwNotMatchError">The password does not match.</string>
 </resources>
