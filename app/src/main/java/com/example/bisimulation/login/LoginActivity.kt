@@ -1,6 +1,10 @@
 package com.example.bisimulation.login
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.CheckBox
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -15,18 +19,41 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = activityLoginBindingSetup()
 
-        binding.loginButton.setOnClickListener{
-            if (logInChecks()){
-                Toast.makeText(this , R.string.logginIn_Toast, Toast.LENGTH_SHORT).show()
+        binding.loginButton.setOnClickListener {
+            if (logInChecks()) {
+                Toast.makeText(this, R.string.logginIn_Toast, Toast.LENGTH_SHORT).show()
                 viewModel.logIn()
             }
         }
         viewModel.logInStatus.observe(this) { message ->
-            Toast.makeText(this , message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
+
+        val sharedPreferences = this.getSharedPreferences("com.example.bisimulation", Context.MODE_PRIVATE)
+        binding.rememberMeCheckBox.isChecked = sharedPreferences.getBoolean("rememberMe", false)
+        viewModel.email = sharedPreferences.getString("email", "")!!
+        viewModel.password = sharedPreferences.getString("password", "")!!
+        binding.rememberMeCheckBox.setOnClickListener { setPreferences(sharedPreferences) }
 
         setContentView(binding.root)
     }
+
+    private fun setPreferences(sharedPreferences: SharedPreferences) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("rememberMe", binding.rememberMeCheckBox.isChecked)
+        if (binding.rememberMeCheckBox.isChecked) {
+            editor
+                .putString("email", viewModel.email)
+                .putString("password", viewModel.password)
+        }
+        else {
+            editor
+                .putString("email", "")
+                .putString("password", "")
+        }
+        editor.apply()
+    }
+
 
     private fun activityLoginBindingSetup(): ActivityLoginBinding {
         // Set the ViewModel to the Activity
@@ -46,17 +73,18 @@ class LoginActivity : AppCompatActivity() {
     private fun logInChecks(): Boolean {
         var passed = true
 
-        if (!isEmail(binding.emailEditText.text)){
+        if (!isEmail(binding.emailEditText.text)) {
             binding.emailEditText.error = "Please insert a valid email address."
             passed = false
         }
-        if (binding.passwordEditText.text.isBlank()){
+        if (binding.passwordEditText.text.isBlank()) {
             binding.passwordEditText.error = "Please insert a password."
             passed = false
         }
 
         return passed
     }
+
     private fun isEmail(email: CharSequence): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }

@@ -17,7 +17,6 @@ class LoginViewModel : ViewModel() {
 
     private var _logInStatus = MutableLiveData<Int>()
     val logInStatus: LiveData<Int> = _logInStatus
-
     fun logIn(){
         Log.i("LoginViewModel", "Sign in triggered.")
 
