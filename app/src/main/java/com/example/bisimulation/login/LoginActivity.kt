@@ -1,6 +1,7 @@
 package com.example.bisimulation.login
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.CheckBox
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.ActivityLoginBinding
+import com.example.bisimulation.signup.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var viewModel: LoginViewModel
@@ -19,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = activityLoginBindingSetup()
 
+        // Log-in handling
         binding.loginButton.setOnClickListener {
             if (logInChecks()) {
                 Toast.makeText(this, R.string.logginIn_Toast, Toast.LENGTH_SHORT).show()
@@ -29,11 +32,18 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
+        // "Remember me" functionality
         val sharedPreferences = this.getSharedPreferences("com.example.bisimulation", Context.MODE_PRIVATE)
         binding.rememberMeCheckBox.isChecked = sharedPreferences.getBoolean("rememberMe", false)
         viewModel.email = sharedPreferences.getString("email", "")!!
         viewModel.password = sharedPreferences.getString("password", "")!!
         binding.rememberMeCheckBox.setOnClickListener { setPreferences(sharedPreferences) }
+
+        // Sign-up handling
+        binding.registerClickHereTextView.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
 
         setContentView(binding.root)
     }
