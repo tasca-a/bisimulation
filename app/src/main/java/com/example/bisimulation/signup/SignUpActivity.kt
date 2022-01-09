@@ -22,13 +22,8 @@ class SignUpActivity : AppCompatActivity() {
                 viewModel.signUp()
             }
         }
-        viewModel.signUpStatus.observe(this){ signed ->
-            val message: String
-            if (signed)
-                message = resources.getString(R.string.signUpSuccessful_Toast)
-            else
-                message = resources.getString(R.string.signUpFailed_Toast)
-
+        viewModel.signUpStatus.observe(this){ status ->
+            val message = resources.getString(status)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
@@ -83,7 +78,7 @@ class SignUpActivity : AppCompatActivity() {
             binding.passwordSignUpEditText.error = resources.getString(R.string.lengthPasswordError)
             passed = false
         }
-        if (binding.passwordSignUpEditText.text != binding.confirmPasswordEditText.text){
+        if (binding.passwordSignUpEditText.text.equals(binding.confirmPasswordEditText.text)){
             binding.confirmPasswordEditText.error = resources.getString(R.string.pwNotMatchError)
             passed = false
         }
