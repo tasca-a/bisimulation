@@ -46,4 +46,9 @@
     <string name="invalidSurnameError">The surname is invalid.</string>
     <string name="invalidUsernameError">The username is invalid.</string>
     <string name="pwNotMatchError">The password does not match.</string>
+    <string name="forgotPwDialog_textView">Insert here the email address that you used during registration.</string>
+    <string name="emailForgotPwDialog_editText">Email</string>
+    <string name="resetForgotPwDialog_button">Reset</string>
+    <string name="forgotPwDialogSuccess_Toast">Success! If your email is already registered, you should receive a message soon.</string>
+    <string name="forgotPwDialogFail_Toast">Password reset failed.</string>
 </resources>
