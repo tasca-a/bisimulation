@@ -1,6 +1,7 @@
 package com.example.bisimulation.main
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,19 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerLayout)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+
+        //Load user info in the drawer
+        val navigationView = binding.navView
+        val header = navigationView.getHeaderView(0)
+        viewModel.username.observe(this){
+            header.findViewById<TextView>(R.id.username_textView).text = it
+        }
+        viewModel.name.observe(this){
+            header.findViewById<TextView>(R.id.name_textView).text = it
+        }
+        viewModel.surname.observe(this){
+            header.findViewById<TextView>(R.id.surname_textView).text = it
+        }
 
         setContentView(binding.root)
     }
