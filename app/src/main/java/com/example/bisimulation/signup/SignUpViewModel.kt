@@ -1,7 +1,5 @@
 package com.example.bisimulation.signup
 
-import android.util.Log
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.bisimulation.R
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.firestore.ktx.firestore
 
 class SignUpViewModel : ViewModel() {
     var name: String = ""
@@ -24,9 +23,19 @@ class SignUpViewModel : ViewModel() {
     private var _signUpStatus = MutableLiveData<Int>()
     val signUpStatus: LiveData<Int> = _signUpStatus
     fun signUp(){
+        val user = hashMapOf(
+            "name" to name,
+            "surname" to surname,
+            "username" to username
+        )
+
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if(task.isSuccessful){
-                _signUpStatus.value = R.string.signUpSuccessful_Toast
+                if (addUserDetail(user))
+                    _signUpStatus.value = R.string.signUpSuccessful_Toast
+                else{
+                    //TODO: if the user details are not stored, cancel the registration
+                }
             } else {
                 if (task.exception is FirebaseAuthUserCollisionException)
                     _signUpStatus.value = R.string.signUpUserCollisiom_Toast
@@ -36,5 +45,11 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-
+    private fun addUserDetail(user: HashMap<String, String>) : Boolean{
+        var result = true
+        val db = Firebase.firestore
+        db.collection("users").add(user)
+            .addOnFailureListener { result = false }
+        return result
+    }
 }

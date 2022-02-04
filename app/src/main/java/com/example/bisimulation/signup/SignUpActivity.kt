@@ -25,6 +25,8 @@ class SignUpActivity : AppCompatActivity() {
         viewModel.signUpStatus.observe(this){ status ->
             val message = resources.getString(status)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+            //TODO: naviga alla main activity se l'utente si registra correttamente
         }
 
         setContentView(binding.root)
@@ -90,7 +92,7 @@ class SignUpActivity : AppCompatActivity() {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-    fun activitySignUpBindingSetup() {
+    private fun activitySignUpBindingSetup() {
         viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         binding.viewModel = viewModel
