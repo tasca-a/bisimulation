@@ -6,9 +6,18 @@
     <item android:title="@string/navigation_menu_title">
         <menu>
             <group android:checkableBehavior="single">
-                <item android:title="@string/home_menu" />
-                <item android:title="@string/myProfile_menu"/>
-                <item android:title="@string/playNow_menu"/>
+                <item
+                    android:id="@+id/homeFragment"
+                    android:icon="@drawable/ic_baseline_home_24"
+                    android:title="@string/home_menu" />
+                <item
+                    android:id="@+id/profileFragment"
+                    android:icon="@drawable/ic_baseline_person_24"
+                    android:title="@string/myProfile_menu" />
+                <item
+                    android:id="@+id/playNowFragment"
+                    android:icon="@drawable/ic_baseline_play_arrow_24"
+                    android:title="@string/playNow_menu" />
             </group>
         </menu>
     </item>
@@ -16,9 +25,18 @@
     <item android:title="@string/other_menu_title">
         <menu>
             <group android:checkableBehavior="single">
-                <item android:title="@string/faq_menu"/>
-                <item android:title="@string/settings_menu"/>
-                <item android:title="@string/report_menu"/>
+                <item
+                    android:id="@+id/faqFragment"
+                    android:icon="@drawable/ic_baseline_help_24"
+                    android:title="@string/faq_menu" />
+                <item
+                    android:id="@+id/settingsFragment"
+                    android:icon="@drawable/ic_baseline_settings_24"
+                    android:title="@string/settings_menu" />
+                <item
+                    android:id="@+id/bugReportFragment"
+                    android:icon="@drawable/ic_baseline_bug_report_24"
+                    android:title="@string/report_menu" />
             </group>
         </menu>
     </item>

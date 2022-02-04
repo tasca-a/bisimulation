@@ -22,7 +22,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:outlineProvider="none"
-            android:backgroundTint="@color/cardview_shadow_start_color"
             app:cardCornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +29,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@drawable/card_background_personal_stats">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -38,6 +38,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/personalStats_textView"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     app:layout_constraintBaseline_toBaselineOf="@+id/discoverMore_button"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -59,6 +60,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/victories_textView"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/discoverMore_button"
                     tools:ignore="TextContrastCheck" />
@@ -69,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView7"
                     app:layout_constraintTop_toBottomOf="@+id/textView7"
@@ -81,6 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:text="@string/losses_textView"
+                    android:textColor="@color/white"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:ignore="TextContrastCheck" />
@@ -91,6 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView10"
                     app:layout_constraintTop_toBottomOf="@+id/textView10"
@@ -115,7 +120,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@drawable/card_background_active_players">
 
                 <TextView
                     android:id="@+id/textView13"
@@ -125,6 +131,7 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/activePlayer_textView"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -134,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/nActivePlayers_textView"
-                    android:textColor="#424242"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="@+id/textView13"
                     app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -144,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
-                    android:textColor="#424242"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView15"
                     app:layout_constraintTop_toBottomOf="@+id/textView15"
@@ -156,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:text="@string/rooms_textView"
-                    android:textColor="#424242"
+                    android:textColor="@color/white"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView15"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -166,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
-                    android:textColor="#424242"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView18"
                     app:layout_constraintTop_toBottomOf="@+id/textView18"

@@ -1,6 +1,8 @@
 package com.example.bisimulation.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -8,14 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: SharedViewModel
     private lateinit var binding: ActivityMainBinding
-    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerLayout)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
 
         //Load user info in the drawer
         val navigationView = binding.navView
