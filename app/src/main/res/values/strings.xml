@@ -51,4 +51,13 @@
     <string name="resetForgotPwDialog_button">Reset</string>
     <string name="forgotPwDialogSuccess_Toast">Success! If your email is already registered, you should receive a message soon.</string>
     <string name="forgotPwDialogFail_Toast">Password reset failed.</string>
+    <string name="personalStats_textView">Personal stats</string>
+    <string name="discoverMore_button">Discover more!</string>
+    <string name="victories_textView">Numberof victories:</string>
+    <string name="losses_textView">Number of losses:</string>
+    <string name="activePlayer_textView">Active players</string>
+    <string name="nActivePlayers_textView">Active players:</string>
+    <string name="rooms_textView">Rooms:</string>
+    <string name="activePlayers_button">Active players</string>
+    <string name="playNow_button">Play now!</string>
 </resources>

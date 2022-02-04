@@ -20,16 +20,6 @@ class HomeFragment : Fragment(){
     ): View {
         homeFragmentSetup(inflater, container)
 
-        viewModel.name.observe(viewLifecycleOwner){
-            binding.nameTextView.text = it
-        }
-        viewModel.surname.observe(viewLifecycleOwner){
-            binding.surnameTextView.text = it
-        }
-        viewModel.username.observe(viewLifecycleOwner){
-            binding.usernameTextView.text = it
-        }
-
         return binding.root
     }
 
