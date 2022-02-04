@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="@string/navigation_menu_title">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:title="@string/home_menu" />
+                <item android:title="@string/myProfile_menu"/>
+                <item android:title="@string/playNow_menu"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/other_menu_title">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:title="@string/faq_menu"/>
+                <item android:title="@string/settings_menu"/>
+                <item android:title="@string/report_menu"/>
+            </group>
+        </menu>
+    </item>
+</menu>

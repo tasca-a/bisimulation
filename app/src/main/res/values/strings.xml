@@ -60,4 +60,13 @@
     <string name="rooms_textView">Rooms:</string>
     <string name="activePlayers_button">Active players</string>
     <string name="playNow_button">Play now!</string>
+
+    <string name="navigation_menu_title">Navigation</string>
+    <string name="other_menu_title">Other</string>
+    <string name="home_menu">Home</string>
+    <string name="myProfile_menu">My profile</string>
+    <string name="playNow_menu">Play now!</string>
+    <string name="faq_menu">FAQ</string>
+    <string name="settings_menu">Settings</string>
+    <string name="report_menu">Report a problem</string>
 </resources>
