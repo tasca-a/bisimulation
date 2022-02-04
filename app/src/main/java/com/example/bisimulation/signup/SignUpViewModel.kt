@@ -22,7 +22,7 @@ class SignUpViewModel : ViewModel() {
 
     private var _signUpStatus = MutableLiveData<Int>()
     val signUpStatus: LiveData<Int> = _signUpStatus
-    fun signUp(){
+    fun signUp() {
         val user = hashMapOf(
             "name" to name,
             "surname" to surname,
@@ -30,10 +30,10 @@ class SignUpViewModel : ViewModel() {
         )
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if(task.isSuccessful){
+            if (task.isSuccessful) {
                 if (addUserDetail(user))
                     _signUpStatus.value = R.string.signUpSuccessful_Toast
-                else{
+                else {
                     //TODO: if the user details are not stored, cancel the registration
                 }
             } else {
@@ -45,11 +45,21 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    private fun addUserDetail(user: HashMap<String, String>) : Boolean{
+    // Add user details in a Firestore document that can be accessed with user UID
+    private fun addUserDetail(user: HashMap<String, String>): Boolean {
         var result = true
+
         val db = Firebase.firestore
-        db.collection("users").add(user)
-            .addOnFailureListener { result = false }
+        val uid = auth.currentUser?.uid
+
+        if (uid != null) {
+            db.collection("users")
+                .document(uid)
+                .set(user)
+                .addOnFailureListener { result = false }
+        } else
+            result = false
+
         return result
     }
 }

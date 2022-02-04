@@ -11,20 +11,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.ActivityLoginBinding
+import com.example.bisimulation.main.MainActivity
 import com.example.bisimulation.signup.SignUpActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var viewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = activityLoginBindingSetup()
+        sharedPreferences = this.getSharedPreferences("com.example.bisimulation", Context.MODE_PRIVATE)
 
         // Log-in handling
         binding.loginButton.setOnClickListener {
             if (logInChecks()) {
+                setPreferences(sharedPreferences)
                 Toast.makeText(this, R.string.logginIn_Toast, Toast.LENGTH_SHORT).show()
                 viewModel.logIn()
             }
@@ -37,6 +41,11 @@ class LoginActivity : AppCompatActivity() {
                 message = resources.getString(R.string.logInFailed_Toast)
 
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+            if (logged) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         // Forgot-password handling
@@ -55,15 +64,14 @@ class LoginActivity : AppCompatActivity() {
                     if (isEmail(email.text)) {
                         viewModel.resetPassword(email.text.toString())
                         bottomSheetDialog.dismiss()
-                    }
-                    else
+                    } else
                         email.error = resources.getString(R.string.invalidEmailError)
                 }
             }
 
             bottomSheetDialog.show()
         }
-        viewModel.resetPasswordStatus.observe(this){ sent ->
+        viewModel.resetPasswordStatus.observe(this) { sent ->
             val message: String
             if (sent)
                 message = resources.getString(R.string.forgotPwDialogSuccess_Toast)
@@ -80,7 +88,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // "Remember me" functionality
-        val sharedPreferences = this.getSharedPreferences("com.example.bisimulation", Context.MODE_PRIVATE)
         binding.rememberMeCheckBox.isChecked = sharedPreferences.getBoolean("rememberMe", false)
         viewModel.email = sharedPreferences.getString("email", "")!!
         viewModel.password = sharedPreferences.getString("password", "")!!
@@ -96,8 +103,7 @@ class LoginActivity : AppCompatActivity() {
             editor
                 .putString("email", viewModel.email)
                 .putString("password", viewModel.password)
-        }
-        else {
+        } else {
             editor
                 .putString("email", "")
                 .putString("password", "")
@@ -139,7 +145,7 @@ class LoginActivity : AppCompatActivity() {
             binding.passwordEditText.error = resources.getString(R.string.emptyPasswordError)
             passed = false
         }
-        if(binding.passwordEditText.text.contains(" ")){
+        if (binding.passwordEditText.text.contains(" ")) {
             binding.passwordEditText.error = resources.getString(R.string.invalidPasswordError)
             passed = false
         }
@@ -150,6 +156,7 @@ class LoginActivity : AppCompatActivity() {
 
         return passed
     }
+
     private fun isEmail(email: CharSequence): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }

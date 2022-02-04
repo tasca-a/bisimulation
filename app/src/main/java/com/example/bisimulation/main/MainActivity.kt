@@ -1,9 +1,8 @@
 package com.example.bisimulation.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.bisimulation.R
 import com.example.bisimulation.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

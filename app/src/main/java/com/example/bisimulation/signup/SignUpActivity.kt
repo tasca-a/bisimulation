@@ -1,11 +1,13 @@
 package com.example.bisimulation.signup
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.ActivitySignUpBinding
+import com.example.bisimulation.main.MainActivity
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var viewModel: SignUpViewModel
@@ -26,7 +28,10 @@ class SignUpActivity : AppCompatActivity() {
             val message = resources.getString(status)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-            //TODO: naviga alla main activity se l'utente si registra correttamente
+            if (status == R.string.signUpSuccessful_Toast){
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         setContentView(binding.root)
