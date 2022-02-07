@@ -87,4 +87,9 @@
     <string name="faq_question_four">How many <b>game tables</b> are available at the moment?</string>
     <string name="faq_answer_four">At the moment only one game table is available. Soon other tables will be ready.</string>
     <string name="faqGroup_contentDescription">Expand or collapse this question.</string>
+    <string name="sendBugReport_textView">Send us a message of what went wrong, we\'ll try to reach out to you as soon as possible!</string>
+    <string name="thanksFeedback_textView">Thank you for your feedback!\nThe message will be sent to test@mail.com</string>
+    <string name="bugReport_hint">Insert here what went wrong with the application.</string>
+    <string name="sendEmail_button">Send</string>
+    <string name="selectEmail_chooser">Select your email app:</string>
 </resources>

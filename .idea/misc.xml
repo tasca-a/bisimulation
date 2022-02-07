@@ -12,7 +12,7 @@
         <entry key="app/src/main/res/layout/dialog_forgot_password.xml" value="0.33875338753387535" />
         <entry key="app/src/main/res/layout/faq_list_group.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/faq_list_item.xml" value="0.35625" />
-        <entry key="app/src/main/res/layout/fragment_bug_report.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_bug_report.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_faq.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/fragment_play_now.xml" value="0.33" />

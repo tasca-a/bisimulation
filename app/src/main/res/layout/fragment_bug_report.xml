@@ -14,12 +14,50 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/sendBugReport_textView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="BUG REPORT"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/sendBugReport_textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/bugReport_editText"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="@string/bugReport_hint"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:textColorHint="#757575"
+            app:layout_constraintEnd_toEndOf="@+id/sendBugReport_textView"
+            app:layout_constraintStart_toStartOf="@+id/sendBugReport_textView"
+            app:layout_constraintTop_toBottomOf="@+id/sendBugReport_textView" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/thanksFeedback_textView"
+            app:layout_constraintEnd_toEndOf="@+id/bugReport_editText"
+            app:layout_constraintStart_toStartOf="@+id/bugReport_editText"
+            app:layout_constraintTop_toBottomOf="@+id/bugReport_editText" />
+
+        <Button
+            android:id="@+id/sendEmail_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/sendEmail_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
