@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.bisimulation.databinding.FragmentHomeBinding
 import com.example.bisimulation.main.SharedViewModel
 
@@ -19,6 +20,11 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         homeFragmentSetup(inflater, container)
+
+        binding.discoverMoreButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeToProfile()
+            findNavController().navigate(action)
+        }
 
         return binding.root
     }
