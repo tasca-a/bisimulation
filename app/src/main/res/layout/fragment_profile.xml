@@ -110,6 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="@{sharedViewModel.victories.toString()}"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView22"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="0" />
@@ -118,6 +119,7 @@
             android:id="@+id/losses_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{sharedViewModel.losses.toString()}"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView25"
             app:layout_constraintEnd_toEndOf="@+id/victories_textView"
             tools:text="0" />
