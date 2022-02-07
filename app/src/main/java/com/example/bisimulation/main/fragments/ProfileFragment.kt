@@ -20,6 +20,13 @@ class ProfileFragment : Fragment() {
     ): View {
         profileFragmentSetup(inflater, container)
 
+        //Load user info
+        viewModel.name.observe(viewLifecycleOwner){ binding.nameTextView.text = viewModel.name.value }
+        viewModel.surname.observe(viewLifecycleOwner){ binding.surnameTextView.text = viewModel.surname.value }
+        binding.emailAddressTextView.text = viewModel.email
+
+        //TODO: numero di vittorie e sconfitte
+
         return binding.root
     }
 

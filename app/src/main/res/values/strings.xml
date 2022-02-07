@@ -69,4 +69,9 @@
     <string name="faq_menu">FAQ</string>
     <string name="settings_menu">Settings</string>
     <string name="report_menu">Report a problem</string>
+    <string name="personalInfoTextView">Personal info:</string>
+    <string name="nameTextView">Name:</string>
+    <string name="surnameTextView">Surname:</string>
+    <string name="emailAddressTextView">Email address:</string>
+    <string name="statsTextView">Statistics:</string>
 </resources>

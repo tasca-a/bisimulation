@@ -19,8 +19,10 @@ class SharedViewModel : ViewModel() {
     val name: LiveData<String> = _name
     val surname: LiveData<String> = _surname
     val username: LiveData<String> = _username
+    val email = currentUser?.email
 
     init {
+        //TODO: crea oggetto "Repository" a parte, in modo da non mischiare model e viewModel
         if (currentUser != null) {
             db.collection("users")
                 .document(currentUser.uid)
