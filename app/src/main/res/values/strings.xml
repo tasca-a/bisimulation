@@ -100,4 +100,6 @@
     <string name="shareDialogPositiveButton">Share!</string>
     <string name="shareDialogNegativeButton">Dismiss</string>
     <string name="shareMessage">I\'m playing the Bisimulation game! Isn\'t that amazing?</string>
+    <string name="createRoom_button">Create room!</string>
+    <string name="roomCreatedBy_textView">Room by:</string>
 </resources>

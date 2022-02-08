@@ -7,13 +7,13 @@
 
         <variable
             name="viewModel"
-            type="com.example.bisimulation.signup.SignUpViewModel" />
+            type="com.example.bisimulation.activities.signup.SignUpViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".signup.SignUpActivity">
+        tools:context=".activities.signup.SignUpActivity">
 
         <TextView
             android:id="@+id/signUp_textView"

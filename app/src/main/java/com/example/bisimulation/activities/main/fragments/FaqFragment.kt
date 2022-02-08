@@ -1,4 +1,4 @@
-package com.example.bisimulation.main.fragments
+package com.example.bisimulation.activities.main.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentFaqBinding
-import com.example.bisimulation.main.SharedViewModel
+import com.example.bisimulation.activities.main.SharedViewModel
 
 class FaqFragment : Fragment() {
     private lateinit var binding: FragmentFaqBinding

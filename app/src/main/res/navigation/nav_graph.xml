@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.bisimulation.main.fragments.HomeFragment"
+        android:name="com.example.bisimulation.activities.main.fragments.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
@@ -16,27 +16,27 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.bisimulation.main.fragments.ProfileFragment"
+        android:name="com.example.bisimulation.activities.main.fragments.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/playNowFragment"
-        android:name="com.example.bisimulation.main.fragments.PlayNowFragment"
+        android:name="com.example.bisimulation.activities.main.fragments.PlayNowFragment"
         android:label="Play Now!"
         tools:layout="@layout/fragment_play_now" />
     <fragment
         android:id="@+id/faqFragment"
-        android:name="com.example.bisimulation.main.fragments.FaqFragment"
+        android:name="com.example.bisimulation.activities.main.fragments.FaqFragment"
         android:label="FAQ"
         tools:layout="@layout/fragment_faq" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.bisimulation.main.fragments.SettingsFragment"
+        android:name="com.example.bisimulation.activities.main.fragments.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/bugReportFragment"
-        android:name="com.example.bisimulation.main.fragments.BugReportFragment"
+        android:name="com.example.bisimulation.activities.main.fragments.BugReportFragment"
         android:label="Bug Report"
         tools:layout="@layout/fragment_bug_report" />
 </navigation>

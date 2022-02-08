@@ -65,4 +65,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
+
+    implementation 'com.firebaseui:firebase-ui-firestore:8.0.0'
+
+    //Questi possono essere rimossi
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1'
 }

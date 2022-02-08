@@ -1,4 +1,4 @@
-package com.example.bisimulation.login
+package com.example.bisimulation.activities.login
 
 import android.content.Context
 import android.content.Intent
@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.ActivityLoginBinding
-import com.example.bisimulation.main.MainActivity
-import com.example.bisimulation.signup.SignUpActivity
+import com.example.bisimulation.activities.main.MainActivity
+import com.example.bisimulation.activities.signup.SignUpActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class LoginActivity : AppCompatActivity() {

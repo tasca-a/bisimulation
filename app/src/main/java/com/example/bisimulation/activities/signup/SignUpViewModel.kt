@@ -1,4 +1,4 @@
-package com.example.bisimulation.signup
+package com.example.bisimulation.activities.signup
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

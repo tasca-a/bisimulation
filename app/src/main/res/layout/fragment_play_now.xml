@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
         <variable
             name="sharedViewModel"
-            type="com.example.bisimulation.main.SharedViewModel" />
+            type="com.example.bisimulation.activities.main.SharedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/createRoom_button"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="PLAY NOW"
+            android:layout_margin="16dp"
+            android:text="@string/createRoom_button"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/room_recyclerView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/room_recyclerView"
+            android:layout_width="409dp"
+            android:layout_height="665dp"
+            tools:listitem="@layout/item_room"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/createRoom_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

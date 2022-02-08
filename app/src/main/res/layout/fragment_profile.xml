@@ -7,7 +7,7 @@
 
         <variable
             name="sharedViewModel"
-            type="com.example.bisimulation.main.SharedViewModel" />
+            type="com.example.bisimulation.activities.main.SharedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="@{sharedViewModel.name.toString()}"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="Name" />
@@ -56,6 +57,7 @@
             android:id="@+id/surname_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{sharedViewModel.surname.toString()}"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView11"
             app:layout_constraintEnd_toEndOf="@+id/name_TextView"
             tools:text="Surname" />
@@ -73,6 +75,7 @@
             android:id="@+id/emailAddress_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{sharedViewModel.email}"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
             app:layout_constraintEnd_toEndOf="@+id/surname_TextView"
             tools:text="email@address.com" />

@@ -1,4 +1,4 @@
-package com.example.bisimulation.signup
+package com.example.bisimulation.activities.signup
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.ActivitySignUpBinding
-import com.example.bisimulation.main.MainActivity
+import com.example.bisimulation.activities.main.MainActivity
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var viewModel: SignUpViewModel
@@ -98,7 +98,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun activitySignUpBindingSetup() {
-        viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
+        viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

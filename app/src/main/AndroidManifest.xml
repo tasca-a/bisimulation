@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bisimulation.NoActionBar">
         <activity
-            android:name=".signup.SignUpActivity"
+            android:name="com.example.bisimulation.activities.signup.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.example.bisimulation.activities.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.example.bisimulation.activities.main.MainActivity"
             android:exported="false" />
     </application>
 

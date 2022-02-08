@@ -1,4 +1,4 @@
-package com.example.bisimulation.main.fragments
+package com.example.bisimulation.activities.main.fragments
 
 import android.content.Intent
 import android.net.Uri
@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentBugReportBinding
-import com.example.bisimulation.main.SharedViewModel
+import com.example.bisimulation.activities.main.SharedViewModel
 
 class BugReportFragment : Fragment() {
     private lateinit var binding: FragmentBugReportBinding

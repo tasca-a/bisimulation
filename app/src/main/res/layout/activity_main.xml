@@ -7,7 +7,7 @@
 
         <variable
             name="sharedViewModel"
-            type="com.example.bisimulation.main.SharedViewModel" />
+            type="com.example.bisimulation.activities.main.SharedViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout

@@ -1,4 +1,4 @@
-package com.example.bisimulation.main.fragments
+package com.example.bisimulation.activities.main.fragments
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentHomeBinding
-import com.example.bisimulation.main.SharedViewModel
+import com.example.bisimulation.activities.main.SharedViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding

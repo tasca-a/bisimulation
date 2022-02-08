@@ -1,4 +1,4 @@
-package com.example.bisimulation.main.fragments
+package com.example.bisimulation.activities.main.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.bisimulation.databinding.FragmentProfileBinding
-import com.example.bisimulation.main.SharedViewModel
+import com.example.bisimulation.activities.main.SharedViewModel
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
@@ -19,14 +19,6 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         profileFragmentSetup(inflater, container)
-
-        //Load user info
-        viewModel.name.observe(viewLifecycleOwner){ binding.nameTextView.text = viewModel.name.value }
-        viewModel.surname.observe(viewLifecycleOwner){ binding.surnameTextView.text = viewModel.surname.value }
-        binding.emailAddressTextView.text = viewModel.email
-
-        //TODO: numero di vittorie e sconfitte
-
         return binding.root
     }
 

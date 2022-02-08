@@ -1,4 +1,4 @@
-package com.example.bisimulation.main.fragments
+package com.example.bisimulation.activities.main.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.bisimulation.databinding.FragmentPlayNowBinding
-import com.example.bisimulation.main.SharedViewModel
+import com.example.bisimulation.activities.main.SharedViewModel
 
 class PlayNowFragment : Fragment(){
     private lateinit var binding:  FragmentPlayNowBinding
@@ -19,6 +19,8 @@ class PlayNowFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View {
         playNowFragmentSetup(inflater, container)
+
+        //val query
 
         return binding.root
     }
