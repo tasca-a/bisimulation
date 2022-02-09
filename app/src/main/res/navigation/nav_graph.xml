@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_home_to_playNow"
             app:destination="@id/playNowFragment" />
+        <action
+            android:id="@+id/action_home_to_activePlayers"
+            app:destination="@id/activePlayersFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -42,4 +45,9 @@
         android:name="com.example.bisimulation.activities.main.fragments.BugReportFragment"
         android:label="Bug Report"
         tools:layout="@layout/fragment_bug_report" />
+    <fragment
+        android:id="@+id/activePlayersFragment"
+        android:name="com.example.bisimulation.activities.main.fragments.ActivePlayersFragment"
+        android:label="Active Players"
+        tools:layout="@layout/fragment_active_players" />
 </navigation>

@@ -35,6 +35,11 @@ class HomeFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.activePlayersButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeToActivePlayers()
+            findNavController().navigate(action)
+        }
+
         //Clicking on the Share fab created a dialog that let you choose if you want to share or not
         binding.shareFab.setOnClickListener {
             //Create the dialog

@@ -1,6 +1,8 @@
 package com.example.bisimulation.repository
 
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 
 object RealtimeRepository {
     private const val TAG = "RealtimeRepository"
@@ -16,4 +18,9 @@ object RealtimeRepository {
         // Tell te server to remove the user from the list when it detects that we disconnected
         activeUsersListRef.child(userUid).onDisconnect().removeValue()
     }
+
+    fun getActiveUsersListReference(): Query {
+        return realtimeDb.reference.child("activeUsersList")
+    }
+
 }

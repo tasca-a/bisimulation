@@ -28,7 +28,7 @@ class RoomFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Matchmaking
     inner class RoomViewHolder internal constructor(private val view: View) :
         RecyclerView.ViewHolder(view) {
         internal fun setRoomHost(username: String) {
-            val roomHostTextView = view.findViewById<TextView>(R.id.roomHost_textView)
+            val roomHostTextView = view.findViewById<TextView>(R.id.hostUsername_textView)
             roomHostTextView.text = username
         }
     }
