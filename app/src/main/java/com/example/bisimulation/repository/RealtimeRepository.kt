@@ -1,20 +1,19 @@
 package com.example.bisimulation.repository
 
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ServerValue
 
 object RealtimeRepository {
     private const val TAG = "RealtimeRepository"
 
     private val realtimeDb = FirebaseDatabase.getInstance("https://bisimulation-default-rtdb.europe-west1.firebasedatabase.app")
-    val activeUsersRef = realtimeDb.getReference("activeUsers")
+    val activeUsersListRef = realtimeDb.getReference("activeUsersList")
 
     // Manages the online presence of the current user
-    fun setupUserPresence(){
-        //Increment the user count
-        activeUsersRef.setValue(ServerValue.increment(1))
+    fun setupUserPresence(userUid: String,username: String){
+        // Add the user to the activeUserList
+        activeUsersListRef.child(userUid).setValue(username)
 
-        //Tell the server to decrement the user count when it detects that we disconnected
-        activeUsersRef.onDisconnect().setValue(ServerValue.increment(-1))
+        // Tell te server to remove the user from the list when it detects that we disconnected
+        activeUsersListRef.child(userUid).onDisconnect().removeValue()
     }
 }

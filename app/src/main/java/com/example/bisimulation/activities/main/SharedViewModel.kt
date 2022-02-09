@@ -16,6 +16,7 @@ class SharedViewModel : ViewModel() {
     // User information
     private val auth = Firebase.auth
     private val currentUser = auth.currentUser
+    val email = currentUser?.email
 
     private val _name = MutableLiveData<String>()
     private val _surname = MutableLiveData<String>()
@@ -29,8 +30,6 @@ class SharedViewModel : ViewModel() {
     val victories: LiveData<Int> = _victories
     val losses: LiveData<Int> = _losses
     val activeUsers: LiveData<Int> = _activeUsers
-
-    val email = currentUser?.email
 
     init {
         // Get all the user extra info
@@ -49,15 +48,18 @@ class SharedViewModel : ViewModel() {
                 FsGetIntEventListener(_losses, "losses")
             )
 
-            //Update and manages currently active user count
-            RealtimeRepository.setupUserPresence()
-
-            // Get the currently active users in realt time
-            RealtimeRepository.activeUsersRef.addValueEventListener(
+            // Get the currently active users in real time
+            RealtimeRepository.activeUsersListRef.addValueEventListener(
                 RtGetIntEventListener(
                     _activeUsers
                 )
             )
+        }
+    }
+
+    fun manageOnlinePresence(username: String){
+        if (currentUser?.uid != null){
+            RealtimeRepository.setupUserPresence(currentUser.uid, username)
         }
     }
 }
