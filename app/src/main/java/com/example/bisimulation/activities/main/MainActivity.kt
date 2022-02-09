@@ -8,11 +8,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.bisimulation.R
+import com.example.bisimulation.game.GameViewModel
 import com.example.bisimulation.databinding.ActivityMainBinding
-import com.example.bisimulation.repository.RealtimeRepository
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: SharedViewModel
+    private lateinit var sharedViewModel: SharedViewModel
+    //private lateinit var gameViewModel: GameViewModel
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,9 +23,9 @@ class MainActivity : AppCompatActivity() {
         // Call the ViewModel to manage user presence online
         // It is necessary to make this call in the Activity to assure that the function is
         // called everytime the activity is created. There must be a better way to separate
-        // this but now I can't find any
-        viewModel.username.observe(this){ username ->
-            viewModel.manageOnlinePresence(username)
+        // this but for now I can't find any
+        sharedViewModel.username.observe(this){ username ->
+            sharedViewModel.manageOnlinePresence(username)
         }
 
         // Toolbar and Drawer setup
@@ -37,13 +38,13 @@ class MainActivity : AppCompatActivity() {
         // Load user info in the drawer
         val navigationView = binding.navView
         val header = navigationView.getHeaderView(0)
-        viewModel.username.observe(this){
+        sharedViewModel.username.observe(this){
             header.findViewById<TextView>(R.id.username_textView).text = it
         }
-        viewModel.name.observe(this){
+        sharedViewModel.name.observe(this){
             header.findViewById<TextView>(R.id.name_textView).text = it
         }
-        viewModel.surname.observe(this){
+        sharedViewModel.surname.observe(this){
             header.findViewById<TextView>(R.id.surname_textView).text = it
         }
 
@@ -52,9 +53,10 @@ class MainActivity : AppCompatActivity() {
 
     // Set up binding and viewModel of the MainActivity
     private fun mainActivitySetup() {
-        viewModel = ViewModelProvider(this)[SharedViewModel::class.java]
+        sharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
+        //gameViewModel = ViewModelProvider(this)[GameViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
-        binding.sharedViewModel = viewModel
+        binding.sharedViewModel = sharedViewModel
         binding.lifecycleOwner = this
     }
 }

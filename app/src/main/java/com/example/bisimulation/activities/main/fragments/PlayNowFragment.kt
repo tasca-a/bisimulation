@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.bisimulation.activities.main.SharedViewModel
 import com.example.bisimulation.adapters.RoomFirestoreRecyclerAdapter
 import com.example.bisimulation.databinding.FragmentPlayNowBinding
@@ -29,6 +30,11 @@ class PlayNowFragment : Fragment() {
         firestoreAdapterInitialization()
 
         binding.roomRecyclerView.adapter = adapter
+
+        binding.createRoomButton.setOnClickListener {
+            val action = PlayNowFragmentDirections.actionPlayNowToLobby(player1uid = viewModel.uid!!)
+            findNavController().navigate(action)
+        }
 
         return binding.root
     }

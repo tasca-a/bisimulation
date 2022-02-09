@@ -1,6 +1,7 @@
 package com.example.bisimulation.repository
 
 import android.util.Log
+import com.example.bisimulation.utils.MatchmakingRoomModel
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
@@ -52,6 +53,12 @@ object FirestoreRepository {
             Log.e(TAG, e.message.toString())
             ""
         }
+    }
+
+    fun createRoom(room: MatchmakingRoomModel){
+        val db = Firebase.firestore
+
+        db.collection("rooms").document(room.player1uid).set(room)
     }
 
     // Realtime queries - to be observed

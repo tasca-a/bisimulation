@@ -16,6 +16,7 @@ class SharedViewModel : ViewModel() {
     // User information
     private val auth = Firebase.auth
     private val currentUser = auth.currentUser
+    val uid = currentUser?.uid
     val email = currentUser?.email
 
     private val _name = MutableLiveData<String>()

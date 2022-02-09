@@ -22,7 +22,7 @@ class RoomFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Matchmaking
         position: Int,
         model: MatchmakingRoomModel
     ) {
-        holder.setRoomHost(model.roomHost)
+        holder.setRoomHost(model.player1username)
     }
 
     inner class RoomViewHolder internal constructor(private val view: View) :
