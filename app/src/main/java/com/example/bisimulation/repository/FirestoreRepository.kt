@@ -1,7 +1,9 @@
 package com.example.bisimulation.repository
 
 import android.util.Log
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -56,5 +58,10 @@ object FirestoreRepository {
     fun getStatsReference(userId: String): DocumentReference {
         val db = Firebase.firestore
         return db.collection("stats").document(userId)
+    }
+
+    fun getRoomsReference(): Query {
+        val db = Firebase.firestore
+        return db.collection("rooms").orderBy("creationTime", Query.Direction.ASCENDING)
     }
 }
