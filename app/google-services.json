@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "181789891597",
-    "project_id": "bisimulation",
-    "storage_bucket": "bisimulation.appspot.com"
+    "project_number": "586513166922",
+    "project_id": "bisimulation-2ed25",
+    "storage_bucket": "bisimulation-2ed25.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:181789891597:android:1bec1e946efbb875b34944",
+        "mobilesdk_app_id": "1:586513166922:android:3778eb06ebcb2dd3946cb3",
         "android_client_info": {
           "package_name": "com.example.bisimulation"
         }
       },
       "oauth_client": [
         {
-          "client_id": "181789891597-jj93lob36q0qi5hul9l4bd1doea2b5m8.apps.googleusercontent.com",
+          "client_id": "586513166922-16fglun53pnsaj5d3ftk0dlrn5dbr0a5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.bisimulation",
-            "certificate_hash": "4b45a76e6c9d71730477af9c1c2ab2fc436e0cf5"
+            "certificate_hash": "98afe24eb8f32f72aebbd597185ccd411a6c5068"
           }
         },
         {
-          "client_id": "181789891597-ujkrqvuq18iofks2ju397bitmaihpljc.apps.googleusercontent.com",
+          "client_id": "586513166922-kjt6d513hgrqb8mr1le85n2ip3260tco.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCGc_4xrKp4ARK2RbutvkKXnV30_w-u52w"
+          "current_key": "AIzaSyB_KAI1Bli0MvLaJRVtviI8VYXnHAhqjd4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "181789891597-ujkrqvuq18iofks2ju397bitmaihpljc.apps.googleusercontent.com",
+              "client_id": "586513166922-kjt6d513hgrqb8mr1le85n2ip3260tco.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

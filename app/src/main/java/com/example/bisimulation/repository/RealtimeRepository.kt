@@ -7,7 +7,7 @@ import com.google.firebase.database.Query
 object RealtimeRepository {
     private const val TAG = "RealtimeRepository"
 
-    private val realtimeDb = FirebaseDatabase.getInstance("https://bisimulation-default-rtdb.europe-west1.firebasedatabase.app")
+    private val realtimeDb = FirebaseDatabase.getInstance("https://bisimulation-2ed25-default-rtdb.europe-west1.firebasedatabase.app/")
     val activeUsersListRef = realtimeDb.getReference("activeUsersList")
 
     // Manages the online presence of the current user
