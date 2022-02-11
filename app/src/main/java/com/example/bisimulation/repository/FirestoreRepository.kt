@@ -1,12 +1,11 @@
 package com.example.bisimulation.repository
 
 import android.util.Log
-import com.example.bisimulation.game.OnConnectionSuccess
-import com.example.bisimulation.game.OnRoomClearedSuccess
-import com.example.bisimulation.game.OnRoomCreationSuccess
+import com.example.bisimulation.callbacks.OnConnectionSuccess
+import com.example.bisimulation.callbacks.OnRoomClearedSuccess
+import com.example.bisimulation.callbacks.OnRoomCreationSuccess
 import com.example.bisimulation.utils.GameState
 import com.example.bisimulation.utils.MatchmakingRoomModel
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore

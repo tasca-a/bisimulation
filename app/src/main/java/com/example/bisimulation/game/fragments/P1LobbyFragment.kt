@@ -12,7 +12,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentLobbyBinding
 import com.example.bisimulation.game.GameViewModel
-import com.example.bisimulation.game.OnRoomClearedSuccess
 import com.example.bisimulation.utils.GameState
 
 class P1LobbyFragment : Fragment() {

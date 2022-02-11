@@ -7,4 +7,16 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- my custom colours -->
+    <!-- Light mode -->
+    <color name="primaryColor">#e8653c</color>
+    <color name="primaryLightColor">#ff9668</color>
+    <color name="primaryDarkColor">#b03510</color>
+    <color name="secondaryColor">#0085c4</color>
+    <color name="secondaryLightColor">#5ab4f7</color>
+    <color name="secondaryDarkColor">#005993</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
+    <color name="primaryTransparent">#77e8653c</color>
 </resources>

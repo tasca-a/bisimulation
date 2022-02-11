@@ -14,10 +14,10 @@ import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentLobbyBinding
 import com.example.bisimulation.game.GameViewModel
-import com.example.bisimulation.game.OnRoomClearedSuccess
+import com.example.bisimulation.callbacks.OnRoomClearedSuccess
 import com.example.bisimulation.utils.GameState
 
-class P2LobbyFragment : Fragment(), OnRoomClearedSuccess{
+class P2LobbyFragment : Fragment(), OnRoomClearedSuccess {
     private lateinit var binding: FragmentLobbyBinding
     private lateinit var viewModel: GameViewModel
     private val args: P2LobbyFragmentArgs by navArgs()

@@ -1,11 +1,13 @@
 package com.example.bisimulation.game
 
-import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bisimulation.callbacks.OnConnectionSuccess
+import com.example.bisimulation.callbacks.OnRoomClearedSuccess
+import com.example.bisimulation.callbacks.OnRoomCreationSuccess
 import com.example.bisimulation.repository.FirestoreRepository
 import com.example.bisimulation.repository.FsGetStringEventListener
 import com.example.bisimulation.utils.GameState
@@ -100,17 +102,4 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     fun setRoomAsZombie(){
         FirestoreRepository.setRoomAsZombie(roomId)
     }
-}
-
-// TODO: Refactor to be just one interface
-interface OnRoomCreationSuccess{
-    fun roomCreationSuccess()
-}
-
-interface OnConnectionSuccess{
-    fun connectionSuccess()
-}
-
-interface OnRoomClearedSuccess{
-    fun clearSuccess()
 }

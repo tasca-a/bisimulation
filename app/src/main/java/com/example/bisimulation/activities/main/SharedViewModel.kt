@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class SharedViewModel : ViewModel() {
     // User information
-    private val auth = Firebase.auth
-    val currentUser = auth.currentUser
+    val auth = Firebase.auth
+    private val currentUser = auth.currentUser
     val uid = currentUser?.uid
     val email = currentUser?.email
 
@@ -55,8 +55,6 @@ class SharedViewModel : ViewModel() {
                     _activeUsers
                 )
             )
-
-            // Clear all previous
         }
     }
 

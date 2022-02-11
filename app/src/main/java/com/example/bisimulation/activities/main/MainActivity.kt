@@ -1,5 +1,6 @@
 package com.example.bisimulation.activities.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -8,8 +9,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.bisimulation.R
+import com.example.bisimulation.activities.login.LoginActivity
 import com.example.bisimulation.game.GameViewModel
 import com.example.bisimulation.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: SharedViewModel
@@ -19,7 +22,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mainActivitySetup()
 
-        //TODO: osserva l'auth, se rileva una disconnessione ritorna alla login.
+        // Return to login if the user disconnects
+        sharedViewModel.auth.addAuthStateListener { auth ->
+            val user = auth.currentUser
+            if (user == null){
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        //TODO: return to login if device goes offline
 
         // Call the ViewModel to manage user presence online
         // It is necessary to make this call in the Activity to assure that the function is
