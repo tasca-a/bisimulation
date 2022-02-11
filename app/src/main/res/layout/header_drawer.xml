@@ -4,6 +4,7 @@
     android:background="@drawable/header_drawer_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="24dp"
     android:orientation="vertical"
     android:fitsSystemWindows="true">
 

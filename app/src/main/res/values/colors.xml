@@ -12,7 +12,7 @@
     <!-- Light mode -->
     <color name="primaryColor">#e8653c</color>
     <color name="primaryLightColor">#ff9668</color>
-    <color name="primaryDarkColor">#b03510</color>
+    <color name="primaryDarkColor">#bbb03510</color>
     <color name="secondaryColor">#0085c4</color>
     <color name="secondaryLightColor">#5ab4f7</color>
     <color name="secondaryDarkColor">#005993</color>
