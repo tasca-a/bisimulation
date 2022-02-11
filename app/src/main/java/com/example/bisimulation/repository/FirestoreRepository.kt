@@ -1,6 +1,7 @@
 package com.example.bisimulation.repository
 
 import android.util.Log
+import com.example.bisimulation.game.OnRoomCreationSuccess
 import com.example.bisimulation.utils.MatchmakingRoomModel
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -55,10 +56,11 @@ object FirestoreRepository {
         }
     }
 
-    fun createRoom(room: MatchmakingRoomModel){
+    fun createRoom(roomId:String, room: MatchmakingRoomModel, listener: OnRoomCreationSuccess){
         val db = Firebase.firestore
-
-        db.collection("rooms").document(room.player1uid).set(room)
+        db.collection("rooms").document(roomId).set(room).addOnSuccessListener {
+            listener.roomCreationSuccess()
+        }
     }
 
     // Realtime queries - to be observed
@@ -70,5 +72,10 @@ object FirestoreRepository {
     fun getRoomsReference(): Query {
         val db = Firebase.firestore
         return db.collection("rooms").orderBy("creationTime", Query.Direction.ASCENDING)
+    }
+
+    fun getLobbyReference(roomId: String): DocumentReference {
+        val db = Firebase.firestore
+        return db.collection("rooms").document(roomId)
     }
 }

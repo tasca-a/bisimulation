@@ -4,11 +4,11 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ServerTimestamp
 
 class MatchmakingRoomModel(
-    val player1username: String = "",
-    val player2username: String = "",
-    val player1uid: String = "",
-    val player2uid: String = "",
-    val roomState: GameState = GameState.DONE,
+    var player1username: String = "",
+    var player2username: String = "",
+    var player1uid: String = "",
+    var player2uid: String = "",
+    var roomState: GameState = GameState.DONE,
 
     @ServerTimestamp
     val creationTime: Timestamp? = null

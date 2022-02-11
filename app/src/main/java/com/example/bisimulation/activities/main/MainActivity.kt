@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mainActivitySetup()
 
+        //TODO: osserva l'auth, se rileva una disconnessione ritorna alla login.
+
         // Call the ViewModel to manage user presence online
         // It is necessary to make this call in the Activity to assure that the function is
         // called everytime the activity is created. There must be a better way to separate

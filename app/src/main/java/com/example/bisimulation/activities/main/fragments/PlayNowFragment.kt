@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.example.bisimulation.activities.main.SharedViewModel
+import com.example.bisimulation.adapters.RoomClickListener
 import com.example.bisimulation.adapters.RoomFirestoreRecyclerAdapter
 import com.example.bisimulation.databinding.FragmentPlayNowBinding
 import com.example.bisimulation.repository.FirestoreRepository
 import com.example.bisimulation.utils.MatchmakingRoomModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class PlayNowFragment : Fragment() {
+class PlayNowFragment : Fragment(), RoomClickListener {
     private lateinit var binding: FragmentPlayNowBinding
     private val viewModel: SharedViewModel by activityViewModels()
 
@@ -32,7 +34,10 @@ class PlayNowFragment : Fragment() {
         binding.roomRecyclerView.adapter = adapter
 
         binding.createRoomButton.setOnClickListener {
-            val action = PlayNowFragmentDirections.actionPlayNowToLobby(player1uid = viewModel.uid!!)
+            val action = PlayNowFragmentDirections.actionPlayNowToP1lobby(
+                viewModel.uid!!,
+                viewModel.username.value!!
+            )
             findNavController().navigate(action)
         }
 
@@ -45,7 +50,7 @@ class PlayNowFragment : Fragment() {
             .setQuery(query, MatchmakingRoomModel::class.java)
             .setLifecycleOwner(viewLifecycleOwner)
             .build()
-        adapter = RoomFirestoreRecyclerAdapter(options)
+        adapter = RoomFirestoreRecyclerAdapter(options, viewModel.uid!!, this)
     }
 
     private fun playNowFragmentSetup(
@@ -55,5 +60,9 @@ class PlayNowFragment : Fragment() {
         binding = FragmentPlayNowBinding.inflate(inflater, container, false)
         binding.sharedViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    override fun navigate(action: NavDirections) {
+        //findNavController().navigate(action)
     }
 }

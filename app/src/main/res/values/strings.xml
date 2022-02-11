@@ -104,4 +104,7 @@
     <string name="roomCreatedBy_textView">Room by:</string>
     <string name="joinRoom_button">Join room!</string>
     <string name="startGame_button">Start game!</string>
+
+    <!-- Lobby -->
+    <string name="lobbyCreationError">Impossible to create a lobby.</string>
 </resources>
