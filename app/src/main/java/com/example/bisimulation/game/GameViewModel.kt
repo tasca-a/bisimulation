@@ -1,5 +1,6 @@
 package com.example.bisimulation.game
 
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -90,12 +91,26 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     override fun connectionSuccess() {
         Log.e("GameViewModel", "Connection successful! :D")
     }
+
+    // Delete the lobby when the user goes away from the lobby
+    fun clearRoom(listener: OnRoomClearedSuccess){
+        FirestoreRepository.clearRoom(roomId, listener)
+    }
+
+    fun setRoomAsZombie(){
+        FirestoreRepository.setRoomAsZombie(roomId)
+    }
 }
 
+// TODO: Refactor to be just one interface
 interface OnRoomCreationSuccess{
     fun roomCreationSuccess()
 }
 
 interface OnConnectionSuccess{
     fun connectionSuccess()
+}
+
+interface OnRoomClearedSuccess{
+    fun clearSuccess()
 }

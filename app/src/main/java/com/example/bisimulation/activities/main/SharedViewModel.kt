@@ -55,6 +55,8 @@ class SharedViewModel : ViewModel() {
                     _activeUsers
                 )
             )
+
+            // Clear all previous
         }
     }
 

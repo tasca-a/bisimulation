@@ -34,12 +34,6 @@ class RoomFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Matchmaking
                 roomId = model.player1uid
             )
             roomClickListener.navigate(action)
-//            val action = PlayNowFragmentDirections.actionPlayNowToLobby(
-//                player1uid = model.player1uid,
-//                player2uid = userUid
-//            )
-            // navigate
-            //roomClickListener.navigate(action)
         }
     }
 

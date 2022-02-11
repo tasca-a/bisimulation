@@ -88,5 +88,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_versus_symbol"
             tools:ignore="ContentDescription" />
+
+        <Button
+            android:id="@+id/zombiefy_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/zombiefy_button"
+            android:visibility="gone"
+            android:onClick="@{() -> gameViewModel.setRoomAsZombie()}"
+            app:layout_constraintBottom_toTopOf="@+id/startGame_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

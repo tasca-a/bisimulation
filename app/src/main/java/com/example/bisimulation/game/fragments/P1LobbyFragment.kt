@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentLobbyBinding
 import com.example.bisimulation.game.GameViewModel
+import com.example.bisimulation.game.OnRoomClearedSuccess
 import com.example.bisimulation.utils.GameState
 
 class P1LobbyFragment : Fragment() {
@@ -36,13 +37,20 @@ class P1LobbyFragment : Fragment() {
         }
 
         // When lobby status changes to READY, enable startButton
+        // TODO: Refactor to a when statement
         viewModel.lobbyStatus.observe(viewLifecycleOwner){ status ->
             if (status == GameState.READY.toString()){
                 binding.startGameButton.isEnabled = true
             }
+            // If the lobby is a zombie, return to PlayNow
+            if (status == GameState.ZOMBIE.toString()){
+                Toast.makeText(context, resources.getString(R.string.lobbyInactiveError), Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.playNowFragment)
+            }
         }
 
         // Play the game!
+        // Maybe you can embed this listener in the XML?
         binding.startGameButton.setOnClickListener {
             // Set the status to PLAYING
             // TODO: Avvia la partita!
@@ -56,5 +64,10 @@ class P1LobbyFragment : Fragment() {
         binding = FragmentLobbyBinding.inflate(inflater, container, false)
         binding.gameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    override fun onDestroy() {
+        viewModel.setRoomAsZombie()
+        super.onDestroy()
     }
 }

@@ -1,6 +1,8 @@
 package com.example.bisimulation.game.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +14,10 @@ import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentLobbyBinding
 import com.example.bisimulation.game.GameViewModel
+import com.example.bisimulation.game.OnRoomClearedSuccess
 import com.example.bisimulation.utils.GameState
 
-class P2LobbyFragment : Fragment(){
+class P2LobbyFragment : Fragment(), OnRoomClearedSuccess{
     private lateinit var binding: FragmentLobbyBinding
     private lateinit var viewModel: GameViewModel
     private val args: P2LobbyFragmentArgs by navArgs()
@@ -37,12 +40,22 @@ class P2LobbyFragment : Fragment(){
         }
 
         // When lobby status changes to READY, enable startButton
+        // TODO: Refactor to a when statement
         viewModel.lobbyStatus.observe(viewLifecycleOwner){ status ->
             if (status == GameState.READY.toString()){
                 binding.startGameButton.text = resources.getString(R.string.lobbyWaitingToStart)
+
+                // Show the zombie-fy button after 10 seconds
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.zombiefyButton.visibility = View.VISIBLE
+                }, 10000)
             }
             if (status == GameState.PLAYING.toString()){
                 //TODO: Avvia la partita!
+            }
+            // If the lobby is a zombie, return to PlayNow
+            if (status == GameState.ZOMBIE.toString()){
+                viewModel.clearRoom(this)
             }
         }
 
@@ -54,5 +67,10 @@ class P2LobbyFragment : Fragment(){
         binding = FragmentLobbyBinding.inflate(inflater, container, false)
         binding.gameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    override fun clearSuccess() {
+        Toast.makeText(context, resources.getString(R.string.lobbyZombieError), Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.playNowFragment)
     }
 }

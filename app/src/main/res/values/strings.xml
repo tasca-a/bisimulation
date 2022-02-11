@@ -107,6 +107,9 @@
 
     <!-- Lobby -->
     <string name="lobbyCreationError">Impossible to create a lobby.</string>
+    <string name="lobbyZombieError">The host left the lobby</string>
+    <string name="lobbyInactiveError">This room has been reported as inactive</string>
     <string name="lobbyWaitingToStart">Waiting for the host to start the game…</string>
     <string name="lobbyWaitingForPlayer2">Waiting…</string>
+    <string name="zombiefy_button">Report this room as empty</string>
 </resources>

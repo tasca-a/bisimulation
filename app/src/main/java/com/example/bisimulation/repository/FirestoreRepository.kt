@@ -2,7 +2,9 @@ package com.example.bisimulation.repository
 
 import android.util.Log
 import com.example.bisimulation.game.OnConnectionSuccess
+import com.example.bisimulation.game.OnRoomClearedSuccess
 import com.example.bisimulation.game.OnRoomCreationSuccess
+import com.example.bisimulation.utils.GameState
 import com.example.bisimulation.utils.MatchmakingRoomModel
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -64,6 +66,23 @@ object FirestoreRepository {
         }
     }
 
+    fun clearRoom(roomId: String, listener: OnRoomClearedSuccess){
+        val db = Firebase.firestore
+        var counter = 0
+        // For some reasons the success callback is triggered multiple times
+        db.collection("rooms").document(roomId).delete().addOnSuccessListener {
+            if (++counter == 1)
+                listener.clearSuccess()
+        }
+    }
+
+    fun setRoomAsZombie(roomId: String){
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId).update(mapOf(
+            "roomState" to GameState.ZOMBIE
+        ))
+    }
+
     fun connectPlayer2(roomId: String, room: MatchmakingRoomModel, listener: OnConnectionSuccess){
         val db = Firebase.firestore
         db.collection("rooms").document(roomId).update(mapOf(
@@ -86,7 +105,9 @@ object FirestoreRepository {
 
         // Maybe get userUid as parameter and make his room not visible?
         // This to impede the user to enter in a lobby with himself
-        return db.collection("rooms").whereEqualTo("roomState", "LOBBY").orderBy("creationTime", Query.Direction.ASCENDING)
+        return db.collection("rooms")
+            .whereEqualTo("roomState", "LOBBY")
+            .orderBy("creationTime", Query.Direction.ASCENDING)
     }
 
     fun getLobbyReference(roomId: String): DocumentReference {
