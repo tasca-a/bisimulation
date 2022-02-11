@@ -70,6 +70,11 @@
             android:name="username"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/action_p1lobby_to_playNow"
+            app:destination="@id/playNowFragment"
+            app:popUpTo="@id/playNowFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/p2LobbyFragment"
@@ -88,5 +93,10 @@
             android:name="roomId"
             android:defaultValue=''
             app:argType="string" />
+        <action
+            android:id="@+id/action_p2Lobby_to_playNow"
+            app:destination="@id/playNowFragment"
+            app:popUpTo="@id/playNowFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

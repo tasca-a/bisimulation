@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,9 +31,14 @@ class P1LobbyFragment : Fragment() {
         if (args.uid.isEmpty() || args.username.isEmpty()){
             // Impossible to create a lobby
             Toast.makeText(context, resources.getString(R.string.lobbyCreationError), Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.playNowFragment)
+            val action = P1LobbyFragmentDirections.actionP1lobbyToPlayNow()
+            findNavController().navigate(action)
         } else {
             viewModel.createRoom(args.uid, args.username)
+
+            // Little animation effect
+            val loadingAnimation = AnimationUtils.loadAnimation(context, R.anim.blink)
+            binding.player2TextView.startAnimation(loadingAnimation)
         }
 
         // When lobby status changes to READY, enable startButton
@@ -40,11 +46,13 @@ class P1LobbyFragment : Fragment() {
         viewModel.lobbyStatus.observe(viewLifecycleOwner){ status ->
             if (status == GameState.READY.toString()){
                 binding.startGameButton.isEnabled = true
+                binding.player2TextView.clearAnimation()
             }
             // If the lobby is a zombie, return to PlayNow
             if (status == GameState.ZOMBIE.toString()){
                 Toast.makeText(context, resources.getString(R.string.lobbyInactiveError), Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.playNowFragment)
+                val action = P1LobbyFragmentDirections.actionP1lobbyToPlayNow()
+                findNavController().navigate(action)
             }
         }
 

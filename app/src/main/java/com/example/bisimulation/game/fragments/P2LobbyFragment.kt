@@ -33,7 +33,8 @@ class P2LobbyFragment : Fragment(), OnRoomClearedSuccess {
         if (args.uid.isEmpty() || args.username.isEmpty() || args.roomId.isEmpty()){
             // Impossible to create a lobby
             Toast.makeText(context, resources.getString(R.string.lobbyCreationError), Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.playNowFragment)
+            val action = P2LobbyFragmentDirections.actionP2LobbyToPlayNow()
+            findNavController().navigate(action)
         } else {
             viewModel.getExistingRoom(args.roomId)
             viewModel.connectPlayer2(args.uid, args.username)
@@ -71,6 +72,7 @@ class P2LobbyFragment : Fragment(), OnRoomClearedSuccess {
 
     override fun clearSuccess() {
         Toast.makeText(context, resources.getString(R.string.lobbyZombieError), Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.playNowFragment)
+        val action = P2LobbyFragmentDirections.actionP2LobbyToPlayNow()
+        findNavController().navigate(action)
     }
 }
