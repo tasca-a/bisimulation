@@ -50,7 +50,7 @@ class PlayNowFragment : Fragment(), RoomClickListener {
             .setQuery(query, MatchmakingRoomModel::class.java)
             .setLifecycleOwner(viewLifecycleOwner)
             .build()
-        adapter = RoomFirestoreRecyclerAdapter(options, viewModel.uid!!, this)
+        adapter = RoomFirestoreRecyclerAdapter(options, viewModel.uid!!, viewModel.username.value!!, this)
     }
 
     private fun playNowFragmentSetup(
@@ -63,6 +63,6 @@ class PlayNowFragment : Fragment(), RoomClickListener {
     }
 
     override fun navigate(action: NavDirections) {
-        //findNavController().navigate(action)
+        findNavController().navigate(action)
     }
 }

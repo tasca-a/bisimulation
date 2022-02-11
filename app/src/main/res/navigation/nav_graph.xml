@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_playNow_to_p1lobby"
             app:destination="@id/p1lobbyFragment" />
+        <action
+            android:id="@+id/action_playNow_to_p2Lobby"
+            app:destination="@id/p2LobbyFragment" />
     </fragment>
     <fragment
         android:id="@+id/faqFragment"
@@ -56,16 +59,34 @@
         tools:layout="@layout/fragment_active_players" />
     <fragment
         android:id="@+id/p1lobbyFragment"
-        android:name="com.example.bisimulation.game.fragments.P1lobbyFragment"
-        android:label="P1lobbyFragment"
+        android:name="com.example.bisimulation.game.fragments.P1LobbyFragment"
+        android:label="Lobby"
         tools:layout="@layout/fragment_lobby">
         <argument
             android:name="uid"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="username"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/p2LobbyFragment"
+        android:name="com.example.bisimulation.game.fragments.P2LobbyFragment"
+        android:label="Lobby"
+        tools:layout="@layout/fragment_lobby">
+        <argument
+            android:name="uid"
+            android:defaultValue=''
+            app:argType="string" />
+        <argument
+            android:name="username"
+            android:defaultValue=''
+            app:argType="string" />
+        <argument
+            android:name="roomId"
+            android:defaultValue=''
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -13,7 +13,6 @@ import com.example.bisimulation.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: SharedViewModel
-    //private lateinit var gameViewModel: GameViewModel
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

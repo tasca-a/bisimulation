@@ -12,7 +12,7 @@ import com.example.bisimulation.utils.MatchmakingRoomModel
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class RoomFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<MatchmakingRoomModel>, private val userUid: String, private val roomClickListener: RoomClickListener) :
+class RoomFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<MatchmakingRoomModel>, private val userUid: String, private val userUsername: String, private val roomClickListener: RoomClickListener) :
     FirestoreRecyclerAdapter<MatchmakingRoomModel, RoomFirestoreRecyclerAdapter.RoomViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
@@ -28,6 +28,12 @@ class RoomFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Matchmaking
         holder.setRoomHost(model.player1username)
 
         holder.connectButton.setOnClickListener {
+            val action = PlayNowFragmentDirections.actionPlayNowToP2Lobby(
+                uid = userUid,
+                username = userUsername,
+                roomId = model.player1uid
+            )
+            roomClickListener.navigate(action)
 //            val action = PlayNowFragmentDirections.actionPlayNowToLobby(
 //                player1uid = model.player1uid,
 //                player2uid = userUid

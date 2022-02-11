@@ -1,6 +1,7 @@
 package com.example.bisimulation.repository
 
 import android.util.Log
+import com.example.bisimulation.game.OnConnectionSuccess
 import com.example.bisimulation.game.OnRoomCreationSuccess
 import com.example.bisimulation.utils.MatchmakingRoomModel
 import com.google.firebase.firestore.CollectionReference
@@ -63,6 +64,17 @@ object FirestoreRepository {
         }
     }
 
+    fun connectPlayer2(roomId: String, room: MatchmakingRoomModel, listener: OnConnectionSuccess){
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId).update(mapOf(
+            "player2uid" to room.player2uid,
+            "player2username" to room.player2username,
+            "roomState" to room.roomState
+        )).addOnSuccessListener {
+            listener.connectionSuccess()
+        }
+    }
+
     // Realtime queries - to be observed
     fun getStatsReference(userId: String): DocumentReference {
         val db = Firebase.firestore
@@ -71,7 +83,10 @@ object FirestoreRepository {
 
     fun getRoomsReference(): Query {
         val db = Firebase.firestore
-        return db.collection("rooms").orderBy("creationTime", Query.Direction.ASCENDING)
+
+        // Maybe get userUid as parameter and make his room not visible?
+        // This to impede the user to enter in a lobby with himself
+        return db.collection("rooms").whereEqualTo("roomState", "LOBBY").orderBy("creationTime", Query.Direction.ASCENDING)
     }
 
     fun getLobbyReference(roomId: String): DocumentReference {

@@ -1,14 +1,17 @@
 package com.example.bisimulation.game
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.bisimulation.repository.FirestoreRepository
 import com.example.bisimulation.repository.FsGetStringEventListener
 import com.example.bisimulation.utils.GameState
 import com.example.bisimulation.utils.MatchmakingRoomModel
+import kotlinx.coroutines.launch
 
-class GameViewModel : ViewModel(), OnRoomCreationSuccess {
+class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     private var roomId: String = ""
 
     private val _p1username = MutableLiveData<String>()
@@ -20,6 +23,7 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess {
     private val _lobbyStatus = MutableLiveData<String>()
     val lobbyStatus: LiveData<String> = _lobbyStatus
 
+    // PLAYER 1
     fun createRoom(uid: String, username: String) {
         // Use the player1 uid as the roomId, to prevent multiple room creation
         // from the same user and support a match log for the user in the future
@@ -35,6 +39,7 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess {
         val newRoom = MatchmakingRoomModel(
             player1uid = uid,
             player1username = username,
+            player2username = "...",
             roomState = GameState.LOBBY
         )
 
@@ -52,8 +57,45 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess {
             FsGetStringEventListener(_lobbyStatus, "roomState")
         )
     }
+
+    // PLAYER 2
+    fun getExistingRoom(roomId: String) {
+        this.roomId = roomId
+        // Get all information of an already existing room
+        viewModelScope.launch {
+            // roomId is the player1 uid
+            _p1username.value = FirestoreRepository.getUsername(roomId)
+        }
+
+        // Start listening for room status
+        FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
+            FsGetStringEventListener(_lobbyStatus, "roomState")
+        )
+    }
+
+    fun connectPlayer2(uid: String, username: String) {
+        // Set the player as player2
+        _p2username.value = username
+
+        // Create a new room object to contain player2 info
+        val player2 = MatchmakingRoomModel(
+            player2uid = uid,
+            player2username = username,
+            roomState = GameState.READY
+        )
+
+        FirestoreRepository.connectPlayer2(roomId, player2, this)
+    }
+
+    override fun connectionSuccess() {
+        Log.e("GameViewModel", "Connection successful! :D")
+    }
 }
 
 interface OnRoomCreationSuccess{
     fun roomCreationSuccess()
+}
+
+interface OnConnectionSuccess{
+    fun connectionSuccess()
 }

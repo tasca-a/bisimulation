@@ -107,4 +107,6 @@
 
     <!-- Lobby -->
     <string name="lobbyCreationError">Impossible to create a lobby.</string>
+    <string name="lobbyWaitingToStart">Waiting for the host to start the game…</string>
+    <string name="lobbyWaitingForPlayer2">Waiting…</string>
 </resources>

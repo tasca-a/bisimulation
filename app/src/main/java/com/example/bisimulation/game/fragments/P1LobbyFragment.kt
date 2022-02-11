@@ -14,10 +14,10 @@ import com.example.bisimulation.databinding.FragmentLobbyBinding
 import com.example.bisimulation.game.GameViewModel
 import com.example.bisimulation.utils.GameState
 
-class P1lobbyFragment : Fragment() {
+class P1LobbyFragment : Fragment() {
     private lateinit var binding: FragmentLobbyBinding
     private lateinit var viewModel: GameViewModel
-    private val args: P1lobbyFragmentArgs by navArgs()
+    private val args: P1LobbyFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +44,7 @@ class P1lobbyFragment : Fragment() {
 
         // Play the game!
         binding.startGameButton.setOnClickListener {
+            // Set the status to PLAYING
             // TODO: Avvia la partita!
         }
 
