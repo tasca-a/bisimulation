@@ -14,10 +14,10 @@ import com.example.bisimulation.game.LobbyViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class P1GameFragment : Fragment() {
+class AttackerFragment : Fragment() {
     private lateinit var binding: FragmentGameBinding
     private lateinit var viewModel: GameViewModel
-    private val args: P1GameFragmentArgs by navArgs()
+    private val args: AttackerFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,

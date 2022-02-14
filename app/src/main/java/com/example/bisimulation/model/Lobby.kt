@@ -15,6 +15,7 @@ class Lobby(
     var player2username: String = "",
     var player1uid: String = "",
     var player2uid: String = "",
+    var player1role: GameRole = GameRole.ATTACKER,
     var roomState: GameState = GameState.DONE,
 
     @ServerTimestamp

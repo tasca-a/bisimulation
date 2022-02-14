@@ -50,8 +50,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/startGame_button"
             android:enabled="false"
+            android:text="@string/startGame_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -95,11 +95,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:onClick="@{() -> gameViewModel.setRoomAsZombie()}"
             android:text="@string/zombiefy_button"
             android:visibility="gone"
-            android:onClick="@{() -> gameViewModel.setRoomAsZombie()}"
             app:layout_constraintBottom_toTopOf="@+id/startGame_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/attacker_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:enabled="false"
+            android:text="@string/attacker_switch"
+            android:textSize="14sp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@+id/player1_textView"
+            app:layout_constraintTop_toBottomOf="@+id/player1_textView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

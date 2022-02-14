@@ -11,10 +11,10 @@ import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.databinding.FragmentGameBinding
 import com.example.bisimulation.game.GameViewModel
 
-class P2GameFragment : Fragment() {
+class DefensorFragment : Fragment() {
     private lateinit var binding: FragmentGameBinding
     private lateinit var viewModel: GameViewModel
-    private val args: P2GameFragmentArgs by navArgs()
+    private val args: DefensorFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,

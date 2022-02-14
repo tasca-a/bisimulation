@@ -13,8 +13,9 @@ import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentLobbyBinding
 import com.example.bisimulation.game.LobbyViewModel
-import com.example.bisimulation.repository.FirestoreRepository
+import com.example.bisimulation.model.GameRole
 import com.example.bisimulation.model.GameState
+import com.example.bisimulation.repository.FirestoreRepository
 
 class P1LobbyFragment : Fragment() {
     private lateinit var binding: FragmentLobbyBinding
@@ -29,9 +30,13 @@ class P1LobbyFragment : Fragment() {
         p1LobbyFragmentSetup(inflater, container)
 
         // Create the lobby
-        if (args.uid.isEmpty() || args.username.isEmpty()){
+        if (args.uid.isEmpty() || args.username.isEmpty()) {
             // Impossible to create a lobby
-            Toast.makeText(context, resources.getString(R.string.lobbyCreationError), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                resources.getString(R.string.lobbyCreationError),
+                Toast.LENGTH_SHORT
+            ).show()
             val action = P1LobbyFragmentDirections.actionP1lobbyToPlayNow()
             findNavController().navigate(action)
         } else {
@@ -42,9 +47,18 @@ class P1LobbyFragment : Fragment() {
             binding.player2TextView.startAnimation(loadingAnimation)
         }
 
+        // Enable the attacker/defender switch functionality
+        binding.attackerSwitch.isEnabled = true
+        binding.attackerSwitch.setOnCheckedChangeListener { _, b ->
+            if (b)
+                viewModel.setP1Role(GameRole.ATTACKER)
+            else
+                viewModel.setP1Role(GameRole.DEFENSOR)
+        }
+
         // When lobby status changes to READY, enable startButton
-        viewModel.lobbyStatus.observe(viewLifecycleOwner){ status ->
-            when(status){
+        viewModel.lobbyStatus.observe(viewLifecycleOwner) { status ->
+            when (status) {
                 // When the game is ready, show the startGameButton
                 GameState.READY -> {
                     binding.startGameButton.isEnabled = true
@@ -53,7 +67,11 @@ class P1LobbyFragment : Fragment() {
 
                 // If the lobby is a zombie, return to PlayNow
                 GameState.ZOMBIE -> {
-                    Toast.makeText(context, resources.getString(R.string.lobbyInactiveError), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.lobbyInactiveError),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     val action = P1LobbyFragmentDirections.actionP1lobbyToPlayNow()
                     findNavController().navigate(action)
                 }
@@ -69,8 +87,14 @@ class P1LobbyFragment : Fragment() {
             // Set the status to PLAYING
             FirestoreRepository.setRoomAsPlaying(viewModel.roomId)
 
+            // Select the fragment to take based on the role
+            val action =
+                if (viewModel.p1role.value == GameRole.ATTACKER)
+                    P1LobbyFragmentDirections.actionP1lobbyToAttacker(viewModel.roomId)
+                else
+                    P1LobbyFragmentDirections.actionP1lobbyToDefensor(viewModel.roomId)
+
             // Start the game!
-            val action = P1LobbyFragmentDirections.actionP1lobbyToP1Game(viewModel.roomId)
             findNavController().navigate(action)
         }
 

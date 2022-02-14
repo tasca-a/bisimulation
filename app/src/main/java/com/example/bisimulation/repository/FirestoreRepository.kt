@@ -3,6 +3,7 @@ package com.example.bisimulation.repository
 import android.util.Log
 import com.example.bisimulation.callbacks.OnConnectionSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
+import com.example.bisimulation.model.GameRole
 import com.example.bisimulation.model.GameState
 import com.example.bisimulation.model.Lobby
 import com.google.firebase.firestore.DocumentReference
@@ -85,8 +86,16 @@ object FirestoreRepository {
             "player2username" to room.player2username,
             "roomState" to room.roomState
         )).addOnSuccessListener {
+            // Useless?
             listener.connectionSuccess()
         }
+    }
+
+    fun setP1Role(roomId: String, role: GameRole) {
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId).update(mapOf(
+            "player1role" to role
+        ))
     }
 
     // Realtime queries - to be observed

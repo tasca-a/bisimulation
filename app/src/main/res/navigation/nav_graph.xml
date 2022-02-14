@@ -29,7 +29,7 @@
         android:id="@+id/playNowFragment"
         android:name="com.example.bisimulation.activities.main.fragments.PlayNowFragment"
         android:label="Play Now!"
-        tools:layout="@layout/fragment_play_now" >
+        tools:layout="@layout/fragment_play_now">
         <action
             android:id="@+id/action_playNow_to_p1lobby"
             app:destination="@id/p1lobbyFragment" />
@@ -76,8 +76,11 @@
             app:popUpTo="@id/playNowFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_p1lobby_to_p1Game"
-            app:destination="@id/p1GameFragment" />
+            android:id="@+id/action_p1lobby_to_attacker"
+            app:destination="@id/attackerFragment" />
+        <action
+            android:id="@+id/action_p1lobby_to_defensor"
+            app:destination="@id/defensorFragment" />
     </fragment>
     <fragment
         android:id="@+id/p2LobbyFragment"
@@ -102,25 +105,30 @@
             app:popUpTo="@id/playNowFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_p2Lobby_to_p2Game"
-            app:destination="@id/p2GameFragment" />
+            android:id="@+id/action_p2Lobby_to_attacker"
+            app:destination="@id/attackerFragment" />
+        <action
+            android:id="@+id/action_p2Lobby_to_defensor"
+            app:destination="@id/defensorFragment" />
     </fragment>
     <fragment
-        android:id="@+id/p1GameFragment"
-        android:name="com.example.bisimulation.game.fragments.P1GameFragment"
-        android:label="P1GameFragment" >
+        android:id="@+id/attackerFragment"
+        android:name="com.example.bisimulation.game.fragments.AttackerFragment"
+        android:label="Attacker"
+        tools:layout="@layout/fragment_game">
         <argument
             android:name="roomId"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/p2GameFragment"
-        android:name="com.example.bisimulation.game.fragments.P2GameFragment"
-        android:label="P2GameFragment" >
+        android:id="@+id/defensorFragment"
+        android:name="com.example.bisimulation.game.fragments.DefensorFragment"
+        android:label="Defensor"
+        tools:layout="@layout/fragment_game">
         <argument
             android:name="roomId"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
 </navigation>

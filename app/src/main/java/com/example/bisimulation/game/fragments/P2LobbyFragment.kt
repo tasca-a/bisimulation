@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentLobbyBinding
 import com.example.bisimulation.game.LobbyViewModel
+import com.example.bisimulation.model.GameRole
 import com.example.bisimulation.model.GameState
 
 class P2LobbyFragment : Fragment() {
@@ -29,9 +30,13 @@ class P2LobbyFragment : Fragment() {
         p2LobbyFragmentSetup(inflater, container)
 
         // Get lobby already existing information
-        if (args.uid.isEmpty() || args.username.isEmpty() || args.roomId.isEmpty()){
+        if (args.uid.isEmpty() || args.username.isEmpty() || args.roomId.isEmpty()) {
             // Impossible to create a lobby
-            Toast.makeText(context, resources.getString(R.string.lobbyCreationError), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                resources.getString(R.string.lobbyCreationError),
+                Toast.LENGTH_SHORT
+            ).show()
             val action = P2LobbyFragmentDirections.actionP2LobbyToPlayNow()
             findNavController().navigate(action)
         } else {
@@ -39,9 +44,14 @@ class P2LobbyFragment : Fragment() {
             viewModel.connectPlayer2(args.uid, args.username)
         }
 
+        // Listen to attacker/defender updates
+        viewModel.p1role.observe(viewLifecycleOwner) { p1role ->
+            binding.attackerSwitch.isChecked = (p1role == GameRole.ATTACKER)
+        }
+
         // When lobby status changes to READY, enable startButton
-        viewModel.lobbyStatus.observe(viewLifecycleOwner){ status ->
-            when(status){
+        viewModel.lobbyStatus.observe(viewLifecycleOwner) { status ->
+            when (status) {
                 GameState.READY -> {
                     binding.startGameButton.text = resources.getString(R.string.lobbyWaitingToStart)
 
@@ -53,13 +63,23 @@ class P2LobbyFragment : Fragment() {
 
                 // Start the game!
                 GameState.PLAYING -> {
-                    val action = P2LobbyFragmentDirections.actionP2LobbyToP2Game(viewModel.roomId)
+                    // Select the fragment to take based on the role of the player1
+                    val action =
+                        if (viewModel.p1role.value == GameRole.ATTACKER)
+                            P2LobbyFragmentDirections.actionP2LobbyToDefensor(viewModel.roomId)
+                        else
+                            P2LobbyFragmentDirections.actionP2LobbyToAttacker(viewModel.roomId)
+
                     findNavController().navigate(action)
                 }
 
                 // If the lobby is a zombie, return to PlayNow
                 GameState.ZOMBIE -> {
-                    Toast.makeText(context, resources.getString(R.string.lobbyZombieError), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.lobbyZombieError),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     val action = P2LobbyFragmentDirections.actionP2LobbyToPlayNow()
                     findNavController().navigate(action)
                 }

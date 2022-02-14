@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisimulation.callbacks.OnConnectionSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
+import com.example.bisimulation.model.GameRole
 import com.example.bisimulation.repository.FirestoreRepository
 import com.example.bisimulation.repository.FsGetStatusEventListener
 import com.example.bisimulation.repository.FsGetStringEventListener
 import com.example.bisimulation.model.GameState
 import com.example.bisimulation.model.Lobby
+import com.example.bisimulation.repository.FsGetRoleEventListener
 import kotlinx.coroutines.launch
 
 class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
@@ -26,6 +28,9 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     private val _lobbyStatus = MutableLiveData<GameState>()
     val lobbyStatus: LiveData<GameState> = _lobbyStatus
 
+    private val _p1role = MutableLiveData<GameRole>()
+    val p1role: LiveData<GameRole> = _p1role
+
     // PLAYER 1
     fun createRoom(uid: String, username: String) {
         // Use the player1 uid as the roomId, to prevent multiple room creation
@@ -35,6 +40,9 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         // Set the current user as player1
         _p1username.value = username
 
+        // Set the default player1 role to attacker
+        _p1role.value = GameRole.ATTACKER
+
         // Set the current lobby status
         _lobbyStatus.value = GameState.LOBBY
 
@@ -42,6 +50,7 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         val newRoom = Lobby(
             player1uid = uid,
             player1username = username,
+            player1role = GameRole.ATTACKER,
             player2username = "...",
             roomState = GameState.LOBBY
         )
@@ -57,8 +66,13 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
 
         // Start listening for room status
         FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
-            FsGetStatusEventListener(_lobbyStatus, "roomState")
+            FsGetStatusEventListener(_lobbyStatus)
         )
+    }
+
+    fun setP1Role(role: GameRole) {
+        _p1role.value = role
+        FirestoreRepository.setP1Role(roomId, role)
     }
 
     fun setRoomAsZombie(){
@@ -76,7 +90,11 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
 
         // Start listening for room status
         FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
-            FsGetStatusEventListener(_lobbyStatus, "roomState")
+            FsGetStatusEventListener(_lobbyStatus),
+        )
+
+        FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
+            FsGetRoleEventListener(_p1role)
         )
     }
 
