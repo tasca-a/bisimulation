@@ -53,7 +53,7 @@ class P1LobbyFragment : Fragment() {
             if (b)
                 viewModel.setP1Role(GameRole.ATTACKER)
             else
-                viewModel.setP1Role(GameRole.DEFENSOR)
+                viewModel.setP1Role(GameRole.DEFENDER)
         }
 
         // When lobby status changes to READY, enable startButton
