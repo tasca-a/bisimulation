@@ -13,13 +13,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentLobbyBinding
-import com.example.bisimulation.game.GameViewModel
-import com.example.bisimulation.callbacks.OnRoomClearedSuccess
-import com.example.bisimulation.utils.GameState
+import com.example.bisimulation.game.LobbyViewModel
+import com.example.bisimulation.model.GameState
 
-class P2LobbyFragment : Fragment(), OnRoomClearedSuccess {
+class P2LobbyFragment : Fragment() {
     private lateinit var binding: FragmentLobbyBinding
-    private lateinit var viewModel: GameViewModel
+    private lateinit var viewModel: LobbyViewModel
     private val args: P2LobbyFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -41,22 +40,32 @@ class P2LobbyFragment : Fragment(), OnRoomClearedSuccess {
         }
 
         // When lobby status changes to READY, enable startButton
-        // TODO: Refactor to a when statement
         viewModel.lobbyStatus.observe(viewLifecycleOwner){ status ->
-            if (status == GameState.READY.toString()){
-                binding.startGameButton.text = resources.getString(R.string.lobbyWaitingToStart)
+            when(status){
+                GameState.READY -> {
+                    binding.startGameButton.text = resources.getString(R.string.lobbyWaitingToStart)
 
-                // Show the zombie-fy button after 10 seconds
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.zombiefyButton.visibility = View.VISIBLE
-                }, 10000)
-            }
-            if (status == GameState.PLAYING.toString()){
-                //TODO: Avvia la partita!
-            }
-            // If the lobby is a zombie, return to PlayNow
-            if (status == GameState.ZOMBIE.toString()){
-                viewModel.clearRoom(this)
+                    // Show the zombie-fy button after 10 seconds
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.zombiefyButton.visibility = View.VISIBLE
+                    }, 10000)
+                }
+
+                // Start the game!
+                GameState.PLAYING -> {
+                    val action = P2LobbyFragmentDirections.actionP2LobbyToP2Game(viewModel.roomId)
+                    findNavController().navigate(action)
+                }
+
+                // If the lobby is a zombie, return to PlayNow
+                GameState.ZOMBIE -> {
+                    Toast.makeText(context, resources.getString(R.string.lobbyZombieError), Toast.LENGTH_SHORT).show()
+                    val action = P2LobbyFragmentDirections.actionP2LobbyToPlayNow()
+                    findNavController().navigate(action)
+                }
+
+                // Don't to anything
+                else -> {}
             }
         }
 
@@ -64,15 +73,9 @@ class P2LobbyFragment : Fragment(), OnRoomClearedSuccess {
     }
 
     private fun p2LobbyFragmentSetup(inflater: LayoutInflater, container: ViewGroup?) {
-        viewModel = ViewModelProvider(requireActivity())[GameViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[LobbyViewModel::class.java]
         binding = FragmentLobbyBinding.inflate(inflater, container, false)
         binding.gameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-    }
-
-    override fun clearSuccess() {
-        Toast.makeText(context, resources.getString(R.string.lobbyZombieError), Toast.LENGTH_SHORT).show()
-        val action = P2LobbyFragmentDirections.actionP2LobbyToPlayNow()
-        findNavController().navigate(action)
     }
 }

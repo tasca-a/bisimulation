@@ -7,7 +7,7 @@
 
         <variable
             name="gameViewModel"
-            type="com.example.bisimulation.game.GameViewModel" />
+            type="com.example.bisimulation.game.LobbyViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,9 +1,16 @@
-package com.example.bisimulation.utils
+package com.example.bisimulation.model
 
+import android.os.Parcelable
+import androidx.versionedparcelable.ParcelField
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ServerTimestamp
+import kotlinx.parcelize.Parcelize
 
-class MatchmakingRoomModel(
+// Lobby model
+// Useless parcelize?
+
+@Parcelize
+class Lobby(
     var player1username: String = "",
     var player2username: String = "",
     var player1uid: String = "",
@@ -12,4 +19,4 @@ class MatchmakingRoomModel(
 
     @ServerTimestamp
     val creationTime: Timestamp? = null
-)
+): Parcelable

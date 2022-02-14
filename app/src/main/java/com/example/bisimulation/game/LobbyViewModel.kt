@@ -6,16 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisimulation.callbacks.OnConnectionSuccess
-import com.example.bisimulation.callbacks.OnRoomClearedSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
 import com.example.bisimulation.repository.FirestoreRepository
+import com.example.bisimulation.repository.FsGetStatusEventListener
 import com.example.bisimulation.repository.FsGetStringEventListener
-import com.example.bisimulation.utils.GameState
-import com.example.bisimulation.utils.MatchmakingRoomModel
+import com.example.bisimulation.model.GameState
+import com.example.bisimulation.model.Lobby
 import kotlinx.coroutines.launch
 
-class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
-    private var roomId: String = ""
+class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
+    var roomId: String = ""
 
     private val _p1username = MutableLiveData<String>()
     val p1username: LiveData<String> = _p1username
@@ -23,8 +23,8 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     private val _p2username = MutableLiveData<String>()
     val p2username: LiveData<String> = _p2username
 
-    private val _lobbyStatus = MutableLiveData<String>()
-    val lobbyStatus: LiveData<String> = _lobbyStatus
+    private val _lobbyStatus = MutableLiveData<GameState>()
+    val lobbyStatus: LiveData<GameState> = _lobbyStatus
 
     // PLAYER 1
     fun createRoom(uid: String, username: String) {
@@ -36,10 +36,10 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         _p1username.value = username
 
         // Set the current lobby status
-        _lobbyStatus.value = GameState.LOBBY.toString()
+        _lobbyStatus.value = GameState.LOBBY
 
         // Create a new room
-        val newRoom = MatchmakingRoomModel(
+        val newRoom = Lobby(
             player1uid = uid,
             player1username = username,
             player2username = "...",
@@ -57,8 +57,12 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
 
         // Start listening for room status
         FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
-            FsGetStringEventListener(_lobbyStatus, "roomState")
+            FsGetStatusEventListener(_lobbyStatus, "roomState")
         )
+    }
+
+    fun setRoomAsZombie(){
+        FirestoreRepository.setRoomAsZombie(roomId)
     }
 
     // PLAYER 2
@@ -72,7 +76,7 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
 
         // Start listening for room status
         FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
-            FsGetStringEventListener(_lobbyStatus, "roomState")
+            FsGetStatusEventListener(_lobbyStatus, "roomState")
         )
     }
 
@@ -81,7 +85,7 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         _p2username.value = username
 
         // Create a new room object to contain player2 info
-        val player2 = MatchmakingRoomModel(
+        val player2 = Lobby(
             player2uid = uid,
             player2username = username,
             roomState = GameState.READY
@@ -90,16 +94,8 @@ class GameViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         FirestoreRepository.connectPlayer2(roomId, player2, this)
     }
 
+    // Useless?
     override fun connectionSuccess() {
         Log.e("GameViewModel", "Connection successful! :D")
-    }
-
-    // Delete the lobby when the user goes away from the lobby
-    fun clearRoom(listener: OnRoomClearedSuccess){
-        FirestoreRepository.clearRoom(roomId, listener)
-    }
-
-    fun setRoomAsZombie(){
-        FirestoreRepository.setRoomAsZombie(roomId)
     }
 }

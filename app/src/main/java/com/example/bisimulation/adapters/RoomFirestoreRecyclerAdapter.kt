@@ -8,12 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bisimulation.R
 import com.example.bisimulation.activities.main.fragments.PlayNowFragmentDirections
-import com.example.bisimulation.utils.MatchmakingRoomModel
+import com.example.bisimulation.model.Lobby
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class RoomFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<MatchmakingRoomModel>, private val userUid: String, private val userUsername: String, private val roomClickListener: RoomClickListener) :
-    FirestoreRecyclerAdapter<MatchmakingRoomModel, RoomFirestoreRecyclerAdapter.RoomViewHolder>(options) {
+class RoomFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Lobby>, private val userUid: String, private val userUsername: String, private val roomClickListener: RoomClickListener) :
+    FirestoreRecyclerAdapter<Lobby, RoomFirestoreRecyclerAdapter.RoomViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_room, parent, false)
@@ -23,7 +23,7 @@ class RoomFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Matchmaking
     override fun onBindViewHolder(
         holder: RoomViewHolder,
         position: Int,
-        model: MatchmakingRoomModel
+        model: Lobby
     ) {
         holder.setRoomHost(model.player1username)
 

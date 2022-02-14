@@ -2,10 +2,9 @@ package com.example.bisimulation.repository
 
 import android.util.Log
 import com.example.bisimulation.callbacks.OnConnectionSuccess
-import com.example.bisimulation.callbacks.OnRoomClearedSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
-import com.example.bisimulation.utils.GameState
-import com.example.bisimulation.utils.MatchmakingRoomModel
+import com.example.bisimulation.model.GameState
+import com.example.bisimulation.model.Lobby
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -58,20 +57,10 @@ object FirestoreRepository {
         }
     }
 
-    fun createRoom(roomId:String, room: MatchmakingRoomModel, listener: OnRoomCreationSuccess){
+    fun createRoom(roomId:String, room: Lobby, listener: OnRoomCreationSuccess){
         val db = Firebase.firestore
         db.collection("rooms").document(roomId).set(room).addOnSuccessListener {
             listener.roomCreationSuccess()
-        }
-    }
-
-    fun clearRoom(roomId: String, listener: OnRoomClearedSuccess){
-        val db = Firebase.firestore
-        var counter = 0
-        // For some reasons the success callback is triggered multiple times
-        db.collection("rooms").document(roomId).delete().addOnSuccessListener {
-            if (++counter == 1)
-                listener.clearSuccess()
         }
     }
 
@@ -82,7 +71,14 @@ object FirestoreRepository {
         ))
     }
 
-    fun connectPlayer2(roomId: String, room: MatchmakingRoomModel, listener: OnConnectionSuccess){
+    fun setRoomAsPlaying(roomId: String){
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId).update(mapOf(
+            "roomState" to GameState.PLAYING
+        ))
+    }
+
+    fun connectPlayer2(roomId: String, room: Lobby, listener: OnConnectionSuccess){
         val db = Firebase.firestore
         db.collection("rooms").document(roomId).update(mapOf(
             "player2uid" to room.player2uid,

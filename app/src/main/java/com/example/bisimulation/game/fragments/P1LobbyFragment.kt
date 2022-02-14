@@ -12,12 +12,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentLobbyBinding
-import com.example.bisimulation.game.GameViewModel
-import com.example.bisimulation.utils.GameState
+import com.example.bisimulation.game.LobbyViewModel
+import com.example.bisimulation.repository.FirestoreRepository
+import com.example.bisimulation.model.GameState
 
 class P1LobbyFragment : Fragment() {
     private lateinit var binding: FragmentLobbyBinding
-    private lateinit var viewModel: GameViewModel
+    private lateinit var viewModel: LobbyViewModel
     private val args: P1LobbyFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -42,17 +43,23 @@ class P1LobbyFragment : Fragment() {
         }
 
         // When lobby status changes to READY, enable startButton
-        // TODO: Refactor to a when statement
         viewModel.lobbyStatus.observe(viewLifecycleOwner){ status ->
-            if (status == GameState.READY.toString()){
-                binding.startGameButton.isEnabled = true
-                binding.player2TextView.clearAnimation()
-            }
-            // If the lobby is a zombie, return to PlayNow
-            if (status == GameState.ZOMBIE.toString()){
-                Toast.makeText(context, resources.getString(R.string.lobbyInactiveError), Toast.LENGTH_SHORT).show()
-                val action = P1LobbyFragmentDirections.actionP1lobbyToPlayNow()
-                findNavController().navigate(action)
+            when(status){
+                // When the game is ready, show the startGameButton
+                GameState.READY -> {
+                    binding.startGameButton.isEnabled = true
+                    binding.player2TextView.clearAnimation()
+                }
+
+                // If the lobby is a zombie, return to PlayNow
+                GameState.ZOMBIE -> {
+                    Toast.makeText(context, resources.getString(R.string.lobbyInactiveError), Toast.LENGTH_SHORT).show()
+                    val action = P1LobbyFragmentDirections.actionP1lobbyToPlayNow()
+                    findNavController().navigate(action)
+                }
+
+                // Don't do anything
+                else -> {}
             }
         }
 
@@ -60,14 +67,18 @@ class P1LobbyFragment : Fragment() {
         // Maybe you can embed this listener in the XML?
         binding.startGameButton.setOnClickListener {
             // Set the status to PLAYING
-            // TODO: Avvia la partita!
+            FirestoreRepository.setRoomAsPlaying(viewModel.roomId)
+
+            // Start the game!
+            val action = P1LobbyFragmentDirections.actionP1lobbyToP1Game(viewModel.roomId)
+            findNavController().navigate(action)
         }
 
         return binding.root
     }
 
     private fun p1LobbyFragmentSetup(inflater: LayoutInflater, container: ViewGroup?) {
-        viewModel = ViewModelProvider(requireActivity())[GameViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[LobbyViewModel::class.java]
         binding = FragmentLobbyBinding.inflate(inflater, container, false)
         binding.gameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

@@ -75,6 +75,9 @@
             app:destination="@id/playNowFragment"
             app:popUpTo="@id/playNowFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_p1lobby_to_p1Game"
+            app:destination="@id/p1GameFragment" />
     </fragment>
     <fragment
         android:id="@+id/p2LobbyFragment"
@@ -98,5 +101,26 @@
             app:destination="@id/playNowFragment"
             app:popUpTo="@id/playNowFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_p2Lobby_to_p2Game"
+            app:destination="@id/p2GameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/p1GameFragment"
+        android:name="com.example.bisimulation.game.fragments.P1GameFragment"
+        android:label="P1GameFragment" >
+        <argument
+            android:name="roomId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+    <fragment
+        android:id="@+id/p2GameFragment"
+        android:name="com.example.bisimulation.game.fragments.P2GameFragment"
+        android:label="P2GameFragment" >
+        <argument
+            android:name="roomId"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
 </navigation>

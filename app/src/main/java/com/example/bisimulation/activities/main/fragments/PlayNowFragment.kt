@@ -13,7 +13,7 @@ import com.example.bisimulation.adapters.RoomClickListener
 import com.example.bisimulation.adapters.RoomFirestoreRecyclerAdapter
 import com.example.bisimulation.databinding.FragmentPlayNowBinding
 import com.example.bisimulation.repository.FirestoreRepository
-import com.example.bisimulation.utils.MatchmakingRoomModel
+import com.example.bisimulation.model.Lobby
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class PlayNowFragment : Fragment(), RoomClickListener {
@@ -46,8 +46,8 @@ class PlayNowFragment : Fragment(), RoomClickListener {
 
     private fun firestoreAdapterInitialization() {
         val query = FirestoreRepository.getRoomsReference()
-        val options = FirestoreRecyclerOptions.Builder<MatchmakingRoomModel>()
-            .setQuery(query, MatchmakingRoomModel::class.java)
+        val options = FirestoreRecyclerOptions.Builder<Lobby>()
+            .setQuery(query, Lobby::class.java)
             .setLifecycleOwner(viewLifecycleOwner)
             .build()
         adapter = RoomFirestoreRecyclerAdapter(options, viewModel.uid!!, viewModel.username.value!!, this)
