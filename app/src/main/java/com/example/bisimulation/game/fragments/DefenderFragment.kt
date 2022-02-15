@@ -11,7 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.databinding.FragmentGameBinding
 import com.example.bisimulation.game.GameViewModel
 
-class DefenderFragment : Fragment() {
+class DefenderFragment : GameFragment() {
     private lateinit var binding: FragmentGameBinding
     private lateinit var viewModel: GameViewModel
     private val args: DefenderFragmentArgs by navArgs()
@@ -22,9 +22,7 @@ class DefenderFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         defenderFragmentSetup(inflater, container)
-
-        // Lock the fragment in landscape
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        setLandscapeOrientation()
 
         return binding.root
     }
@@ -33,10 +31,5 @@ class DefenderFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[GameViewModel::class.java]
         binding = FragmentGameBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-    }
-
-    override fun onDestroyView() {
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        super.onDestroyView()
     }
 }

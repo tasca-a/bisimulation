@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_home_to_activePlayers"
             app:destination="@id/activePlayersFragment" />
+        <action
+            android:id="@+id/action_graph_debug"
+            app:destination="@id/attackerFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

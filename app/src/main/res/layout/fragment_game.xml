@@ -14,23 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.otaliastudios.zoom.ZoomLayout
+        <!-- canvas -->
+        <com.example.bisimulation.game.views.GraphView
+            android:id="@+id/graphView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:hasClickableChildren="true"
+            tools:showExample="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/separator1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/leftGraphRecycler"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="SpeakableTextPresentCheck"
-                tools:itemCount="4"
-                tools:listitem="@layout/item_graph_vertex" />
-        </com.otaliastudios.zoom.ZoomLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/separator1"
@@ -42,23 +35,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.otaliastudios.zoom.ZoomLayout
+        <!-- canvas -->
+        <com.example.bisimulation.game.views.GraphView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:hasClickableChildren="true"
+            tools:showExample="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/separator2"
             app:layout_constraintStart_toEndOf="@+id/separator1"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rightGraphRecycler"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="SpeakableTextPresentCheck"
-                tools:itemCount="4"
-                tools:listitem="@layout/item_graph_vertex" />
-        </com.otaliastudios.zoom.ZoomLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/separator2"

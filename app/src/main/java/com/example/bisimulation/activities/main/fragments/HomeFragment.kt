@@ -24,6 +24,12 @@ class HomeFragment : Fragment() {
     ): View {
         homeFragmentSetup(inflater, container)
 
+        //TODO: REMOVE DEBUG
+        binding.graphDebugButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionGraphDebug("yey")
+            findNavController().navigate(action)
+        }
+
         //Discover more button redirects to the Profile page
         binding.discoverMoreButton.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeToProfile()

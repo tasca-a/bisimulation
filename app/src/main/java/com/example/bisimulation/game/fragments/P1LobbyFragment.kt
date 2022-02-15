@@ -108,6 +108,7 @@ class P1LobbyFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
     }
 
+    // Lateinit bug?
     override fun onDestroy() {
         viewModel.setRoomAsZombie()
         super.onDestroy()
