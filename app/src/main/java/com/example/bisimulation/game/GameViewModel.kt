@@ -1,16 +1,9 @@
 package com.example.bisimulation.game
 
 import android.graphics.Color
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Graph.Edge
-import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
 class GameViewModel : ViewModel() {
 
@@ -44,12 +37,5 @@ class GameViewModel : ViewModel() {
         addVertex(Vertex(e3, e5))
         addVertex(Vertex(e5, e4, Color.BLUE))
         addVertex(Vertex(e5, e1, Color.GREEN))
-    }
-
-    private val _leftGraphChanged = MutableLiveData<Boolean>()
-    val leftGraphChanged: LiveData<Boolean> = _leftGraphChanged
-    fun selectEdge(id: Int){
-        leftGraph.selectEdge(id)
-        _leftGraphChanged.value = true
     }
 }

@@ -28,15 +28,19 @@ class AttackerFragment : GameFragment() {
         binding.leftGraphView.setGraph(viewModel.leftGraph)
         binding.rightGraphView.setGraph(viewModel.rightGraph)
 
-        binding.leftGraphView.addGraphEventListener(object : GraphEventListener{
+        binding.leftGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onNodeClicked(nodeId: Int) {
                 Log.i("AttackerFragment", "Al che sx! :D $nodeId")
+                viewModel.leftGraph.selectEdge(nodeId)
+                binding.leftGraphView.setGraph(viewModel.leftGraph)
             }
         })
 
-        binding.rightGraphView.addGraphEventListener(object : GraphEventListener{
+        binding.rightGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onNodeClicked(nodeId: Int) {
                 Log.i("AttackerFragment", "Al che dx! :D $nodeId")
+                viewModel.rightGraph.selectEdge(nodeId)
+                binding.rightGraphView.setGraph(viewModel.rightGraph)
             }
         })
 
