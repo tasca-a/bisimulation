@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="GraphView">
-        <attr name="showExample" format="boolean"/>
+        <attr name="showExample" format="boolean" />
+        <attr name="edgeSize" format="float" />
+        <attr name="arrowSize" format="float" />
+        <attr name="arrowAngle" format="float" />
+        <attr name="loopWidth" format="float" />
+        <attr name="lineWidth" format="float" />
     </declare-styleable>
 </resources>

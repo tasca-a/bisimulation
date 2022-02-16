@@ -52,18 +52,72 @@
             android:layout_height="0dp"
             android:background="@android:color/background_dark"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintEnd_toStartOf="@+id/stayStill_button"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
+            android:id="@+id/stayStill_button"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:text="@string/stayStill_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="TextContrastCheck" />
+
+        <TextView
+            android:id="@+id/turn_textView"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="@color/yourTurnText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/separator2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Your turn!" />
+
+        <TextView
+            android:id="@+id/sc_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/sc_textView"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/separator2"
+            app:layout_constraintTop_toBottomOf="@+id/turn_textView" />
+
+        <TextView
+            android:id="@+id/special_color"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="@color/secondaryColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/separator2"
+            app:layout_constraintTop_toBottomOf="@+id/sc_textView" />
+
+        <TextView
+            android:id="@+id/lm_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/lm_textView"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/separator2"
+            app:layout_constraintTop_toBottomOf="@+id/special_color" />
+
+        <TextView
+            android:id="@+id/lastMove_color"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="@color/secondaryLightColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/lm_textView"
+            app:layout_constraintTop_toBottomOf="@+id/lm_textView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

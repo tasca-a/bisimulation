@@ -113,4 +113,7 @@
     <string name="lobbyWaitingForPlayer2">Waiting…</string>
     <string name="zombiefy_button">Report this room as empty</string>
     <string name="attacker_switch">Attacker</string>
+    <string name="stayStill_button">Still!</string>
+    <string name="sc_textView">Special colour:</string>
+    <string name="lm_textView">Last move:</string>
 </resources>

@@ -19,16 +19,19 @@ class Graph() {
     }
 
     fun selectEdge(id: Int){
+        // Deselect the currently selected edge
         for (e in edges){
             if (e.selected){
                 e.selected = false
             }
         }
 
+        // Find the edge to select
         val internalEdge = edges.find {
             it.id == id
         }
 
+        // Select the edge
         internalEdge?.selected = true
     }
 
