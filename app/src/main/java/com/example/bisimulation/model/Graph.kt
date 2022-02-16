@@ -18,6 +18,20 @@ class Graph() {
         vertices.add(vertex)
     }
 
-    inner class Edge(var x: Int, var y: Int)
+    fun selectEdge(id: Int){
+        for (e in edges){
+            if (e.selected){
+                e.selected = false
+            }
+        }
+
+        val internalEdge = edges.find {
+            it.id == id
+        }
+
+        internalEdge?.selected = true
+    }
+
+    class Edge(val id: Int, var x: Int, var y: Int, var selected: Boolean = false)
     inner class Vertex(val from: Edge, val to: Edge, val color: Int = Color.BLACK)
 }

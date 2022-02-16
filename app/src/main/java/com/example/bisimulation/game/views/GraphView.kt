@@ -223,7 +223,10 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 graphicEdge.right = edge.x + EDGE_SIZE
                 graphicEdge.bottom = edge.y + EDGE_SIZE
 
-                drawOval(graphicEdge, edgePaint)
+                if (edge.selected)
+                    drawOval(graphicEdge, edgeSelectedPaint)
+                else
+                    drawOval(graphicEdge, edgePaint)
             }
         }
     }
@@ -276,6 +279,11 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         style = Paint.Style.FILL_AND_STROKE
         strokeWidth = STROKE_WIDTH
         color = Color.BLACK
+    }
+    private val edgeSelectedPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL_AND_STROKE
+        strokeWidth = STROKE_WIDTH
+        color = Color.LTGRAY
     }
     private val arrowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
