@@ -74,14 +74,16 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val v1 = Vertex(e1, e2)
         val v2 = Vertex(e2, e3)
         val v3 = Vertex(e2, e4)
+        val v4 = Vertex(e4, e1)
 
         addVertex(v1)
         addVertex(v2)
         addVertex(v3)
+        addVertex(v4)
     }
 
     // Draw the graph
-    private val EDGE_SIZE = 20f
+    private val EDGE_SIZE = 60f
     private val ARROW_SIZE = 60f
     private val ARROW_ANGLE = (PI / 4).toFloat()
     private val graphicEdge = RectF()
@@ -112,22 +114,25 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 )
 
                 // Draw the arrow
-                // The attach point is the point of the arrow touching the border of the edge
-                val attachX = vertex.to.x.toFloat()// - 2 * EDGE_SIZE
-                val attachY = vertex.to.y.toFloat()// - 2 * EDGE_SIZE
-
                 // The stick length is the length of the line from the start to the attach point
-                val stickLength =
-                    sqrt((attachX - vertex.from.x).toFloat().pow(2) +
-                            (attachY - vertex.from.y).toFloat().pow(2))
+                val norm =
+                    sqrt((vertex.to.x - vertex.from.x).toFloat().pow(2) +
+                            (vertex.to.y - vertex.from.y).toFloat().pow(2))
+
+                // The attach point is the point of the arrow touching the border of the edge
+                val dirX = (vertex.to.x - vertex.from.x) / norm
+                val dirY = (vertex.to.y - vertex.from.y) / norm
+
+                val attachX = vertex.to.x - EDGE_SIZE * dirX
+                val attachY = vertex.to.y - EDGE_SIZE * dirY
 
                 // l1 is the point of the first side of the arrow
-                val l1x = attachX + (ARROW_SIZE / stickLength) * (((vertex.from.x - attachX) * cos(ARROW_ANGLE)) + ((vertex.from.y - attachY) * sin(ARROW_ANGLE)))
-                val l1y = attachY + (ARROW_SIZE / stickLength) * (((vertex.from.y - attachY) * cos(ARROW_ANGLE)) - ((vertex.from.x - attachX) * sin(ARROW_ANGLE)))
+                val l1x = attachX + (ARROW_SIZE / norm) * (((vertex.from.x - attachX) * cos(ARROW_ANGLE)) + ((vertex.from.y - attachY) * sin(ARROW_ANGLE)))
+                val l1y = attachY + (ARROW_SIZE / norm) * (((vertex.from.y - attachY) * cos(ARROW_ANGLE)) - ((vertex.from.x - attachX) * sin(ARROW_ANGLE)))
 
                 // l2 is the point of the second side of the arrow
-                val l2x = attachX + (ARROW_SIZE / stickLength) * (((vertex.from.x - attachX) * cos(ARROW_ANGLE)) - ((vertex.from.y - attachY) * sin(ARROW_ANGLE)))
-                val l2y = attachY + (ARROW_SIZE / stickLength) * (((vertex.from.y - attachY) * cos(ARROW_ANGLE)) + ((vertex.from.x - attachX) * sin(ARROW_ANGLE)))
+                val l2x = attachX + (ARROW_SIZE / norm) * (((vertex.from.x - attachX) * cos(ARROW_ANGLE)) - ((vertex.from.y - attachY) * sin(ARROW_ANGLE)))
+                val l2y = attachY + (ARROW_SIZE / norm) * (((vertex.from.y - attachY) * cos(ARROW_ANGLE)) + ((vertex.from.x - attachX) * sin(ARROW_ANGLE)))
 
                 // Draw the arrow lines
                 drawLine(l1x, l1y, attachX, attachY, arrowPaint)
