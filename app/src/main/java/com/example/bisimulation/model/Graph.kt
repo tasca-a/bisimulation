@@ -1,5 +1,7 @@
 package com.example.bisimulation.model
 
+import android.graphics.Color
+
 class Graph() {
     val edges: MutableList<Edge> = mutableListOf()
     val vertices: MutableList<Vertex> = mutableListOf()
@@ -17,5 +19,5 @@ class Graph() {
     }
 
     inner class Edge(var x: Int, var y: Int)
-    inner class Vertex(val from: Edge, val to: Edge)
+    inner class Vertex(val from: Edge, val to: Edge, val color: Int = Color.BLACK)
 }

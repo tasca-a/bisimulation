@@ -16,7 +16,7 @@
 
         <!-- canvas -->
         <com.example.bisimulation.game.views.GraphView
-            android:id="@+id/graphView"
+            android:id="@+id/leftGraphView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             tools:showExample="true"
@@ -37,6 +37,7 @@
 
         <!-- canvas -->
         <com.example.bisimulation.game.views.GraphView
+            android:id="@+id/rightGraphView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             tools:showExample="true"
