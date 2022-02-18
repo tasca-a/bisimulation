@@ -31,8 +31,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //TODO: return to login if device goes offline
-
         // Call the ViewModel to manage user presence online
         // It is necessary to make this call in the Activity to assure that the function is
         // called everytime the activity is created. There must be a better way to separate
@@ -71,5 +69,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.sharedViewModel = sharedViewModel
         binding.lifecycleOwner = this
+    }
+
+    // Manage disconnections
+    override fun onResume() {
+        super.onResume()
+        if (sharedViewModel.auth.currentUser == null){
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

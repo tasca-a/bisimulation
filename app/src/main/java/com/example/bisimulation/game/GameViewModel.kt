@@ -1,41 +1,59 @@
 package com.example.bisimulation.game
 
 import android.graphics.Color
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.bisimulation.model.GameRole
 import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Graph.Edge
+import com.example.bisimulation.model.Graph.Vertex
+import com.example.bisimulation.repository.FirestoreRepository
+import com.example.bisimulation.repository.FsGetGameEventListener
+import com.example.bisimulation.repository.FsGetGraphEventListener
 
-class GameViewModel : ViewModel() {
+class GameViewModel() : ViewModel() {
 
-    val leftGraph = Graph().apply {
-        val e1 = Edge(1,2, 3, true)
-        val e2 = Edge(2,1, 2)
-        val e3 = Edge(3,3, 2)
-        val e4 = Edge(4,1, 1)
-        val e5 = Edge(5,3, 1)
+    private var roomId: String = ""
+    fun setRoomId(roomId: String){
+        this.roomId = roomId
 
-        addVertex(Vertex(e1, e2, Color.RED))
-        addVertex(Vertex(e1, e3, Color.RED))
-        addVertex(Vertex(e2, e1, Color.GREEN))
-        addVertex(Vertex(e3, e1, Color.GREEN))
-        addVertex(Vertex(e2, e4, Color.BLUE))
-        addVertex(Vertex(e3, e5))
-        addVertex(Vertex(e5, e4, Color.BLUE))
+        //Setup all the listeners
+        FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
+            FsGetGameEventListener(
+                _turnOf,
+                _specialColor
+            )
+        )
+
+        FirestoreRepository.getLobbyReference(roomId).collection("graphs")
+            .document("leftGraph").addSnapshotListener(
+                FsGetGraphEventListener(_leftGraph)
+            )
+
+        FirestoreRepository.getLobbyReference(roomId).collection("graphs")
+            .document("rightGraph").addSnapshotListener(
+                FsGetGraphEventListener(_rightGraph)
+            )
     }
 
-    val rightGraph = Graph().apply {
-        val e1 = Edge(1,2, 3)
-        val e2 = Edge(2,1, 2)
-        val e3 = Edge(3,3, 2, true)
-        val e4 = Edge(4,1, 1)
-        val e5 = Edge(5,3, 1)
-
-        addVertex(Vertex(e1, e2, Color.RED))
-        addVertex(Vertex(e1, e3, Color.RED))
-        addVertex(Vertex(e3, e1, Color.GREEN))
-        addVertex(Vertex(e2, e4, Color.BLUE))
-        addVertex(Vertex(e3, e5))
-        addVertex(Vertex(e5, e4, Color.BLUE))
-        addVertex(Vertex(e5, e1, Color.GREEN))
+    fun click(graph: String, nodeId: Int) {
+        if (graph == "left"){
+            _leftGraph.value?.selectEdge(nodeId)
+            FirestoreRepository.setGraph(roomId, "leftGraph", _leftGraph.value!!)
+        } else {
+            _rightGraph.value?.selectEdge(nodeId)
+            FirestoreRepository.setGraph(roomId, "rightGraph", _rightGraph.value!!)
+        }
     }
+
+    private val _leftGraph = MutableLiveData<Graph>()
+    private val _rightGraph = MutableLiveData<Graph>()
+    private val _turnOf = MutableLiveData<GameRole>()
+    private val _specialColor = MutableLiveData<Int>()
+    val leftGraph: LiveData<Graph> = _leftGraph
+    val rightGraph: LiveData<Graph> = _rightGraph
+    val turnOf: LiveData<GameRole> = _turnOf
+    val specialColor: LiveData<Int> = _specialColor
 }

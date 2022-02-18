@@ -116,4 +116,8 @@
     <string name="stayStill_button">Still!</string>
     <string name="sc_textView">Special colour:</string>
     <string name="lm_textView">Last move:</string>
+
+    <!-- Game -->
+    <string name="yourTurn_textView">Your turn!</string>
+    <string name="notYourTurn_textView">Not your turn..</string>
 </resources>

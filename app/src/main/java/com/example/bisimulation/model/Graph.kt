@@ -35,6 +35,18 @@ class Graph() {
         internalEdge?.selected = true
     }
 
-    class Edge(val id: Int, var x: Int, var y: Int, var selected: Boolean = false)
-    inner class Vertex(val from: Edge, val to: Edge, val color: Int = Color.BLACK)
+    class Edge(val id: Int, var x: Int, var y: Int, var selected: Boolean = false){
+        constructor() : this(0,0,0,false)
+
+        override fun equals(other: Any?): Boolean {
+            return (other is Edge) && id == other.id && x == other.x && y == other.y
+        }
+    }
+    class Vertex(val from: Edge, val to: Edge, val color: Int = Color.BLACK){
+        constructor() : this(Edge(), Edge())
+
+        override fun equals(other: Any?): Boolean {
+            return (other is Vertex) && from == other.from && to == other.to
+        }
+    }
 }

@@ -25,12 +25,14 @@ class SharedViewModel : ViewModel() {
     private val _victories = MutableLiveData<Int>()
     private val _losses = MutableLiveData<Int>()
     private val _activeUsers = MutableLiveData<Int>()
+    private val _roomCount = MutableLiveData<Int>()
     val name: LiveData<String> = _name
     val surname: LiveData<String> = _surname
     val username: LiveData<String> = _username
     val victories: LiveData<Int> = _victories
     val losses: LiveData<Int> = _losses
     val activeUsers: LiveData<Int> = _activeUsers
+    val roomCount: LiveData<Int> = _roomCount
 
     init {
         // Get all the user extra info
@@ -55,6 +57,17 @@ class SharedViewModel : ViewModel() {
                     _activeUsers
                 )
             )
+
+            // Get the currently active rooms in real time
+            FirestoreRepository.getRoomsReference().addSnapshotListener { value, error ->
+                var count = 0
+                if (value != null) {
+                    for (v in value){
+                        count++
+                    }
+                }
+                _roomCount.value = count
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import com.example.bisimulation.callbacks.OnConnectionSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
 import com.example.bisimulation.model.GameRole
 import com.example.bisimulation.model.GameState
+import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Lobby
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
@@ -58,34 +59,40 @@ object FirestoreRepository {
         }
     }
 
-    fun createRoom(roomId:String, room: Lobby, listener: OnRoomCreationSuccess){
+    fun createRoom(roomId: String, room: Lobby, listener: OnRoomCreationSuccess) {
         val db = Firebase.firestore
         db.collection("rooms").document(roomId).set(room).addOnSuccessListener {
             listener.roomCreationSuccess()
         }
     }
 
-    fun setRoomAsZombie(roomId: String){
+    fun setRoomAsZombie(roomId: String) {
         val db = Firebase.firestore
-        db.collection("rooms").document(roomId).update(mapOf(
-            "roomState" to GameState.ZOMBIE
-        ))
+        db.collection("rooms").document(roomId).update(
+            mapOf(
+                "roomState" to GameState.ZOMBIE
+            )
+        )
     }
 
-    fun setRoomAsPlaying(roomId: String){
+    fun setRoomAsPlaying(roomId: String) {
         val db = Firebase.firestore
-        db.collection("rooms").document(roomId).update(mapOf(
-            "roomState" to GameState.PLAYING
-        ))
+        db.collection("rooms").document(roomId).update(
+            mapOf(
+                "roomState" to GameState.PLAYING
+            )
+        )
     }
 
-    fun connectPlayer2(roomId: String, room: Lobby, listener: OnConnectionSuccess){
+    fun connectPlayer2(roomId: String, room: Lobby, listener: OnConnectionSuccess) {
         val db = Firebase.firestore
-        db.collection("rooms").document(roomId).update(mapOf(
-            "player2uid" to room.player2uid,
-            "player2username" to room.player2username,
-            "roomState" to room.roomState
-        )).addOnSuccessListener {
+        db.collection("rooms").document(roomId).update(
+            mapOf(
+                "player2uid" to room.player2uid,
+                "player2username" to room.player2username,
+                "roomState" to room.roomState
+            )
+        ).addOnSuccessListener {
             // Useless?
             listener.connectionSuccess()
         }
@@ -93,9 +100,38 @@ object FirestoreRepository {
 
     fun setP1Role(roomId: String, role: GameRole) {
         val db = Firebase.firestore
-        db.collection("rooms").document(roomId).update(mapOf(
-            "player1role" to role
-        ))
+        db.collection("rooms").document(roomId).update(
+            mapOf(
+                "player1role" to role
+            )
+        )
+    }
+
+    // Game functions
+    fun setInitialConfig(
+        roomId: String,
+        turnOf: GameRole,
+        specialColor: Int
+    ) {
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId).update(
+            mapOf(
+                "turnOf" to turnOf,
+                "specialColor" to specialColor
+            )
+        )
+    }
+
+    fun setGraph(
+        roomId: String,
+        type: String,
+        graph: Graph
+    ) {
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId)
+            .collection("graphs").document(type).set(
+                graph
+            )
     }
 
     // Realtime queries - to be observed

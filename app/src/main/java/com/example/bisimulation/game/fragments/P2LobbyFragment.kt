@@ -66,7 +66,9 @@ class P2LobbyFragment : Fragment() {
                     // Select the fragment to take based on the role of the player1
                     val action =
                         if (viewModel.p1role.value == GameRole.ATTACKER)
-                            P2LobbyFragmentDirections.actionP2LobbyToDefensor(viewModel.roomId)
+                            //P2LobbyFragmentDirections.actionP2LobbyToDefensor(viewModel.roomId)
+                                //TODO: DEBUG
+                            P2LobbyFragmentDirections.actionP2LobbyToAttacker(viewModel.roomId)
                         else
                             P2LobbyFragmentDirections.actionP2LobbyToAttacker(viewModel.roomId)
 

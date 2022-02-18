@@ -11,6 +11,7 @@ import android.view.View
 import com.example.bisimulation.R
 import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Graph.Edge
+import com.example.bisimulation.model.Graph.Vertex
 import kotlin.math.*
 
 class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
@@ -46,13 +47,13 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         // Show the example graph in the preview while editing
         if (isInEditMode) showExample = true
 
-        if (showExample){
+        if (showExample) {
             graph.apply {
-                val e1 = Edge(1,2, 3, true)
-                val e2 = Edge(2,1, 2)
-                val e3 = Edge(3,3, 2)
-                val e4 = Edge(4,1, 1)
-                val e5 = Edge(5,3, 1)
+                val e1 = Edge(1, 2, 3, true)
+                val e2 = Edge(2, 1, 2)
+                val e3 = Edge(3, 3, 2)
+                val e4 = Edge(4, 1, 1)
+                val e5 = Edge(5, 3, 1)
 
                 addVertex(Vertex(e1, e2, Color.RED))
                 addVertex(Vertex(e1, e3, Color.RED))
@@ -70,12 +71,27 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         invalidate()
     }
 
+    fun updateGraph(graph: Graph) {
+        this.graph = graph
+        scaleGraph(wd, ht)
+        invalidate()
+    }
+
     // Calculate here all dimensions and stuff
+    private var wd: Int = 0
+    private var ht: Int = 0
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        // Update various component
+        // Save dimensions for later use
+        wd = w
+        ht = h
 
+        // Update various component
+        scaleGraph(w, h)
+    }
+
+    private fun scaleGraph(w: Int, h: Int) {
         // Find max and min X and Y of the graph
         var maxX = 0f
         var maxY = 0f
@@ -95,8 +111,26 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         // Scale all the edges to the current height and width
         for (edge in graph.edges) {
-            edge.x = (w * (edge.x / maxX)).roundToInt()
-            edge.y = (h * (edge.y / maxY)).roundToInt()
+            val newX = (w * (edge.x / maxX)).roundToInt()
+            val newY = (h * (edge.y / maxY)).roundToInt()
+
+            scaleVertices(edge, newX, newY)
+
+            edge.x = newX
+            edge.y = newY
+        }
+    }
+
+    fun scaleVertices(edge: Edge, newX: Int, newY: Int) {
+        for (v in graph.vertices) {
+            if (v.from.x == edge.x && v.from.y == edge.y) {
+                v.from.x = newX
+                v.from.y = newY
+            }
+            if (v.to.x == edge.x && v.to.y == edge.y) {
+                v.to.x = newX
+                v.to.y = newY
+            }
         }
     }
 
@@ -261,11 +295,11 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         if (event?.action == MotionEvent.ACTION_DOWN) {
             // Detect where the user clicked and if is a button
-            for (e in graph.edges){
+            for (e in graph.edges) {
                 val isInside =
-                    ((x - e.x)*(x - e.x)) + ((y - e.y)*(y - e.y)) < (edgeSize * edgeSize)
+                    ((x - e.x) * (x - e.x)) + ((y - e.y) * (y - e.y)) < (edgeSize * edgeSize)
 
-                if (isInside){
+                if (isInside) {
                     // Notify the listener with the node selected
                     eventListener?.onNodeClicked(e.id)
                     invalidate()

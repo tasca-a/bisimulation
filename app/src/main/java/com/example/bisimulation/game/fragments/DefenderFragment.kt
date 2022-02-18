@@ -22,7 +22,7 @@ class DefenderFragment : GameFragment() {
         savedInstanceState: Bundle?
     ): View {
         defenderFragmentSetup(inflater, container)
-        setLandscapeOrientation()
+        //setLandscapeOrientation()
 
         return binding.root
     }

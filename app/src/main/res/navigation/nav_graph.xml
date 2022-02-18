@@ -80,10 +80,12 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_p1lobby_to_attacker"
-            app:destination="@id/attackerFragment" />
+            app:destination="@id/attackerFragment"
+            app:popUpTo="@id/playNowFragment" />
         <action
             android:id="@+id/action_p1lobby_to_defensor"
-            app:destination="@id/defensorFragment" />
+            app:destination="@id/defensorFragment"
+            app:popUpTo="@id/playNowFragment" />
     </fragment>
     <fragment
         android:id="@+id/p2LobbyFragment"
@@ -109,10 +111,12 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_p2Lobby_to_attacker"
-            app:destination="@id/attackerFragment" />
+            app:destination="@id/attackerFragment"
+            app:popUpTo="@id/playNowFragment" />
         <action
             android:id="@+id/action_p2Lobby_to_defensor"
-            app:destination="@id/defensorFragment" />
+            app:destination="@id/defensorFragment"
+            app:popUpTo="@id/playNowFragment" />
     </fragment>
     <fragment
         android:id="@+id/attackerFragment"

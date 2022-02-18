@@ -73,10 +73,11 @@
             android:gravity="center"
             android:textSize="24sp"
             android:textColor="@color/yourTurnText"
+            tools:text="@string/yourTurn_textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/separator2"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Your turn!" />
+            />
 
         <TextView
             android:id="@+id/sc_textView"
@@ -93,7 +94,7 @@
             android:id="@+id/special_color"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:background="@color/secondaryColor"
+            tools:background="@color/secondaryColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/separator2"
             app:layout_constraintTop_toBottomOf="@+id/sc_textView" />

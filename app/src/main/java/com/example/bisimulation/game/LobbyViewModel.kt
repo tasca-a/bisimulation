@@ -1,5 +1,6 @@
 package com.example.bisimulation.game
 
+import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,7 @@ import com.example.bisimulation.repository.FirestoreRepository
 import com.example.bisimulation.repository.FsGetStatusEventListener
 import com.example.bisimulation.repository.FsGetStringEventListener
 import com.example.bisimulation.model.GameState
+import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Lobby
 import com.example.bisimulation.repository.FsGetRoleEventListener
 import kotlinx.coroutines.launch
@@ -115,5 +117,70 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     // Useless?
     override fun connectionSuccess() {
         Log.e("GameViewModel", "Connection successful! :D")
+    }
+
+    fun gameSetUp() {
+        // Graph setup
+        val gl = graphSetupL()
+        val gr = graphSetupR()
+
+        // It is always the attacker turn at the beginning
+        val turnOf = GameRole.ATTACKER
+
+        // Select a random special color from the list of colors
+        val sc = colorList.random()
+
+        // Update to Firestore
+        FirestoreRepository.setGraph(roomId, "leftGraph", gl)
+        FirestoreRepository.setGraph(roomId, "rightGraph", gr)
+        FirestoreRepository.setInitialConfig(
+            roomId,
+            turnOf,
+            sc
+        )
+    }
+
+    private fun graphSetupL(): Graph {
+        val graph = Graph()
+
+        val e1 = Graph.Edge(1, 2, 3)
+        val e2 = Graph.Edge(2, 1, 2)
+        val e3 = Graph.Edge(3, 3, 2)
+        val e4 = Graph.Edge(4, 1, 1)
+        val e5 = Graph.Edge(5, 3, 1)
+
+        graph.addVertex(Graph.Vertex(e1, e2, Color.RED))
+        graph.addVertex(Graph.Vertex(e1, e3, Color.RED))
+        graph.addVertex(Graph.Vertex(e2, e1, Color.GREEN))
+        graph.addVertex(Graph.Vertex(e3, e1, Color.GREEN))
+        graph.addVertex(Graph.Vertex(e2, e4, Color.BLUE))
+        graph.addVertex(Graph.Vertex(e3, e5, Color.BLACK))
+        graph.addVertex(Graph.Vertex(e5, e4, Color.BLUE))
+
+        return graph
+    }
+
+    private fun graphSetupR(): Graph {
+        val graph = Graph()
+
+        val e1 = Graph.Edge(1, 2, 3)
+        val e2 = Graph.Edge(2, 1, 2)
+        val e3 = Graph.Edge(3, 3, 2)
+        val e4 = Graph.Edge(4, 1, 1)
+        val e5 = Graph.Edge(5, 3, 1)
+
+        graph.addVertex(Graph.Vertex(e1, e2, Color.RED))
+        graph.addVertex(Graph.Vertex(e1, e3, Color.RED))
+        graph.addVertex(Graph.Vertex(e3, e1, Color.GREEN))
+        graph.addVertex(Graph.Vertex(e2, e4, Color.BLUE))
+        graph.addVertex(Graph.Vertex(e3, e5, Color.BLACK))
+        graph.addVertex(Graph.Vertex(e5, e4, Color.BLUE))
+        graph.addVertex(Graph.Vertex(e5, e1, Color.GREEN))
+
+        return graph
+    }
+
+    companion object {
+        val colorList = listOf<Int>(Color.RED, Color.GREEN, Color.BLUE, Color.BLACK)
     }
 }

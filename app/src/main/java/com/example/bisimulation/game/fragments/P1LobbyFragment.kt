@@ -94,6 +94,8 @@ class P1LobbyFragment : Fragment() {
                 else
                     P1LobbyFragmentDirections.actionP1lobbyToDefensor(viewModel.roomId)
 
+            // Prepare the game
+            viewModel.gameSetUp()
             // Start the game!
             findNavController().navigate(action)
         }
@@ -108,9 +110,9 @@ class P1LobbyFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
     }
 
-    // Lateinit bug?
     override fun onDestroy() {
-        viewModel.setRoomAsZombie()
+        if (viewModel.lobbyStatus.value != GameState.PLAYING)
+            viewModel.setRoomAsZombie()
         super.onDestroy()
     }
 }

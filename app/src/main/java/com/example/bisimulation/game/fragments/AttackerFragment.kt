@@ -5,17 +5,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentGameBinding
 import com.example.bisimulation.game.GameViewModel
 import com.example.bisimulation.game.views.GraphEventListener
+import com.example.bisimulation.model.GameRole
 
 class AttackerFragment : GameFragment() {
     private lateinit var binding: FragmentGameBinding
     private lateinit var viewModel: GameViewModel
     private val args: AttackerFragmentArgs by navArgs()
 
+    //TODO: Crea un unico fragment per il gioco
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,25 +28,47 @@ class AttackerFragment : GameFragment() {
         attackerFragmentSetup(inflater, container)
         setLandscapeOrientation()
 
-        // Initial graph setup
-        binding.leftGraphView.setGraph(viewModel.leftGraph)
-        binding.rightGraphView.setGraph(viewModel.rightGraph)
+        viewModel.setRoomId(args.roomId)
+
+        viewModel.leftGraph.observe(viewLifecycleOwner){
+            if (it != null)
+                binding.leftGraphView.updateGraph(it)
+        }
+
+        viewModel.rightGraph.observe(viewLifecycleOwner){
+            if (it != null)
+                binding.rightGraphView.updateGraph(it)
+        }
+
 
         binding.leftGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onNodeClicked(nodeId: Int) {
                 Log.i("AttackerFragment", "Al che sx! :D $nodeId")
-                viewModel.leftGraph.selectEdge(nodeId)
-                binding.leftGraphView.setGraph(viewModel.leftGraph)
+                viewModel.click("left", nodeId)
             }
         })
 
         binding.rightGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onNodeClicked(nodeId: Int) {
                 Log.i("AttackerFragment", "Al che dx! :D $nodeId")
-                viewModel.rightGraph.selectEdge(nodeId)
-                binding.rightGraphView.setGraph(viewModel.rightGraph)
+                viewModel.click("right", nodeId)
             }
         })
+
+        // TODO: right now they don't work
+        // Listen for special color
+        viewModel.specialColor.observe(viewLifecycleOwner){ color ->
+            binding.specialColor.background = color?.toDrawable()
+        }
+
+        // Listen for turn
+        viewModel.turnOf.observe(viewLifecycleOwner){ turnOf ->
+            if (turnOf == GameRole.ATTACKER){
+                binding.turnTextView.text = resources.getString(R.string.yourTurn_textView)
+            } else {
+                binding.turnTextView.text = resources.getString(R.string.notYourTurn_textView)
+            }
+        }
 
         return binding.root
     }
