@@ -20,4 +20,4 @@ class Lobby(
 
     @ServerTimestamp
     val creationTime: Timestamp? = null
-): Parcelable
+) : Parcelable

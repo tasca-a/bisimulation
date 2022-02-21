@@ -3,12 +3,11 @@ package com.example.bisimulation.repository
 import android.util.Log
 import com.example.bisimulation.callbacks.OnConnectionSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
-import com.example.bisimulation.model.GameRole
-import com.example.bisimulation.model.GameState
-import com.example.bisimulation.model.Graph
-import com.example.bisimulation.model.Lobby
+import com.example.bisimulation.model.*
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -134,6 +133,17 @@ object FirestoreRepository {
             )
     }
 
+    fun setMove(
+        roomId: String,
+        move: Move
+    ){
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId)
+            .collection("moves").document().set(
+                move
+            )
+    }
+
     // Realtime queries - to be observed
     fun getStatsReference(userId: String): DocumentReference {
         val db = Firebase.firestore
@@ -153,5 +163,12 @@ object FirestoreRepository {
     fun getLobbyReference(roomId: String): DocumentReference {
         val db = Firebase.firestore
         return db.collection("rooms").document(roomId)
+    }
+
+    fun getMovesReference(roomId: String): Query {
+        val db = Firebase.firestore
+        return db.collection("rooms").document(roomId).collection("moves")
+            .orderBy("creationTime", Query.Direction.DESCENDING)
+            .limit(1)
     }
 }

@@ -50,6 +50,8 @@ class PlayNowFragment : Fragment(), RoomClickListener {
             .setQuery(query, Lobby::class.java)
             .setLifecycleOwner(viewLifecycleOwner)
             .build()
+
+        //TODO: fix, sometimes it trows a null pointer exception
         adapter = RoomFirestoreRecyclerAdapter(options, viewModel.uid!!, viewModel.username.value!!, this)
     }
 

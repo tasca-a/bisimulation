@@ -17,6 +17,7 @@ import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Lobby
 import com.example.bisimulation.repository.FsGetRoleEventListener
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     var roomId: String = ""
@@ -123,6 +124,10 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         // Graph setup
         val gl = graphSetupL()
         val gr = graphSetupR()
+
+        // Make a random initial config
+        gl.selectEdge(Random.nextInt(1, gl.edges.size))
+        gr.selectEdge(Random.nextInt(1, gr.edges.size))
 
         // It is always the attacker turn at the beginning
         val turnOf = GameRole.ATTACKER

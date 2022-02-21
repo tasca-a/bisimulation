@@ -19,7 +19,6 @@ class AttackerFragment : GameFragment() {
     private lateinit var viewModel: GameViewModel
     private val args: AttackerFragmentArgs by navArgs()
 
-    //TODO: Crea un unico fragment per il gioco
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,45 +27,67 @@ class AttackerFragment : GameFragment() {
         attackerFragmentSetup(inflater, container)
         setLandscapeOrientation()
 
+        // Setup
         viewModel.setRoomId(args.roomId)
 
-        viewModel.leftGraph.observe(viewLifecycleOwner){
+        // Observe graph status changes
+        viewModel.leftGraph.observe(viewLifecycleOwner) {
             if (it != null)
                 binding.leftGraphView.updateGraph(it)
         }
 
-        viewModel.rightGraph.observe(viewLifecycleOwner){
+        viewModel.rightGraph.observe(viewLifecycleOwner) {
             if (it != null)
                 binding.rightGraphView.updateGraph(it)
         }
 
-
+        // React to node clicks
         binding.leftGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onNodeClicked(nodeId: Int) {
-                Log.i("AttackerFragment", "Al che sx! :D $nodeId")
-                viewModel.click("left", nodeId)
+                if (viewModel.turnOf.value == GameRole.ATTACKER) {
+                    Log.i("AttackerFragment", "Al che sx! :D $nodeId")
+                    viewModel.attackerClick("left", nodeId)
+                }
             }
         })
 
         binding.rightGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onNodeClicked(nodeId: Int) {
-                Log.i("AttackerFragment", "Al che dx! :D $nodeId")
-                viewModel.click("right", nodeId)
+                if (viewModel.turnOf.value == GameRole.ATTACKER) {
+                    Log.i("AttackerFragment", "Al che dx! :D $nodeId")
+                    viewModel.attackerClick("right", nodeId)
+                }
             }
         })
 
-        // TODO: right now they don't work
         // Listen for special color
-        viewModel.specialColor.observe(viewLifecycleOwner){ color ->
+        viewModel.specialColor.observe(viewLifecycleOwner) { color ->
             binding.specialColor.background = color?.toDrawable()
         }
 
         // Listen for turn
-        viewModel.turnOf.observe(viewLifecycleOwner){ turnOf ->
-            if (turnOf == GameRole.ATTACKER){
+        viewModel.turnOf.observe(viewLifecycleOwner) { turnOf ->
+            if (turnOf == GameRole.ATTACKER) {
                 binding.turnTextView.text = resources.getString(R.string.yourTurn_textView)
             } else {
                 binding.turnTextView.text = resources.getString(R.string.notYourTurn_textView)
+            }
+        }
+
+        // Listen for move color
+        viewModel.lastMove.observe(viewLifecycleOwner){ move ->
+            if (move == null) return@observe
+
+            binding.lastMoveColor.background = move.color.toDrawable()
+
+            if (move.graph == "left") {
+                viewModel.setLeftEdge(move.edge)
+                binding.leftGraphView.updateGraph(viewModel.leftGraph.value!!)
+            }
+
+            if (move.graph == "right") {
+                viewModel.setRightEdge(move.edge)
+                binding.rightGraphView.updateGraph(viewModel.rightGraph.value!!)
             }
         }
 

@@ -59,6 +59,7 @@ class SharedViewModel : ViewModel() {
             )
 
             // Get the currently active rooms in real time
+            // Todo: move it in a separate listener
             FirestoreRepository.getRoomsReference().addSnapshotListener { value, error ->
                 var count = 0
                 if (value != null) {

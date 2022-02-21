@@ -111,8 +111,14 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         // Scale all the edges to the current height and width
         for (edge in graph.edges) {
-            val newX = (w * (edge.x / maxX)).roundToInt()
-            val newY = (h * (edge.y / maxY)).roundToInt()
+            var newX = 0
+            var newY = 0
+
+            // Check if is NaN to avoid runtime crashes (for reasons idk about)
+            if (!(w * (edge.x / maxX)).isNaN() && !(h * (edge.y / maxY)).isNaN()){
+                newX = (w * (edge.x / maxX)).roundToInt()
+                newY = (h * (edge.y / maxY)).roundToInt()
+            }
 
             scaleVertices(edge, newX, newY)
 

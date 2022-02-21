@@ -2,14 +2,19 @@ package com.example.bisimulation.game.fragments
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentGameBinding
 import com.example.bisimulation.game.GameViewModel
+import com.example.bisimulation.game.views.GraphEventListener
+import com.example.bisimulation.model.GameRole
 
 class DefenderFragment : GameFragment() {
     private lateinit var binding: FragmentGameBinding
@@ -22,7 +27,71 @@ class DefenderFragment : GameFragment() {
         savedInstanceState: Bundle?
     ): View {
         defenderFragmentSetup(inflater, container)
-        //setLandscapeOrientation()
+        setLandscapeOrientation()
+
+        // Setup
+        viewModel.setRoomId(args.roomId)
+
+        // Observe graph status changes
+        viewModel.leftGraph.observe(viewLifecycleOwner) {
+            if (it != null)
+                binding.leftGraphView.updateGraph(it)
+        }
+
+        viewModel.rightGraph.observe(viewLifecycleOwner) {
+            if (it != null)
+                binding.rightGraphView.updateGraph(it)
+        }
+
+        // React to node clicks
+        binding.leftGraphView.addGraphEventListener(object : GraphEventListener {
+            override fun onNodeClicked(nodeId: Int) {
+                if (viewModel.turnOf.value == GameRole.DEFENDER) {
+                    Log.i("DefenderFragment", "Al che sx! :D $nodeId")
+                    viewModel.defenderClick("left", nodeId)
+                }
+            }
+        })
+
+        binding.rightGraphView.addGraphEventListener(object : GraphEventListener {
+            override fun onNodeClicked(nodeId: Int) {
+                if (viewModel.turnOf.value == GameRole.DEFENDER) {
+                    Log.i("DefenderFragment", "Al che dx! :D $nodeId")
+                    viewModel.defenderClick("right", nodeId)
+                }
+            }
+        })
+
+        // Listen for special color
+        viewModel.specialColor.observe(viewLifecycleOwner) { color ->
+            binding.specialColor.background = color?.toDrawable()
+        }
+
+        // Listen for turn
+        viewModel.turnOf.observe(viewLifecycleOwner) { turnOf ->
+            if (turnOf == GameRole.DEFENDER) {
+                binding.turnTextView.text = resources.getString(R.string.yourTurn_textView)
+            } else {
+                binding.turnTextView.text = resources.getString(R.string.notYourTurn_textView)
+            }
+        }
+
+        // Listen for move color
+        viewModel.lastMove.observe(viewLifecycleOwner){ move ->
+            if (move == null) return@observe
+
+            binding.lastMoveColor.background = move.color.toDrawable()
+
+            if (move.graph == "left") {
+                viewModel.setLeftEdge(move.edge)
+                binding.leftGraphView.updateGraph(viewModel.leftGraph.value!!)
+            }
+
+            if (move.graph == "right") {
+                viewModel.setRightEdge(move.edge)
+                binding.rightGraphView.updateGraph(viewModel.rightGraph.value!!)
+            }
+        }
 
         return binding.root
     }
