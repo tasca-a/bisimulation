@@ -16,7 +16,7 @@ class GameViewModel() : ViewModel() {
     private var roomId: String = ""
 
     // Set room ID and activate necessary listeners
-    fun setRoomId(roomId: String){
+    fun setRoomId(roomId: String) {
         this.roomId = roomId
 
         //Setup all the listeners
@@ -44,64 +44,41 @@ class GameViewModel() : ViewModel() {
         )
     }
 
-    // Todo: remove this
-    // Perform click on a graph
-    fun click(graph: String, nodeId: Int) {
-        if (graph == "left"){
+    fun attackerClick(graph: String, nodeId: Int) {
 
-            // Game logic
+        val selectedEdge =
+            if (graph == "left")
+                leftGraph.value?.edges?.find { it.selected }
+            else
+                rightGraph.value?.edges?.find { it.selected }
 
-            _leftGraph.value?.selectEdge(nodeId)
-            FirestoreRepository.setGraph(roomId, "leftGraph", _leftGraph.value!!)
-        } else {
+        val pathVertex =
+            if (graph == "left")
+                leftGraph.value?.vertices?.find {
+                    it.from == selectedEdge && it.to.id == nodeId
+                }
+            else
+                rightGraph.value?.vertices?.find {
+                    it.from == selectedEdge && it.to.id == nodeId
+                }
 
-            // Game logic
-
-            _rightGraph.value?.selectEdge(nodeId)
-            FirestoreRepository.setGraph(roomId, "rightGraph", _rightGraph.value!!)
+        // If the vertex exists, the move is strong
+        if (pathVertex != null) {
+            FirestoreRepository.setMove(
+                roomId, GameRole.ATTACKER, Move(
+                    graph = graph,
+                    color = pathVertex.color,
+                    edge = nodeId
+                )
+            )
         }
     }
 
-    fun attackerClick(graph: String, nodeId: Int){
-        if (graph == "left"){
-            // Check if it is a valid strong move
-            val selectedEdge = leftGraph.value?.edges?.find { it.selected }
-            val pathVertex = leftGraph.value?.vertices?.find {
-                it.from == selectedEdge && it.to.id == nodeId
-            }
-
-            // If the vertex exists, the move is strong
-            if (pathVertex != null){
-                FirestoreRepository.setMove(roomId, Move(
-                    graph = "left",
-                    color = pathVertex.color,
-                    edge = nodeId
-                ))
-            }
-        }
-        if (graph == "right"){
-            // Check if it is a valid strong move
-            val selectedEdge = rightGraph.value?.edges?.find { it.selected }
-            val pathVertex = rightGraph.value?.vertices?.find {
-                it.from == selectedEdge && it.to.id == nodeId
-            }
-
-            // If the vertex exists, the move is strong
-            if (pathVertex != null){
-                FirestoreRepository.setMove(roomId, Move(
-                    graph = "right",
-                    color = pathVertex.color,
-                    edge = nodeId
-                ))
-            }
-        }
-    }
-
-    fun defenderClick(graph: String, nodeId: Int){
-        if (graph == "left"){
+    fun defenderClick(graph: String, nodeId: Int) {
+        if (graph == "left") {
 
         }
-        if (graph == "right"){
+        if (graph == "right") {
 
         }
     }

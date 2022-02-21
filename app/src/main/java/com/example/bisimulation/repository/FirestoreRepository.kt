@@ -135,13 +135,28 @@ object FirestoreRepository {
 
     fun setMove(
         roomId: String,
+        from: GameRole,
         move: Move
-    ){
+    ) {
         val db = Firebase.firestore
         db.collection("rooms").document(roomId)
             .collection("moves").document().set(
                 move
             )
+
+        // Change turn
+        when (from) {
+            GameRole.ATTACKER -> db.collection("rooms").document(roomId).update(
+                mapOf(
+                    "turnOf" to GameRole.DEFENDER
+                )
+            )
+            GameRole.DEFENDER -> db.collection("rooms").document(roomId).update(
+                mapOf(
+                    "turnOf" to GameRole.DEFENDER
+                )
+            )
+        }
     }
 
     // Realtime queries - to be observed
