@@ -1,13 +1,11 @@
 package com.example.bisimulation.game.fragments
 
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.toDrawable
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
@@ -15,6 +13,7 @@ import com.example.bisimulation.databinding.FragmentGameBinding
 import com.example.bisimulation.game.GameViewModel
 import com.example.bisimulation.game.views.GraphEventListener
 import com.example.bisimulation.model.GameRole
+import com.example.bisimulation.model.Graph.Vertex
 
 class DefenderFragment : GameFragment() {
     private lateinit var binding: FragmentGameBinding
@@ -45,19 +44,19 @@ class DefenderFragment : GameFragment() {
 
         // React to node clicks
         binding.leftGraphView.addGraphEventListener(object : GraphEventListener {
-            override fun onNodeClicked(nodeId: Int) {
+            override fun onVertexClicked(vertex: Vertex) {
                 if (viewModel.turnOf.value == GameRole.DEFENDER) {
-                    Log.i("DefenderFragment", "Al che sx! :D $nodeId")
-                    viewModel.defenderClick("left", nodeId)
+                    Log.i("DefenderFragment", "Al che sx! :D ${vertex.id}")
+                    viewModel.defenderClick("left", vertex)
                 }
             }
         })
 
         binding.rightGraphView.addGraphEventListener(object : GraphEventListener {
-            override fun onNodeClicked(nodeId: Int) {
+            override fun onVertexClicked(vertex: Vertex) {
                 if (viewModel.turnOf.value == GameRole.DEFENDER) {
-                    Log.i("DefenderFragment", "Al che dx! :D $nodeId")
-                    viewModel.defenderClick("right", nodeId)
+                    Log.i("DefenderFragment", "Al che dx! :D ${vertex.id}")
+                    viewModel.defenderClick("right", vertex)
                 }
             }
         })
@@ -83,12 +82,12 @@ class DefenderFragment : GameFragment() {
             binding.lastMoveColor.background = move.color.toDrawable()
 
             if (move.graph == "left") {
-                viewModel.setLeftEdge(move.edge)
+                viewModel.setLeftEdge(move.vertex)
                 binding.leftGraphView.updateGraph(viewModel.leftGraph.value!!)
             }
 
             if (move.graph == "right") {
-                viewModel.setRightEdge(move.edge)
+                viewModel.setRightEdge(move.vertex)
                 binding.rightGraphView.updateGraph(viewModel.rightGraph.value!!)
             }
         }

@@ -133,7 +133,7 @@ object FirestoreRepository {
             )
     }
 
-    fun setMove(
+    fun sendMove(
         roomId: String,
         from: GameRole,
         move: Move
@@ -153,7 +153,7 @@ object FirestoreRepository {
             )
             GameRole.DEFENDER -> db.collection("rooms").document(roomId).update(
                 mapOf(
-                    "turnOf" to GameRole.DEFENDER
+                    "turnOf" to GameRole.ATTACKER
                 )
             )
         }

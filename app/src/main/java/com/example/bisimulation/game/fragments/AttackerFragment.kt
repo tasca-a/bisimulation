@@ -13,6 +13,7 @@ import com.example.bisimulation.databinding.FragmentGameBinding
 import com.example.bisimulation.game.GameViewModel
 import com.example.bisimulation.game.views.GraphEventListener
 import com.example.bisimulation.model.GameRole
+import com.example.bisimulation.model.Graph.Vertex
 
 class AttackerFragment : GameFragment() {
     private lateinit var binding: FragmentGameBinding
@@ -43,19 +44,19 @@ class AttackerFragment : GameFragment() {
 
         // React to node clicks
         binding.leftGraphView.addGraphEventListener(object : GraphEventListener {
-            override fun onNodeClicked(nodeId: Int) {
+            override fun onVertexClicked(vertex: Vertex) {
                 if (viewModel.turnOf.value == GameRole.ATTACKER) {
-                    Log.i("AttackerFragment", "Al che sx! :D $nodeId")
-                    viewModel.attackerClick("left", nodeId)
+                    Log.i("AttackerFragment", "Al che sx! :D ${vertex.id}")
+                    viewModel.attackerClick("left", vertex)
                 }
             }
         })
 
         binding.rightGraphView.addGraphEventListener(object : GraphEventListener {
-            override fun onNodeClicked(nodeId: Int) {
+            override fun onVertexClicked(vertex: Vertex) {
                 if (viewModel.turnOf.value == GameRole.ATTACKER) {
-                    Log.i("AttackerFragment", "Al che dx! :D $nodeId")
-                    viewModel.attackerClick("right", nodeId)
+                    Log.i("AttackerFragment", "Al che dx! :D ${vertex.id}")
+                    viewModel.attackerClick("right", vertex)
                 }
             }
         })
@@ -81,12 +82,12 @@ class AttackerFragment : GameFragment() {
             binding.lastMoveColor.background = move.color.toDrawable()
 
             if (move.graph == "left") {
-                viewModel.setLeftEdge(move.edge)
+                viewModel.setLeftEdge(move.vertex)
                 binding.leftGraphView.updateGraph(viewModel.leftGraph.value!!)
             }
 
             if (move.graph == "right") {
-                viewModel.setRightEdge(move.edge)
+                viewModel.setRightEdge(move.vertex)
                 binding.rightGraphView.updateGraph(viewModel.rightGraph.value!!)
             }
         }

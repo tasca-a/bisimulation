@@ -10,8 +10,8 @@ import android.view.MotionEvent
 import android.view.View
 import com.example.bisimulation.R
 import com.example.bisimulation.model.Graph
-import com.example.bisimulation.model.Graph.Edge
 import com.example.bisimulation.model.Graph.Vertex
+import com.example.bisimulation.model.Graph.Edge
 import kotlin.math.*
 
 class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
@@ -49,19 +49,19 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         if (showExample) {
             graph.apply {
-                val e1 = Edge(1, 2, 3, true)
-                val e2 = Edge(2, 1, 2)
-                val e3 = Edge(3, 3, 2)
-                val e4 = Edge(4, 1, 1)
-                val e5 = Edge(5, 3, 1)
+                val e1 = Vertex(1, 2, 3, true)
+                val e2 = Vertex(2, 1, 2)
+                val e3 = Vertex(3, 3, 2)
+                val e4 = Vertex(4, 1, 1)
+                val e5 = Vertex(5, 3, 1)
 
-                addVertex(Vertex(e1, e2, Color.RED))
-                addVertex(Vertex(e1, e3, Color.RED))
-                addVertex(Vertex(e2, e1, Color.GREEN))
-                addVertex(Vertex(e3, e1, Color.GREEN))
-                addVertex(Vertex(e2, e4, Color.BLUE))
-                addVertex(Vertex(e3, e5))
-                addVertex(Vertex(e5, e4, Color.BLUE))
+                addEdge(Edge(e1, e2, Color.RED))
+                addEdge(Edge(e1, e3, Color.RED))
+                addEdge(Edge(e2, e1, Color.GREEN))
+                addEdge(Edge(e3, e1, Color.GREEN))
+                addEdge(Edge(e2, e4, Color.BLUE))
+                addEdge(Edge(e3, e5))
+                addEdge(Edge(e5, e4, Color.BLUE))
             }
         }
     }
@@ -97,7 +97,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         var maxY = 0f
         var minX = Float.MAX_VALUE
         var minY = Float.MAX_VALUE
-        for (edge in graph.edges) {
+        for (edge in graph.vertices) {
             if (edge.x > maxX) maxX = edge.x.toFloat()
             if (edge.y > maxY) maxY = edge.y.toFloat()
 
@@ -110,7 +110,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         maxY += minY
 
         // Scale all the edges to the current height and width
-        for (edge in graph.edges) {
+        for (edge in graph.vertices) {
             var newX = 0
             var newY = 0
 
@@ -127,13 +127,13 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
     }
 
-    fun scaleVertices(edge: Edge, newX: Int, newY: Int) {
-        for (v in graph.vertices) {
-            if (v.from.x == edge.x && v.from.y == edge.y) {
+    fun scaleVertices(vertex: Vertex, newX: Int, newY: Int) {
+        for (v in graph.edges) {
+            if (v.from.x == vertex.x && v.from.y == vertex.y) {
                 v.from.x = newX
                 v.from.y = newY
             }
-            if (v.to.x == edge.x && v.to.y == edge.y) {
+            if (v.to.x == vertex.x && v.to.y == vertex.y) {
                 v.to.x = newX
                 v.to.y = newY
             }
@@ -149,14 +149,14 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         canvas?.apply {
 
             // For each vertex, draw an arrow between the two associated edges
-            graph.vertices.forEachIndexed { vIndex, v ->
+            graph.edges.forEachIndexed { vIndex, v ->
 
                 arrowPaint.color = v.color
 
                 // TODO: gestisci cappi
                 // TODO: gestisci doppio disegno
                 var loop = false
-                graph.vertices.forEachIndexed { xIndex, x ->
+                graph.edges.forEachIndexed { xIndex, x ->
 
                     // If you find a loop, draw a curved line
                     if (x.from == v.to && x.to == v.from) {
@@ -217,7 +217,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             // For each edge, create the shape recycling an existing rectF and draw it as a circle
             // in the correct spot
-            for (edge in graph.edges) {
+            for (edge in graph.vertices) {
                 graphicEdge.left = edge.x - edgeSize
                 graphicEdge.top = edge.y - edgeSize
                 graphicEdge.right = edge.x + edgeSize
@@ -301,13 +301,13 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         if (event?.action == MotionEvent.ACTION_DOWN) {
             // Detect where the user clicked and if is a button
-            for (e in graph.edges) {
+            for (vertex in graph.vertices) {
                 val isInside =
-                    ((x - e.x) * (x - e.x)) + ((y - e.y) * (y - e.y)) < (edgeSize * edgeSize)
+                    ((x - vertex.x) * (x - vertex.x)) + ((y - vertex.y) * (y - vertex.y)) < (edgeSize * edgeSize)
 
                 if (isInside) {
                     // Notify the listener with the node selected
-                    eventListener?.onNodeClicked(e.id)
+                    eventListener?.onVertexClicked(vertex)
                     invalidate()
                 }
             }
@@ -318,7 +318,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 }
 
 interface GraphEventListener {
-    fun onNodeClicked(nodeId: Int)
+    fun onVertexClicked(vertex: Vertex)
 }
 
 // TEST GRAPH

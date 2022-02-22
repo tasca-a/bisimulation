@@ -126,8 +126,8 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         val gr = graphSetupR()
 
         // Make a random initial config
-        gl.selectEdge(Random.nextInt(1, gl.edges.size))
-        gr.selectEdge(Random.nextInt(1, gr.edges.size))
+        gl.selectVertex(Random.nextInt(1, gl.vertices.size))
+        gr.selectVertex(Random.nextInt(1, gr.vertices.size))
 
         // It is always the attacker turn at the beginning
         val turnOf = GameRole.ATTACKER
@@ -148,19 +148,19 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     private fun graphSetupL(): Graph {
         val graph = Graph()
 
-        val e1 = Graph.Edge(1, 2, 3)
-        val e2 = Graph.Edge(2, 1, 2)
-        val e3 = Graph.Edge(3, 3, 2)
-        val e4 = Graph.Edge(4, 1, 1)
-        val e5 = Graph.Edge(5, 3, 1)
+        val e1 = Graph.Vertex(1, 2, 3)
+        val e2 = Graph.Vertex(2, 1, 2)
+        val e3 = Graph.Vertex(3, 3, 2)
+        val e4 = Graph.Vertex(4, 1, 1)
+        val e5 = Graph.Vertex(5, 3, 1)
 
-        graph.addVertex(Graph.Vertex(e1, e2, Color.RED))
-        graph.addVertex(Graph.Vertex(e1, e3, Color.RED))
-        graph.addVertex(Graph.Vertex(e2, e1, Color.GREEN))
-        graph.addVertex(Graph.Vertex(e3, e1, Color.GREEN))
-        graph.addVertex(Graph.Vertex(e2, e4, Color.BLUE))
-        graph.addVertex(Graph.Vertex(e3, e5, Color.BLACK))
-        graph.addVertex(Graph.Vertex(e5, e4, Color.BLUE))
+        graph.addEdge(Graph.Edge(e1, e2, Color.RED))
+        graph.addEdge(Graph.Edge(e1, e3, Color.RED))
+        graph.addEdge(Graph.Edge(e2, e1, Color.GREEN))
+        graph.addEdge(Graph.Edge(e3, e1, Color.GREEN))
+        graph.addEdge(Graph.Edge(e2, e4, Color.BLUE))
+        graph.addEdge(Graph.Edge(e3, e5, Color.BLACK))
+        graph.addEdge(Graph.Edge(e5, e4, Color.BLUE))
 
         return graph
     }
@@ -168,19 +168,19 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     private fun graphSetupR(): Graph {
         val graph = Graph()
 
-        val e1 = Graph.Edge(1, 2, 3)
-        val e2 = Graph.Edge(2, 1, 2)
-        val e3 = Graph.Edge(3, 3, 2)
-        val e4 = Graph.Edge(4, 1, 1)
-        val e5 = Graph.Edge(5, 3, 1)
+        val e1 = Graph.Vertex(1, 2, 3)
+        val e2 = Graph.Vertex(2, 1, 2)
+        val e3 = Graph.Vertex(3, 3, 2)
+        val e4 = Graph.Vertex(4, 1, 1)
+        val e5 = Graph.Vertex(5, 3, 1)
 
-        graph.addVertex(Graph.Vertex(e1, e2, Color.RED))
-        graph.addVertex(Graph.Vertex(e1, e3, Color.RED))
-        graph.addVertex(Graph.Vertex(e3, e1, Color.GREEN))
-        graph.addVertex(Graph.Vertex(e2, e4, Color.BLUE))
-        graph.addVertex(Graph.Vertex(e3, e5, Color.BLACK))
-        graph.addVertex(Graph.Vertex(e5, e4, Color.BLUE))
-        graph.addVertex(Graph.Vertex(e5, e1, Color.GREEN))
+        graph.addEdge(Graph.Edge(e1, e2, Color.RED))
+        graph.addEdge(Graph.Edge(e1, e3, Color.RED))
+        graph.addEdge(Graph.Edge(e3, e1, Color.GREEN))
+        graph.addEdge(Graph.Edge(e2, e4, Color.BLUE))
+        graph.addEdge(Graph.Edge(e3, e5, Color.BLACK))
+        graph.addEdge(Graph.Edge(e5, e4, Color.BLUE))
+        graph.addEdge(Graph.Edge(e5, e1, Color.GREEN))
 
         return graph
     }

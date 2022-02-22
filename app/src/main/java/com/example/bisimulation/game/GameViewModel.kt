@@ -1,5 +1,7 @@
 package com.example.bisimulation.game
 
+import android.util.Log
+import androidx.core.graphics.toColor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,53 +46,108 @@ class GameViewModel() : ViewModel() {
         )
     }
 
-    fun attackerClick(graph: String, nodeId: Int) {
-
-        val selectedEdge =
+    // Manages edge clicks for the attacker
+    fun attackerClick(graph: String, clickedVertex: Graph.Vertex) {
+        // Currently selected vertex
+        val selectedVertex =
             if (graph == "left")
-                leftGraph.value?.edges?.find { it.selected }
+                leftGraph.value?.vertices?.find { it.selected }
             else
-                rightGraph.value?.edges?.find { it.selected }
+                rightGraph.value?.vertices?.find { it.selected }
 
-        val pathVertex =
+        // Direct path from the currently selected vertex to the clicked one
+        val pathEdge =
             if (graph == "left")
-                leftGraph.value?.vertices?.find {
-                    it.from == selectedEdge && it.to.id == nodeId
+                leftGraph.value?.edges?.find {
+                    it.from == selectedVertex && it.to == clickedVertex
                 }
             else
-                rightGraph.value?.vertices?.find {
-                    it.from == selectedEdge && it.to.id == nodeId
+                rightGraph.value?.edges?.find {
+                    it.from == selectedVertex && it.to == clickedVertex
                 }
 
-        // If the vertex exists, the move is strong
-        if (pathVertex != null) {
-            FirestoreRepository.setMove(
+        // If the edge exists, the move is strong
+        if (pathEdge != null) {
+            // Send the move to the server
+            FirestoreRepository.sendMove(
                 roomId, GameRole.ATTACKER, Move(
                     graph = graph,
-                    color = pathVertex.color,
-                    edge = nodeId
+                    color = pathEdge.color,
+                    vertex = clickedVertex.id
                 )
             )
         }
     }
 
-    fun defenderClick(graph: String, nodeId: Int) {
-        if (graph == "left") {
+    // Manages edge clicks for the defender
+    fun defenderClick(graph: String, clickedVertex: Graph.Vertex) {
+        // Currently selected vertex
+        val selectedVertex =
+            if (graph == "left")
+                leftGraph.value?.vertices?.find { it.selected }
+            else
+                rightGraph.value?.vertices?.find { it.selected }
 
-        }
-        if (graph == "right") {
+        // Current graph we are using
+        val g =
+            if (graph == "left")
+                leftGraph.value!!
+            else
+                rightGraph.value!!
 
+        // Find all paths from the selected vertex to the clicked one
+        val paths = g.findAllPaths(selectedVertex!!, clickedVertex)
+
+        // Compute all possible moves
+        val moveList = mutableListOf<Move>()
+        for (path in paths) {
+            val moveColors = mutableListOf<Int>()
+            path.forEachIndexed { index, vertex ->
+                if (index == path.size - 1) return@forEachIndexed
+
+                val edge = g.edges.find {
+                    it.from.id == vertex && it.to.id == path[index + 1]
+                }
+
+                if (edge != null)
+                    moveColors.add(edge.color)
+            }
+
+            // Filter all moves based on the special color
+            val filteredMoveColors = moveColors.filter { it != specialColor.value }
+
+            // If all the colors in a move are the special color, the move is special
+            val isSpecial = filteredMoveColors.isEmpty()
+            if (isSpecial) {
+                Log.i("GameViewModel", "Special move! :D")
+                moveList.add(Move(graph, specialColor.value!!, clickedVertex.id))
+            }
+
+            // If all the colors in a move are special color except one, the move is colored
+            val isColor = filteredMoveColors.size == 1
+            if (isColor){
+                Log.i("GameViewModel", "Move of color: ${filteredMoveColors[0].toString()}")
+                moveList.add(Move(graph, filteredMoveColors[0], clickedVertex.id))
+            }
+
+            // Send the first available move it finds
+            if (moveList.isNotEmpty()){
+                FirestoreRepository.sendMove(roomId, GameRole.DEFENDER,
+                    moveList[0]
+                )
+            }
         }
     }
 
+    // colors -> 0 = white, 1 = gray, 2 = black
+    inner class BfsV(val id: Int, var color: Int = 0, var d: Int = 0, var p: BfsV? = null)
+
     fun setLeftEdge(edge: Int) {
-        _leftGraph.value?.selectEdge(edge)
-        //FirestoreRepository.setGraph(roomId, "leftGraph", _leftGraph.value!!)
+        _leftGraph.value?.selectVertex(edge)
     }
 
     fun setRightEdge(edge: Int) {
-        _rightGraph.value?.selectEdge(edge)
-        //FirestoreRepository.setGraph(roomId, "rightGraph", _rightGraph.value!!)
+        _rightGraph.value?.selectVertex(edge)
     }
 
     private val _leftGraph = MutableLiveData<Graph>()
