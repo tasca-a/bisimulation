@@ -3,7 +3,7 @@ package com.example.bisimulation.model
 import android.graphics.Color
 import android.util.Log
 
-class Graph() {
+class Graph {
     val vertices: MutableList<Vertex> = mutableListOf()
     val edges: MutableList<Edge> = mutableListOf()
 
@@ -60,7 +60,7 @@ class Graph() {
             tmpEdgeList.toList()
         }
 
-        val isVisited = Array<Boolean>(vertices.size){false}
+        val isVisited = Array(vertices.size){false}
         val pathList = ArrayList<Int>()
 
         // Add the source to the path
@@ -111,12 +111,27 @@ class Graph() {
         override fun equals(other: Any?): Boolean {
             return (other is Vertex) && id == other.id && x == other.x && y == other.y
         }
+
+        override fun hashCode(): Int {
+            var result = id
+            result = 31 * result + x
+            result = 31 * result + y
+            result = 31 * result + selected.hashCode()
+            return result
+        }
     }
     class Edge(val from: Vertex, val to: Vertex, val color: Int = Color.BLACK){
         constructor() : this(Vertex(), Vertex())
 
         override fun equals(other: Any?): Boolean {
             return (other is Edge) && from == other.from && to == other.to
+        }
+
+        override fun hashCode(): Int {
+            var result = from.hashCode()
+            result = 31 * result + to.hashCode()
+            result = 31 * result + color
+            return result
         }
     }
 }

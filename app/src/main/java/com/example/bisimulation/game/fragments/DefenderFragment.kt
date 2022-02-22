@@ -29,7 +29,7 @@ class DefenderFragment : GameFragment() {
         setLandscapeOrientation()
 
         // Setup
-        viewModel.setRoomId(args.roomId)
+        viewModel.roomSetup(args.roomId)
 
         // Observe graph status changes
         viewModel.leftGraph.observe(viewLifecycleOwner) {
@@ -84,12 +84,22 @@ class DefenderFragment : GameFragment() {
             if (move.graph == "left") {
                 viewModel.setLeftEdge(move.vertex)
                 binding.leftGraphView.updateGraph(viewModel.leftGraph.value!!)
+                binding.leftGraphView.enableClick = false
+                binding.rightGraphView.enableClick = true
             }
 
             if (move.graph == "right") {
                 viewModel.setRightEdge(move.vertex)
                 binding.rightGraphView.updateGraph(viewModel.rightGraph.value!!)
+                binding.leftGraphView.enableClick = true
+                binding.rightGraphView.enableClick = false
             }
+
+            // Check if victory has been achieved
+//            if (viewModel.checkVictory())
+//                binding.turnTextView.text = "Victory!"
+//            else
+//                binding.turnTextView.text = "Ripperotty.."
         }
 
         return binding.root

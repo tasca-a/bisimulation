@@ -29,7 +29,7 @@ class AttackerFragment : GameFragment() {
         setLandscapeOrientation()
 
         // Setup
-        viewModel.setRoomId(args.roomId)
+        viewModel.roomSetup(args.roomId)
 
         // Observe graph status changes
         viewModel.leftGraph.observe(viewLifecycleOwner) {
@@ -90,6 +90,12 @@ class AttackerFragment : GameFragment() {
                 viewModel.setRightEdge(move.vertex)
                 binding.rightGraphView.updateGraph(viewModel.rightGraph.value!!)
             }
+
+            // Check if victory has been achieved
+//            if (viewModel.checkVictory())
+//                binding.turnTextView.text = "Victory!"
+//            else
+//                binding.turnTextView.text = "Ripperotty.."
         }
 
         return binding.root

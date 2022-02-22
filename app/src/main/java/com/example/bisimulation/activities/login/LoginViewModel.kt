@@ -3,6 +3,7 @@ package com.example.bisimulation.activities.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.bisimulation.repository.FirestoreRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -27,5 +28,9 @@ class LoginViewModel : ViewModel() {
         auth.sendPasswordResetEmail(emailToReset).addOnCompleteListener { task ->
             _resetPasswordStatus.value = task.isSuccessful
         }
+    }
+
+    init {
+        FirestoreRepository.clearCache()
     }
 }

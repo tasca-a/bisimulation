@@ -1,7 +1,6 @@
 package com.example.bisimulation.game
 
 import android.util.Log
-import androidx.core.graphics.toColor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,12 +12,12 @@ import com.example.bisimulation.repository.FsGetGameEventListener
 import com.example.bisimulation.repository.FsGetGraphEventListener
 import com.example.bisimulation.repository.FsGetLastMoveEventListener
 
-class GameViewModel() : ViewModel() {
+class GameViewModel : ViewModel() {
 
     private var roomId: String = ""
 
     // Set room ID and activate necessary listeners
-    fun setRoomId(roomId: String) {
+    fun roomSetup(roomId: String) {
         this.roomId = roomId
 
         //Setup all the listeners
@@ -125,22 +124,24 @@ class GameViewModel() : ViewModel() {
 
             // If all the colors in a move are special color except one, the move is colored
             val isColor = filteredMoveColors.size == 1
-            if (isColor){
-                Log.i("GameViewModel", "Move of color: ${filteredMoveColors[0].toString()}")
+            if (isColor) {
+                Log.i("GameViewModel", "Move of color: ${filteredMoveColors[0]}")
                 moveList.add(Move(graph, filteredMoveColors[0], clickedVertex.id))
             }
 
             // Send the first available move it finds
-            if (moveList.isNotEmpty()){
-                FirestoreRepository.sendMove(roomId, GameRole.DEFENDER,
+            if (moveList.isNotEmpty()) {
+                FirestoreRepository.sendMove(
+                    roomId, GameRole.DEFENDER,
                     moveList[0]
                 )
             }
         }
     }
 
-    // colors -> 0 = white, 1 = gray, 2 = black
-    inner class BfsV(val id: Int, var color: Int = 0, var d: Int = 0, var p: BfsV? = null)
+    fun checkVictory(): Boolean {
+        TODO("Not yet implemented")
+    }
 
     fun setLeftEdge(edge: Int) {
         _leftGraph.value?.selectVertex(edge)

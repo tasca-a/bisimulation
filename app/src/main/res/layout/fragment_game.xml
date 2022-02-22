@@ -52,32 +52,22 @@
             android:layout_height="0dp"
             android:background="@android:color/background_dark"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/stayStill_button"
+
+            app:layout_constraintEnd_toStartOf="@+id/turn_textView"
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <Button
-            android:id="@+id/stayStill_button"
-            android:layout_width="100dp"
-            android:layout_height="80dp"
-            android:text="@string/stayStill_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="TextContrastCheck" />
-
         <TextView
             android:id="@+id/turn_textView"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="80dp"
-            android:textAlignment="center"
             android:gravity="center"
-            android:textSize="24sp"
+            android:textAlignment="center"
             android:textColor="@color/yourTurnText"
-            tools:text="@string/yourTurn_textView"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/separator2"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            tools:text="@string/yourTurn_textView" />
 
         <TextView
             android:id="@+id/sc_textView"
@@ -115,7 +105,7 @@
             android:id="@+id/lastMove_color"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:background="@color/secondaryLightColor"
+            tools:background="@color/secondaryLightColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/lm_textView"
             app:layout_constraintTop_toBottomOf="@+id/lm_textView" />

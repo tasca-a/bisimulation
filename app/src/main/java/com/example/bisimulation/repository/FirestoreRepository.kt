@@ -15,6 +15,10 @@ import kotlinx.coroutines.tasks.await
 object FirestoreRepository {
     private const val TAG = "FirestoreRepository"
 
+    fun clearCache(){
+        Firebase.firestore.clearPersistence()
+    }
+
     // One-shot queries
     suspend fun getName(userId: String): String? {
         val db = Firebase.firestore
@@ -63,6 +67,12 @@ object FirestoreRepository {
         db.collection("rooms").document(roomId).set(room).addOnSuccessListener {
             listener.roomCreationSuccess()
         }
+        db.collection("rooms").document(roomId)
+            .collection("moves").get().addOnCompleteListener {
+                for (document in it.result.documents){
+                    document.reference.delete()
+                }
+            }
     }
 
     fun setRoomAsZombie(roomId: String) {

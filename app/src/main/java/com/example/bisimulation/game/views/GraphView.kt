@@ -1,5 +1,6 @@
 package com.example.bisimulation.game.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -25,6 +26,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var arrowAngle: Float
     private var loopWidth: Float  // This is inverted!
     private val lineWidth: Float
+    var enableClick: Boolean
 
     init {
         context.theme.obtainStyledAttributes(
@@ -34,6 +36,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         ).apply {
             try {
                 showExample = getBoolean(R.styleable.GraphView_showExample, false)
+                enableClick = getBoolean(R.styleable.GraphView_enableClick, true)
                 edgeSize = getFloat(R.styleable.GraphView_edgeSize, 60f)
                 arrowSize = getFloat(R.styleable.GraphView_arrowSize, 40f)
                 arrowAngle = getFloat(R.styleable.GraphView_arrowAngle, (PI / 4).toFloat())
@@ -64,11 +67,6 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 addEdge(Edge(e5, e4, Color.BLUE))
             }
         }
-    }
-
-    fun setGraph(graph: Graph) {
-        this.graph = graph
-        invalidate()
     }
 
     fun updateGraph(graph: Graph) {
@@ -127,7 +125,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
     }
 
-    fun scaleVertices(vertex: Vertex, newX: Int, newY: Int) {
+    private fun scaleVertices(vertex: Vertex, newX: Int, newY: Int) {
         for (v in graph.edges) {
             if (v.from.x == vertex.x && v.from.y == vertex.y) {
                 v.from.x = newX
@@ -153,8 +151,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
                 arrowPaint.color = v.color
 
-                // TODO: gestisci cappi
-                // TODO: gestisci doppio disegno
+                // TODO: Manage loops!
                 var loop = false
                 graph.edges.forEachIndexed { xIndex, x ->
 
@@ -295,7 +292,14 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         eventListener = graphEventListener
     }
 
+    // I have to suppress this because there is no easy way to detect where
+    // the user is clicking without x and y coordinates, so performClick is useless
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        // If click is not enabled, exit immediately
+        if (!enableClick) return false
+
         val x = event?.x ?: 0f
         val y = event?.y ?: 0f
 
@@ -313,7 +317,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
             }
         }
 
-        return false
+        return true
     }
 }
 
