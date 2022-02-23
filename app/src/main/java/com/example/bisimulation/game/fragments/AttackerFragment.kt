@@ -26,7 +26,6 @@ class AttackerFragment : GameFragment() {
         savedInstanceState: Bundle?
     ): View {
         attackerFragmentSetup(inflater, container)
-        setLandscapeOrientation()
 
         // Setup
         viewModel.roomSetup(args.roomId)
@@ -91,13 +90,11 @@ class AttackerFragment : GameFragment() {
                 binding.rightGraphView.updateGraph(viewModel.rightGraph.value!!)
             }
 
-            // Check if victory has been achieved
-//            if (viewModel.checkVictory())
-//                binding.turnTextView.text = "Victory!"
-//            else
-//                binding.turnTextView.text = "Ripperotty.."
+            // Check victory!
+            if (viewModel.turnOf.value == GameRole.ATTACKER)
+                if (viewModel.checkAttackerVictory(move.graph))
+                    Log.i("AttackerFragment", "The attacker won!")
         }
-
         return binding.root
     }
 

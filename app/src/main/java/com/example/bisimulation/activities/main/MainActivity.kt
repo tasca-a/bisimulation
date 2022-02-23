@@ -1,6 +1,8 @@
 package com.example.bisimulation.activities.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var binding: ActivityMainBinding
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivitySetup()
@@ -46,6 +49,14 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
+        // Rotate the screen if we are in a game
+        navController.addOnDestinationChangedListener{ _, destination, _ ->
+            if (destination.id == R.id.attackerFragment || destination.id == R.id.defenderFragment)
+                this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            else
+                this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         // Load user info in the drawer
         val navigationView = binding.navView
         val header = navigationView.getHeaderView(0)
@@ -65,7 +76,6 @@ class MainActivity : AppCompatActivity() {
     // Set up binding and viewModel of the MainActivity
     private fun mainActivitySetup() {
         sharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
-        //gameViewModel = ViewModelProvider(this)[GameViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.sharedViewModel = sharedViewModel
         binding.lifecycleOwner = this

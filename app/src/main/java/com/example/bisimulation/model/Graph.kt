@@ -7,6 +7,10 @@ class Graph {
     val vertices: MutableList<Vertex> = mutableListOf()
     val edges: MutableList<Edge> = mutableListOf()
 
+    fun getSelectedVertex(): Vertex? {
+        return vertices.find { it.selected }
+    }
+
     fun addEdge(edge: Edge){
         // Check vertices and add them to the internal vertices list
         if (!vertices.contains(edge.from))

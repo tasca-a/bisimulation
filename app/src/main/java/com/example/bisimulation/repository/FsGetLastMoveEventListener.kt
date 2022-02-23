@@ -8,7 +8,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 
 class FsGetLastMoveEventListener(
-    private val lastMove: MutableLiveData<Move>
+    private val lastMove: MutableLiveData<Move>,
+    private val moveList: MutableList<Move>
 ) :
     EventListener<QuerySnapshot> {
 
@@ -17,6 +18,12 @@ class FsGetLastMoveEventListener(
         if (value != null) {
             try {
                 lastMove.value = value.documents[0].toObject(Move::class.java)
+
+                moveList.clear()
+                value.documents.forEachIndexed { index, documentSnapshot ->
+                    if (index != 0)
+                        moveList.add(documentSnapshot.toObject(Move::class.java)!!)
+                }
             } catch (e: Exception) {
                 lastMove.value = lastMove.value
             }

@@ -84,7 +84,7 @@
             app:popUpTo="@id/playNowFragment" />
         <action
             android:id="@+id/action_p1lobby_to_defensor"
-            app:destination="@id/defensorFragment"
+            app:destination="@id/defenderFragment"
             app:popUpTo="@id/playNowFragment" />
     </fragment>
     <fragment
@@ -115,7 +115,7 @@
             app:popUpTo="@id/playNowFragment" />
         <action
             android:id="@+id/action_p2Lobby_to_defensor"
-            app:destination="@id/defensorFragment"
+            app:destination="@id/defenderFragment"
             app:popUpTo="@id/playNowFragment" />
     </fragment>
     <fragment
@@ -129,9 +129,9 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/defensorFragment"
+        android:id="@+id/defenderFragment"
         android:name="com.example.bisimulation.game.fragments.DefenderFragment"
-        android:label="Defensor"
+        android:label="Defender"
         tools:layout="@layout/fragment_game">
         <argument
             android:name="roomId"

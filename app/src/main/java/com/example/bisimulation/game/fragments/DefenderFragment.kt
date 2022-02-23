@@ -26,7 +26,6 @@ class DefenderFragment : GameFragment() {
         savedInstanceState: Bundle?
     ): View {
         defenderFragmentSetup(inflater, container)
-        setLandscapeOrientation()
 
         // Setup
         viewModel.roomSetup(args.roomId)
@@ -95,11 +94,9 @@ class DefenderFragment : GameFragment() {
                 binding.rightGraphView.enableClick = false
             }
 
-            // Check if victory has been achieved
-//            if (viewModel.checkVictory())
-//                binding.turnTextView.text = "Victory!"
-//            else
-//                binding.turnTextView.text = "Ripperotty.."
+            if (viewModel.turnOf.value == GameRole.DEFENDER)
+                if (viewModel.checkDefenderVictory())
+                    Log.i("DefenderFragment", "The defender won!")
         }
 
         return binding.root

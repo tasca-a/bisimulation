@@ -166,6 +166,7 @@ object FirestoreRepository {
                     "turnOf" to GameRole.ATTACKER
                 )
             )
+            else -> {}
         }
     }
 
@@ -194,6 +195,6 @@ object FirestoreRepository {
         val db = Firebase.firestore
         return db.collection("rooms").document(roomId).collection("moves")
             .orderBy("creationTime", Query.Direction.DESCENDING)
-            .limit(1)
+            //.limit(1)
     }
 }

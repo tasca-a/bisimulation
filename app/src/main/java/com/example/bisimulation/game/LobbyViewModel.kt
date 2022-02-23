@@ -126,8 +126,8 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         val gr = graphSetupR()
 
         // Make a random initial config
-        gl.selectVertex(Random.nextInt(1, 3))
-        gr.selectVertex(Random.nextInt(1, 3))
+        gl.selectVertex(1)
+        gr.selectVertex(1)
 
         // It is always the attacker turn at the beginning
         val turnOf = GameRole.ATTACKER
