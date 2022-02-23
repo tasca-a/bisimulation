@@ -1,18 +1,23 @@
 package com.example.bisimulation.game.fragments
 
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentGameBinding
 import com.example.bisimulation.game.GameViewModel
 import com.example.bisimulation.game.views.GraphEventListener
 import com.example.bisimulation.model.GameRole
+import com.example.bisimulation.model.GameState
 import com.example.bisimulation.model.Graph.Vertex
 
 class AttackerFragment : GameFragment() {
@@ -30,6 +35,18 @@ class AttackerFragment : GameFragment() {
         // Setup
         viewModel.roomSetup(args.roomId)
 
+        setupListeners()
+
+        return binding.root
+    }
+
+    private fun setupListeners() {
+        viewModel.leftGraph.removeObservers(viewLifecycleOwner)
+        viewModel.rightGraph.removeObservers(viewLifecycleOwner)
+        viewModel.specialColor.removeObservers(viewLifecycleOwner)
+        viewModel.turnOf.removeObservers(viewLifecycleOwner)
+        viewModel.lastMove.removeObservers(viewLifecycleOwner)
+
         // Observe graph status changes
         viewModel.leftGraph.observe(viewLifecycleOwner) {
             if (it != null)
@@ -44,19 +61,15 @@ class AttackerFragment : GameFragment() {
         // React to node clicks
         binding.leftGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onVertexClicked(vertex: Vertex) {
-                if (viewModel.turnOf.value == GameRole.ATTACKER) {
-                    Log.i("AttackerFragment", "Al che sx! :D ${vertex.id}")
+                if (viewModel.turnOf.value == GameRole.ATTACKER)
                     viewModel.attackerClick("left", vertex)
-                }
             }
         })
 
         binding.rightGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onVertexClicked(vertex: Vertex) {
-                if (viewModel.turnOf.value == GameRole.ATTACKER) {
-                    Log.i("AttackerFragment", "Al che dx! :D ${vertex.id}")
+                if (viewModel.turnOf.value == GameRole.ATTACKER)
                     viewModel.attackerClick("right", vertex)
-                }
             }
         })
 
@@ -75,7 +88,7 @@ class AttackerFragment : GameFragment() {
         }
 
         // Listen for move color
-        viewModel.lastMove.observe(viewLifecycleOwner){ move ->
+        viewModel.lastMove.observe(viewLifecycleOwner) { move ->
             if (move == null) return@observe
 
             binding.lastMoveColor.background = move.color.toDrawable()
@@ -92,14 +105,32 @@ class AttackerFragment : GameFragment() {
 
             // Check victory!
             if (viewModel.turnOf.value == GameRole.ATTACKER)
-                if (viewModel.checkAttackerVictory(move.graph))
-                    Log.i("AttackerFragment", "The attacker won!")
+                if (viewModel.checkAttackerVictory(move.graph)) {
+                    binding.turnTextView.text = resources.getString(R.string.victoryText)
+                    Toast.makeText(context, "Vittoria!", Toast.LENGTH_SHORT).show()
+                    viewModel.setVictory()
+                }
         }
-        return binding.root
+
+        // Listen to lobby status and react accordingly
+        viewModel.lobbyStatus.observe(viewLifecycleOwner){ staus ->
+            // If you won, just wait a few seconds and exit.
+            // If you lost, display the defeat, wait a few seconds and then exit
+            if (staus == GameState.DONE){
+                if (!viewModel.victory)
+                    binding.turnTextView.text = resources.getString(R.string.defeatText)
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    lifecycleScope.launchWhenResumed {
+                        findNavController().popBackStack()
+                    }
+                }, 5000)
+            }
+        }
     }
 
     private fun attackerFragmentSetup(inflater: LayoutInflater, container: ViewGroup?) {
-        viewModel = ViewModelProvider(requireActivity())[GameViewModel::class.java]
+        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
         binding = FragmentGameBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
     }

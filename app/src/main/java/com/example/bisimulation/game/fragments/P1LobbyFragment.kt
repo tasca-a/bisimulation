@@ -1,5 +1,6 @@
 package com.example.bisimulation.game.fragments
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -96,6 +97,10 @@ class P1LobbyFragment : Fragment() {
 
             // Prepare the game
             viewModel.gameSetUp()
+
+            // Change screen orientation before the new gameFragment start
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
             // Start the game!
             findNavController().navigate(action)
         }
@@ -104,15 +109,9 @@ class P1LobbyFragment : Fragment() {
     }
 
     private fun p1LobbyFragmentSetup(inflater: LayoutInflater, container: ViewGroup?) {
-        viewModel = ViewModelProvider(requireActivity())[LobbyViewModel::class.java]
+        viewModel = ViewModelProvider(this)[LobbyViewModel::class.java]
         binding = FragmentLobbyBinding.inflate(inflater, container, false)
         binding.gameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-    }
-
-    override fun onDestroy() {
-        if (viewModel.lobbyStatus.value != GameState.PLAYING)
-            viewModel.setRoomAsZombie()
-        super.onDestroy()
     }
 }

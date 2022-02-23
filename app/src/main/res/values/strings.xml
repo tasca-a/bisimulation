@@ -120,4 +120,6 @@
     <!-- Game -->
     <string name="yourTurn_textView">Your turn!</string>
     <string name="notYourTurn_textView">Not your turn..</string>
+    <string name="victoryText">Vitcory!</string>
+    <string name="defeatText">Defeat.</string>
 </resources>

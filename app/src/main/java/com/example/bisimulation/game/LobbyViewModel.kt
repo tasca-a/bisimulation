@@ -9,15 +9,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.bisimulation.callbacks.OnConnectionSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
 import com.example.bisimulation.model.GameRole
-import com.example.bisimulation.repository.FirestoreRepository
-import com.example.bisimulation.repository.FsGetStatusEventListener
-import com.example.bisimulation.repository.FsGetStringEventListener
 import com.example.bisimulation.model.GameState
 import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Lobby
+import com.example.bisimulation.repository.FirestoreRepository
 import com.example.bisimulation.repository.FsGetRoleEventListener
+import com.example.bisimulation.repository.FsGetStatusEventListener
+import com.example.bisimulation.repository.FsGetStringEventListener
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     var roomId: String = ""
@@ -85,6 +84,7 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     // PLAYER 2
     fun getExistingRoom(roomId: String) {
         this.roomId = roomId
+
         // Get all information of an already existing room
         viewModelScope.launch {
             // roomId is the player1 uid
@@ -124,10 +124,6 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         // Graph setup
         val gl = graphSetupL()
         val gr = graphSetupR()
-
-        // Make a random initial config
-        gl.selectVertex(1)
-        gr.selectVertex(1)
 
         // It is always the attacker turn at the beginning
         val turnOf = GameRole.ATTACKER

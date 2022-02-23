@@ -1,18 +1,24 @@
 package com.example.bisimulation.game.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.bisimulation.R
 import com.example.bisimulation.databinding.FragmentGameBinding
 import com.example.bisimulation.game.GameViewModel
 import com.example.bisimulation.game.views.GraphEventListener
 import com.example.bisimulation.model.GameRole
+import com.example.bisimulation.model.GameState
 import com.example.bisimulation.model.Graph.Vertex
 
 class DefenderFragment : GameFragment() {
@@ -30,6 +36,13 @@ class DefenderFragment : GameFragment() {
         // Setup
         viewModel.roomSetup(args.roomId)
 
+        setupListeners()
+
+        return binding.root
+    }
+
+
+    private fun setupListeners() {
         // Observe graph status changes
         viewModel.leftGraph.observe(viewLifecycleOwner) {
             if (it != null)
@@ -41,7 +54,7 @@ class DefenderFragment : GameFragment() {
                 binding.rightGraphView.updateGraph(it)
         }
 
-        // React to node clicks
+        // React to vertex clicks
         binding.leftGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onVertexClicked(vertex: Vertex) {
                 if (viewModel.turnOf.value == GameRole.DEFENDER) {
@@ -75,7 +88,7 @@ class DefenderFragment : GameFragment() {
         }
 
         // Listen for move color
-        viewModel.lastMove.observe(viewLifecycleOwner){ move ->
+        viewModel.lastMove.observe(viewLifecycleOwner) { move ->
             if (move == null) return@observe
 
             binding.lastMoveColor.background = move.color.toDrawable()
@@ -95,15 +108,32 @@ class DefenderFragment : GameFragment() {
             }
 
             if (viewModel.turnOf.value == GameRole.DEFENDER)
-                if (viewModel.checkDefenderVictory())
-                    Log.i("DefenderFragment", "The defender won!")
+                if (viewModel.checkDefenderVictory()) {
+                    binding.turnTextView.text = resources.getString(R.string.victoryText)
+                    Toast.makeText(context, "Vittoria!", Toast.LENGTH_SHORT).show()
+                    viewModel.setVictory()
+                }
         }
 
-        return binding.root
+        // Listen to lobby status and react accordingly
+        viewModel.lobbyStatus.observe(viewLifecycleOwner){ staus ->
+            // If you won, just wait a few seconds and exit.
+            // If you lost, display the defeat, wait a few seconds and then exit
+            if (staus == GameState.DONE){
+                if (!viewModel.victory)
+                    binding.turnTextView.text = resources.getString(R.string.defeatText)
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    lifecycleScope.launchWhenResumed {
+                        findNavController().popBackStack()
+                    }
+                }, 5000)
+            }
+        }
     }
 
     private fun defenderFragmentSetup(inflater: LayoutInflater, container: ViewGroup?) {
-        viewModel = ViewModelProvider(requireActivity())[GameViewModel::class.java]
+        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
         binding = FragmentGameBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
     }

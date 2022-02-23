@@ -4,20 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.bisimulation.model.GameRole
+import com.example.bisimulation.model.GameState
 import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Move
-import com.example.bisimulation.repository.FirestoreRepository
-import com.example.bisimulation.repository.FsGetGameEventListener
-import com.example.bisimulation.repository.FsGetGraphEventListener
-import com.example.bisimulation.repository.FsGetLastMoveEventListener
+import com.example.bisimulation.repository.*
 
 class GameViewModel : ViewModel() {
 
     private var roomId: String = ""
+    //private var userId: String = ""
 
     // Set room ID and activate necessary listeners
     fun roomSetup(roomId: String) {
         this.roomId = roomId
+        //this.userId = userId
 
         //Setup all the listeners
         FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
@@ -42,6 +42,11 @@ class GameViewModel : ViewModel() {
         FirestoreRepository.getMovesReference(roomId).addSnapshotListener(
             FsGetLastMoveEventListener(_lastMove, moveList)
         )
+
+        // Listen to lobby state
+        FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
+            FsGetStatusEventListener(_lobbyStatus)
+        )
     }
 
     // Manages edge clicks for the attacker
@@ -64,6 +69,21 @@ class GameViewModel : ViewModel() {
                 leftGraph.value?.getSelectedVertex()?.id ?: -1,
                 clickedVertex.id
             )
+        }
+
+        // If there is no selected vertex, it means that we are in the initial
+        // configuration phase
+        if (g.getSelectedVertex() == null){
+            FirestoreRepository.sendMove(
+                roomId, GameRole.ATTACKER, Move(
+                    graph = graph,
+                    color = 0,
+                    vertex = clickedVertex.id,
+                    from = GameRole.ATTACKER,
+                    config = config
+                )
+            )
+            return
         }
 
         // Currently selected vertex
@@ -111,8 +131,23 @@ class GameViewModel : ViewModel() {
             )
         }
 
+        // If there is no selected vertex, it means that we are in the initial
+        // configuration phase
+        if (g.getSelectedVertex() == null){
+            FirestoreRepository.sendMove(
+                roomId, GameRole.DEFENDER, Move(
+                    graph = graph,
+                    color = 0,
+                    vertex = clickedVertex.id,
+                    from = GameRole.DEFENDER,
+                    config = config
+                )
+            )
+            return
+        }
+
         // Currently selected vertex
-        val selectedVertex = g.vertices.find { it.selected }
+        val selectedVertex = g.getSelectedVertex()
 
         // Find all paths from the selected vertex to the clicked one
         val paths = g.findAllPaths(selectedVertex!!, clickedVertex)
@@ -263,15 +298,24 @@ class GameViewModel : ViewModel() {
         _rightGraph.value?.selectVertex(edge)
     }
 
+    var victory = false
+    fun setVictory() {
+        victory = true
+        FirestoreRepository.setRoomAsDone(roomId)
+        //FirestoreRepository.addVictoryStat(userId)
+    }
+
     private val moveList = mutableListOf<Move>()
     private val _leftGraph = MutableLiveData<Graph>()
     private val _rightGraph = MutableLiveData<Graph>()
     private val _turnOf = MutableLiveData<GameRole>()
     private val _specialColor = MutableLiveData<Int>()
     private val _lastMove = MutableLiveData<Move>()
+    private val _lobbyStatus = MutableLiveData<GameState>()
     val leftGraph: LiveData<Graph> = _leftGraph
     val rightGraph: LiveData<Graph> = _rightGraph
     val turnOf: LiveData<GameRole> = _turnOf
     val specialColor: LiveData<Int> = _specialColor
     val lastMove: LiveData<Move> = _lastMove
+    val lobbyStatus: LiveData<GameState> = _lobbyStatus
 }

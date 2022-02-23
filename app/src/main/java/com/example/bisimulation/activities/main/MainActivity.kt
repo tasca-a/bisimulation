@@ -49,14 +49,6 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
-        // Rotate the screen if we are in a game
-        navController.addOnDestinationChangedListener{ _, destination, _ ->
-            if (destination.id == R.id.attackerFragment || destination.id == R.id.defenderFragment)
-                this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            else
-                this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
-
         // Load user info in the drawer
         val navigationView = binding.navView
         val header = navigationView.getHeaderView(0)

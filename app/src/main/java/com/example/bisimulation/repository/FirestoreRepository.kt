@@ -4,10 +4,9 @@ import android.util.Log
 import com.example.bisimulation.callbacks.OnConnectionSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
 import com.example.bisimulation.model.*
-import com.google.android.gms.tasks.Task
+import com.google.firebase.database.ServerValue
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -75,6 +74,15 @@ object FirestoreRepository {
             }
     }
 
+    fun setRoomAsDone(roomId: String) {
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId).update(
+            mapOf(
+                "roomState" to GameState.DONE
+            )
+        )
+    }
+
     fun setRoomAsZombie(roomId: String) {
         val db = Firebase.firestore
         db.collection("rooms").document(roomId).update(
@@ -112,6 +120,24 @@ object FirestoreRepository {
         db.collection("rooms").document(roomId).update(
             mapOf(
                 "player1role" to role
+            )
+        )
+    }
+
+    fun addVictoryStat(userId: String){
+        val db = Firebase.firestore
+        db.collection("stats").document(userId).update(
+            mapOf(
+                "victories" to ServerValue.increment(1)
+            )
+        )
+    }
+
+    fun addDefeatStat(userId: String){
+        val db = Firebase.firestore
+        db.collection("stats").document(userId).update(
+            mapOf(
+                "losses" to ServerValue.increment(1)
             )
         )
     }

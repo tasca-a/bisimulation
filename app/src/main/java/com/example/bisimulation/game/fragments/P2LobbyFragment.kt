@@ -1,5 +1,6 @@
 package com.example.bisimulation.game.fragments
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +17,7 @@ import com.example.bisimulation.databinding.FragmentLobbyBinding
 import com.example.bisimulation.game.LobbyViewModel
 import com.example.bisimulation.model.GameRole
 import com.example.bisimulation.model.GameState
+import com.example.bisimulation.repository.FirestoreRepository
 
 class P2LobbyFragment : Fragment() {
     private lateinit var binding: FragmentLobbyBinding
@@ -70,6 +72,10 @@ class P2LobbyFragment : Fragment() {
                         else
                             P2LobbyFragmentDirections.actionP2LobbyToAttacker(viewModel.roomId)
 
+                    // Change screen orientation before the new gameFragment start
+                    activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
+                    // Start the game!
                     findNavController().navigate(action)
                 }
 
@@ -93,7 +99,7 @@ class P2LobbyFragment : Fragment() {
     }
 
     private fun p2LobbyFragmentSetup(inflater: LayoutInflater, container: ViewGroup?) {
-        viewModel = ViewModelProvider(requireActivity())[LobbyViewModel::class.java]
+        viewModel = ViewModelProvider(this)[LobbyViewModel::class.java]
         binding = FragmentLobbyBinding.inflate(inflater, container, false)
         binding.gameViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
