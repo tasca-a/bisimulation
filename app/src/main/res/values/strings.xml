@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Bisimulation</string>
     <string name="login_textView">LOGIN</string>
-    <string name="email_textView">Email address</string>
+    <string name="email_textView">E-mail address</string>
     <string name="password_textView">Password</string>
     <string name="rememberMe_checkBox">Remember me</string>
     <string name="login_button">Log in</string>
@@ -15,21 +15,13 @@
     <string name="signUpSuccessful_Toast">Sign up successful!</string>
     <string name="signUpFailed_Toast">Sign up failed.</string>
     <string name="signUpUserCollisiom_Toast">A user with this email already exists.</string>
-    <string name="title_activity_sign_up">SignUpActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="signUp_textView">SIGN UP</string>
     <string name="insertYourName_textView">Insert your name</string>
     <string name="name_editText">Name</string>
     <string name="insertYourSurname_textView">Insert your surname</string>
     <string name="surname_editText">Surname</string>
-    <string name="insertYourEmail_textView">Insert your email</string>
+    <string name="insertYourEmail_textView">Insert your e-mail</string>
     <string name="insertYourUsername_textView">Insert your username</string>
     <string name="username_editText">Username</string>
     <string name="insertYourPassword_textView">Insert your password</string>
@@ -38,7 +30,7 @@
     <string name="confirmPassword_editText">Your password again</string>
     <string name="signUp_button">Sign up!</string>
 
-    <string name="invalidEmailError">Please insert a valid email address.</string>
+    <string name="invalidEmailError">Please insert a valid e-mail address.</string>
     <string name="emptyPasswordError">Please insert a password.</string>
     <string name="invalidPasswordError">Password is invalid.</string>
     <string name="lengthPasswordError">Password must be at least 6 characters long.</string>
@@ -46,10 +38,10 @@
     <string name="invalidSurnameError">The surname is invalid.</string>
     <string name="invalidUsernameError">The username is invalid.</string>
     <string name="pwNotMatchError">The password does not match.</string>
-    <string name="forgotPwDialog_textView">Insert here the email address that you used during registration.</string>
-    <string name="emailForgotPwDialog_editText">Email</string>
+    <string name="forgotPwDialog_textView">Insert here the e-mail address that you used during registration.</string>
+    <string name="emailForgotPwDialog_editText">E-mail</string>
     <string name="resetForgotPwDialog_button">Reset</string>
-    <string name="forgotPwDialogSuccess_Toast">Success! If your email is already registered, you should receive a message soon.</string>
+    <string name="forgotPwDialogSuccess_Toast">Success! If your e-mail is already registered, you should receive a message soon.</string>
     <string name="forgotPwDialogFail_Toast">Password reset failed.</string>
     <string name="personalStats_textView">Personal stats</string>
     <string name="discoverMore_button">Discover more!</string>
@@ -72,7 +64,7 @@
     <string name="personalInfoTextView">Personal info:</string>
     <string name="nameTextView">Name:</string>
     <string name="surnameTextView">Surname:</string>
-    <string name="emailAddressTextView">Email address:</string>
+    <string name="emailAddressTextView">E-mail address:</string>
     <string name="statsTextView">Statistics:</string>
 
     <!-- FAQ -->
@@ -85,7 +77,7 @@
     <string name="faq_question_three">Where are my <b>data</b> stored?</string>
     <string name="faq_answer_three">Data are stored in <b>Firebase</b>, a service offered by <i>Google</i>, where data are <b><i>encrypted</i></b>.</string>
     <string name="faq_question_four">How many <b>game tables</b> are available at the moment?</string>
-    <string name="faq_answer_four">At the moment only one game table is available. Soon other tables will be ready.</string>
+    <string name="faq_answer_four">An <b>infinite</b>amount! Every game generates a different set of tables, so you will never get bored!</string>
     <string name="faqGroup_contentDescription">Expand or collapse this question.</string>
 
     <!-- Bug report -->
@@ -93,19 +85,20 @@
     <string name="thanksFeedback_textView">Thank you for your feedback!\nThe message will be sent to test@mail.com</string>
     <string name="bugReport_hint">Insert here what went wrong with the application.</string>
     <string name="sendEmail_button">Send</string>
-    <string name="selectEmail_chooser">Select your email app:</string>
+    <string name="selectEmail_chooser">Select your e-mail app:</string>
 
     <string name="shareDialogTitle">Share this app</string>
     <string name="shareDialogMessage">Tell all your friends that you are playing the bisimulation game!</string>
     <string name="shareDialogPositiveButton">Share!</string>
     <string name="shareDialogNegativeButton">Dismiss</string>
-    <string name="shareMessage">I\'m playing the Bisimulation game! Isn\'t that amazing?</string>
+    <string name="shareMessage">I\'m playing the bisimulation game! Isn\'t that amazing? 😎</string>
     <string name="createRoom_button">Create room!</string>
     <string name="roomCreatedBy_textView">Room by:</string>
     <string name="joinRoom_button">Join room!</string>
     <string name="startGame_button">Start game!</string>
 
     <!-- Lobby -->
+    <string name="lobby_menu">Lobby</string>
     <string name="lobbyCreationError">Impossible to create a lobby.</string>
     <string name="lobbyZombieError">The host left the lobby</string>
     <string name="lobbyInactiveError">This room has been reported as inactive</string>
@@ -120,6 +113,11 @@
     <!-- Game -->
     <string name="yourTurn_textView">Your turn!</string>
     <string name="notYourTurn_textView">Not your turn..</string>
-    <string name="victoryText">Vitcory!</string>
-    <string name="defeatText">Defeat.</string>
+    <string name="victoryText">Vitcory! 🎉</string>
+    <string name="defeatText">Defeat. 💀</string>
+    <string name="attacker_label">Attacker</string>
+    <string name="defender_label">Defender</string>
+    <string name="selectLanguage_textView">Select your language:</string>
+    <string name="englishLanguageHint">English</string>
+    <string name="italianLanguageHint">Italian</string>
 </resources>

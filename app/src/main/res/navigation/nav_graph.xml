@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.bisimulation.activities.main.fragments.HomeFragment"
-        android:label="Home"
+        android:label="@string/home_menu"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_to_profile"
@@ -26,12 +26,12 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.bisimulation.activities.main.fragments.ProfileFragment"
-        android:label="Profile"
+        android:label="@string/myProfile_menu"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/playNowFragment"
         android:name="com.example.bisimulation.activities.main.fragments.PlayNowFragment"
-        android:label="Play Now!"
+        android:label="@string/playNow_menu"
         tools:layout="@layout/fragment_play_now">
         <action
             android:id="@+id/action_playNow_to_p1lobby"
@@ -43,27 +43,27 @@
     <fragment
         android:id="@+id/faqFragment"
         android:name="com.example.bisimulation.activities.main.fragments.FaqFragment"
-        android:label="FAQ"
+        android:label="@string/faq_menu"
         tools:layout="@layout/fragment_faq" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.bisimulation.activities.main.fragments.SettingsFragment"
-        android:label="Settings"
+        android:label="@string/settings_menu"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/bugReportFragment"
         android:name="com.example.bisimulation.activities.main.fragments.BugReportFragment"
-        android:label="Bug Report"
+        android:label="@string/report_menu"
         tools:layout="@layout/fragment_bug_report" />
     <fragment
         android:id="@+id/activePlayersFragment"
         android:name="com.example.bisimulation.activities.main.fragments.ActivePlayersFragment"
-        android:label="Active Players"
+        android:label="@string/activePlayer_textView"
         tools:layout="@layout/fragment_active_players" />
     <fragment
         android:id="@+id/p1lobbyFragment"
         android:name="com.example.bisimulation.game.fragments.P1LobbyFragment"
-        android:label="Lobby"
+        android:label="@string/lobby_menu"
         tools:layout="@layout/fragment_lobby">
         <argument
             android:name="uid"
@@ -90,7 +90,7 @@
     <fragment
         android:id="@+id/p2LobbyFragment"
         android:name="com.example.bisimulation.game.fragments.P2LobbyFragment"
-        android:label="Lobby"
+        android:label="@string/lobby_menu"
         tools:layout="@layout/fragment_lobby">
         <argument
             android:name="uid"
@@ -121,7 +121,7 @@
     <fragment
         android:id="@+id/attackerFragment"
         android:name="com.example.bisimulation.game.fragments.AttackerFragment"
-        android:label="Attacker"
+        android:label="@string/attacker_label"
         tools:layout="@layout/fragment_game">
         <argument
             android:name="roomId"
@@ -129,13 +129,13 @@
             app:argType="string" />
         <argument
             android:name="userId"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/defenderFragment"
         android:name="com.example.bisimulation.game.fragments.DefenderFragment"
-        android:label="Defender"
+        android:label="@string/defender_label"
         tools:layout="@layout/fragment_game">
         <argument
             android:name="roomId"

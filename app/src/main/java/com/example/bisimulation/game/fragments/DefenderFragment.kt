@@ -110,11 +110,9 @@ class DefenderFragment : GameFragment() {
 
             // Check victory!
             if (viewModel.turnOf.value == GameRole.DEFENDER)
-                if (viewModel.checkDefenderVictory()) {
-                    binding.turnTextView.text = resources.getString(R.string.victoryText)
-                    Toast.makeText(context, "Vittoria!", Toast.LENGTH_SHORT).show()
+                if (viewModel.checkDefenderVictory())
                     viewModel.setVictory()
-                }
+
         }
 
         // Listen to lobby state and react accordingly
@@ -126,8 +124,11 @@ class DefenderFragment : GameFragment() {
                     Toast.makeText(context, resources.getString(R.string.defeatText), Toast.LENGTH_SHORT).show()
                     binding.turnTextView.text = resources.getString(R.string.defeatText)
                     viewModel.updateStats("losses")
-                } else
+                } else{
+                    Toast.makeText(context, resources.getString(R.string.victoryText), Toast.LENGTH_SHORT).show()
+                    binding.turnTextView.text = resources.getString(R.string.victoryText)
                     viewModel.updateStats("victories")
+                }
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     lifecycleScope.launchWhenResumed {

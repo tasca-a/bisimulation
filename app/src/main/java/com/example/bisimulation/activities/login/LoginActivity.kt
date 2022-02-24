@@ -3,6 +3,7 @@ package com.example.bisimulation.activities.login
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -14,6 +15,7 @@ import com.example.bisimulation.databinding.ActivityLoginBinding
 import com.example.bisimulation.activities.main.MainActivity
 import com.example.bisimulation.activities.signup.SignUpActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.util.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var viewModel: LoginViewModel
@@ -22,8 +24,13 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = activityLoginBindingSetup()
         sharedPreferences = this.getSharedPreferences("com.example.bisimulation", Context.MODE_PRIVATE)
+
+        // Set the locale to use
+        setLocale(sharedPreferences)
+
+        binding = activityLoginBindingSetup()
+
 
         // Log-in handling
         binding.loginButton.setOnClickListener {
@@ -92,6 +99,27 @@ class LoginActivity : AppCompatActivity() {
         binding.rememberMeCheckBox.setOnClickListener { setPreferences(sharedPreferences) }
 
         setContentView(binding.root)
+    }
+
+    // Changing the app locale this way is hacky, deprecated, and error
+    // prone. As I already said in SettingsFragment, ask if it is possible
+    // to change the requirement and let the OS choose the correct locale.
+    private fun setLocale(sharedPreferences: SharedPreferences) {
+        val lang = sharedPreferences.getString("language", "en")!!
+
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+
+        val config = Configuration()
+        config.setLocale(locale)
+
+        this.baseContext?.resources?.updateConfiguration(config,
+            this.baseContext?.resources?.displayMetrics)
+
+        val currentLocale = resources.configuration.locale.toLanguageTag()
+
+        if (lang != currentLocale)
+            this.recreate()
     }
 
     private fun setPreferences(sharedPreferences: SharedPreferences) {
