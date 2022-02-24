@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.bisimulation.callbacks.OnConnectionSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
 import com.example.bisimulation.model.*
-import com.google.firebase.database.ServerValue
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
@@ -19,7 +18,7 @@ object FirestoreRepository {
         Firebase.firestore.clearPersistence()
     }
 
-    // One-shot queries
+    // One-shot get queries
     suspend fun getName(userId: String): String? {
         val db = Firebase.firestore
         return try {
@@ -62,50 +61,7 @@ object FirestoreRepository {
         }
     }
 
-    suspend fun getPlayerId(roomId: String, userRole: GameRole): String {
-        val db = Firebase.firestore
-        return try {
-            // Get the p1 role from db
-            val p1Role = db.collection("rooms")
-                .document(roomId)
-                .get()
-                .await()
-                .data?.get("player1role").toString()
-
-            // If the user that made this query has the same role as the p1,
-            // then it must be the p1
-            val request =
-                if (GameRole.valueOf(p1Role) == userRole) {
-                    "player1uid"
-                } else {
-                    "player2uid"
-                }
-
-            // Now that we know who is the user making this query, we return his uid
-            db.collection("rooms")
-                .document(roomId)
-                .get()
-                .await()
-                .data?.get(request).toString()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            ""
-        }
-    }
-
-    fun createRoom(roomId: String, room: Lobby, listener: OnRoomCreationSuccess) {
-        val db = Firebase.firestore
-        db.collection("rooms").document(roomId).set(room).addOnSuccessListener {
-            listener.roomCreationSuccess()
-        }
-        db.collection("rooms").document(roomId)
-            .collection("moves").get().addOnCompleteListener {
-                for (document in it.result.documents) {
-                    document.reference.delete()
-                }
-            }
-    }
-
+    // One-shot set queries
     fun setRoomAsDone(roomId: String) {
         val db = Firebase.firestore
         db.collection("rooms").document(roomId).update(
@@ -133,6 +89,48 @@ object FirestoreRepository {
         )
     }
 
+    fun setP1Role(roomId: String, role: GameRole) {
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId).update(
+            mapOf(
+                "player1role" to role
+            )
+        )
+    }
+
+    fun setInitialConfig(roomId: String, turnOf: GameRole, specialColor: Int) {
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId).update(
+            mapOf(
+                "turnOf" to turnOf,
+                "specialColor" to specialColor
+            )
+        )
+    }
+
+    fun setGraph(roomId: String, type: String, graph: Graph) {
+        val db = Firebase.firestore
+        db.collection("rooms").document(roomId)
+            .collection("graphs").document(type).set(
+                graph
+            )
+    }
+
+    // One-shot lobby queries
+    fun createRoom(roomId: String, room: Lobby, listener: OnRoomCreationSuccess) {
+        val db = Firebase.firestore
+        // Useless listener?
+        db.collection("rooms").document(roomId).set(room).addOnSuccessListener {
+            listener.roomCreationSuccess()
+        }
+        db.collection("rooms").document(roomId)
+            .collection("moves").get().addOnCompleteListener {
+                for (document in it.result.documents) {
+                    document.reference.delete()
+                }
+            }
+    }
+
     fun connectPlayer2(roomId: String, room: Lobby, listener: OnConnectionSuccess) {
         val db = Firebase.firestore
         db.collection("rooms").document(roomId).update(
@@ -147,69 +145,8 @@ object FirestoreRepository {
         }
     }
 
-    fun setP1Role(roomId: String, role: GameRole) {
-        val db = Firebase.firestore
-        db.collection("rooms").document(roomId).update(
-            mapOf(
-                "player1role" to role
-            )
-        )
-    }
-
-    fun addVictoryStat(userId: String) {
-        val db = Firebase.firestore
-        db.collection("stats").document(userId)
-            .update("victories", FieldValue.increment(1))
-//            .update(
-//            mapOf(
-//                "victories" to ServerValue.increment(1)
-//            )
-//        )
-    }
-
-    fun addDefeatStat(userId: String) {
-        val db = Firebase.firestore
-        db.collection("stats").document(userId)
-            .update("losses", FieldValue.increment(1))
-//            .update(
-//            mapOf(
-//                "losses" to ServerValue.increment(1)
-//            )
-//        )
-    }
-
-    // Game functions
-    fun setInitialConfig(
-        roomId: String,
-        turnOf: GameRole,
-        specialColor: Int
-    ) {
-        val db = Firebase.firestore
-        db.collection("rooms").document(roomId).update(
-            mapOf(
-                "turnOf" to turnOf,
-                "specialColor" to specialColor
-            )
-        )
-    }
-
-    fun setGraph(
-        roomId: String,
-        type: String,
-        graph: Graph
-    ) {
-        val db = Firebase.firestore
-        db.collection("rooms").document(roomId)
-            .collection("graphs").document(type).set(
-                graph
-            )
-    }
-
-    fun sendMove(
-        roomId: String,
-        from: GameRole,
-        move: Move
-    ) {
+    // One-shot game queries
+    fun sendMove(roomId: String, from: GameRole, move: Move) {
         val db = Firebase.firestore
         db.collection("rooms").document(roomId)
             .collection("moves").document().set(
@@ -232,7 +169,19 @@ object FirestoreRepository {
         }
     }
 
-    // Realtime queries - to be observed
+    fun addVictoryStat(userId: String) {
+        val db = Firebase.firestore
+        db.collection("stats").document(userId)
+            .update("victories", FieldValue.increment(1))
+    }
+
+    fun addDefeatStat(userId: String) {
+        val db = Firebase.firestore
+        db.collection("stats").document(userId)
+            .update("losses", FieldValue.increment(1))
+    }
+
+    // Realtime queries to be observed
     fun getStatsReference(userId: String): DocumentReference {
         val db = Firebase.firestore
         return db.collection("stats").document(userId)
@@ -248,6 +197,7 @@ object FirestoreRepository {
             .orderBy("creationTime", Query.Direction.ASCENDING)
     }
 
+    // Realtime queries to be observed while in game
     fun getLobbyReference(roomId: String): DocumentReference {
         val db = Firebase.firestore
         return db.collection("rooms").document(roomId)
@@ -257,6 +207,5 @@ object FirestoreRepository {
         val db = Firebase.firestore
         return db.collection("rooms").document(roomId).collection("moves")
             .orderBy("creationTime", Query.Direction.DESCENDING)
-        //.limit(1)
     }
 }

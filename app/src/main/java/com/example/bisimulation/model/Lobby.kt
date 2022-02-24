@@ -1,7 +1,6 @@
 package com.example.bisimulation.model
 
 import android.os.Parcelable
-import androidx.versionedparcelable.ParcelField
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ServerTimestamp
 import kotlinx.parcelize.Parcelize

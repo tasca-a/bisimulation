@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bisimulation.repository.FirestoreRepository
-import com.example.bisimulation.repository.FsGetIntEventListener
-import com.example.bisimulation.repository.RealtimeRepository
-import com.example.bisimulation.repository.RtGetIntEventListener
+import com.example.bisimulation.repository.*
+import com.example.bisimulation.repository.realtimeEventListeners.RtGetIntEventListener
+import com.example.bisimulation.repository.firestoreEventListeners.FsGetIntEventListener
+import com.example.bisimulation.repository.firestoreEventListeners.FsGetRoomCountEventListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -59,16 +59,9 @@ class SharedViewModel : ViewModel() {
             )
 
             // Get the currently active rooms in real time
-            // Todo: move it in a separate listener
-            FirestoreRepository.getRoomsReference().addSnapshotListener { value, error ->
-                var count = 0
-                if (value != null) {
-                    for (v in value){
-                        count++
-                    }
-                }
-                _roomCount.value = count
-            }
+            FirestoreRepository.getRoomsReference().addSnapshotListener(
+                FsGetRoomCountEventListener(_roomCount)
+            )
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.bisimulation.repository
+package com.example.bisimulation.repository.firestoreEventListeners
 
 import androidx.lifecycle.MutableLiveData
 import com.example.bisimulation.model.GameState

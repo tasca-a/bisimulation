@@ -2,7 +2,6 @@ package com.example.bisimulation.activities.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.bisimulation.R
 import com.example.bisimulation.activities.login.LoginActivity
-import com.example.bisimulation.game.GameViewModel
 import com.example.bisimulation.databinding.ActivityMainBinding
-import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: SharedViewModel

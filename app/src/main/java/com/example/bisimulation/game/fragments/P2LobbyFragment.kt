@@ -17,7 +17,6 @@ import com.example.bisimulation.databinding.FragmentLobbyBinding
 import com.example.bisimulation.game.LobbyViewModel
 import com.example.bisimulation.model.GameRole
 import com.example.bisimulation.model.GameState
-import com.example.bisimulation.repository.FirestoreRepository
 
 class P2LobbyFragment : Fragment() {
     private lateinit var binding: FragmentLobbyBinding

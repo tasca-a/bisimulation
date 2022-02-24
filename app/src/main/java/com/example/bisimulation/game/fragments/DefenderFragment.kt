@@ -117,11 +117,11 @@ class DefenderFragment : GameFragment() {
                 }
         }
 
-        // Listen to lobby status and react accordingly
-        viewModel.lobbyStatus.observe(viewLifecycleOwner){ staus ->
+        // Listen to lobby state and react accordingly
+        viewModel.lobbyStatus.observe(viewLifecycleOwner){ state ->
             // If you won, just wait a few seconds and exit.
             // If you lost, display the defeat, wait a few seconds and then exit
-            if (staus == GameState.DONE){
+            if (state == GameState.DONE){
                 if (!viewModel.victory) {
                     Toast.makeText(context, resources.getString(R.string.defeatText), Toast.LENGTH_SHORT).show()
                     binding.turnTextView.text = resources.getString(R.string.defeatText)

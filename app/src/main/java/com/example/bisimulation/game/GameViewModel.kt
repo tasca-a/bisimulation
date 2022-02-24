@@ -3,17 +3,17 @@ package com.example.bisimulation.game
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.bisimulation.model.GameRole
-
 import com.example.bisimulation.model.GameState
 import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Move
 import com.example.bisimulation.repository.*
+import com.example.bisimulation.repository.firestoreEventListeners.FsGetGameEventListener
+import com.example.bisimulation.repository.firestoreEventListeners.FsGetGraphEventListener
+import com.example.bisimulation.repository.firestoreEventListeners.FsGetLastMoveEventListener
+import com.example.bisimulation.repository.firestoreEventListeners.FsGetStatusEventListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class GameViewModel : ViewModel() {

@@ -4,10 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bisimulation.R
-import com.example.bisimulation.activities.main.SharedViewModel
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 

@@ -34,11 +34,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         viewModel.logInStatus.observe(this) { logged ->
-            val message: String
-            if (logged)
-                message = resources.getString(R.string.logInSuccessful_Toast)
+            val message = if (logged)
+                resources.getString(R.string.logInSuccessful_Toast)
             else
-                message = resources.getString(R.string.logInFailed_Toast)
+                resources.getString(R.string.logInFailed_Toast)
 
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
@@ -72,11 +71,10 @@ class LoginActivity : AppCompatActivity() {
             bottomSheetDialog.show()
         }
         viewModel.resetPasswordStatus.observe(this) { sent ->
-            val message: String
-            if (sent)
-                message = resources.getString(R.string.forgotPwDialogSuccess_Toast)
+            val message = if (sent)
+                resources.getString(R.string.forgotPwDialogSuccess_Toast)
             else
-                message = resources.getString(R.string.forgotPwDialogFail_Toast)
+                resources.getString(R.string.forgotPwDialogFail_Toast)
 
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         }
@@ -114,7 +112,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun activityLoginBindingSetup(): ActivityLoginBinding {
         // Set the ViewModel to the Activity
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
         // Setup binding object to inflate the activity
         val binding = ActivityLoginBinding.inflate(layoutInflater)

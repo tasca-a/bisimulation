@@ -1,7 +1,6 @@
-package com.example.bisimulation.repository
+package com.example.bisimulation.repository.firestoreEventListeners
 
 import androidx.lifecycle.MutableLiveData
-import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Move
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestoreException

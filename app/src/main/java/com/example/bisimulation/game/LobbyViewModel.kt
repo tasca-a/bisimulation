@@ -13,9 +13,9 @@ import com.example.bisimulation.model.GameState
 import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Lobby
 import com.example.bisimulation.repository.FirestoreRepository
-import com.example.bisimulation.repository.FsGetRoleEventListener
-import com.example.bisimulation.repository.FsGetStatusEventListener
-import com.example.bisimulation.repository.FsGetStringEventListener
+import com.example.bisimulation.repository.firestoreEventListeners.FsGetRoleEventListener
+import com.example.bisimulation.repository.firestoreEventListeners.FsGetStatusEventListener
+import com.example.bisimulation.repository.firestoreEventListeners.FsGetStringEventListener
 import kotlinx.coroutines.launch
 
 class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {

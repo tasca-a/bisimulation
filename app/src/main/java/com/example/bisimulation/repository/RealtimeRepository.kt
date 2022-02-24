@@ -1,12 +1,9 @@
 package com.example.bisimulation.repository
 
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 
 object RealtimeRepository {
-    private const val TAG = "RealtimeRepository"
-
     private val realtimeDb = FirebaseDatabase.getInstance("https://bisimulation-2ed25-default-rtdb.europe-west1.firebasedatabase.app/")
     val activeUsersListRef = realtimeDb.getReference("activeUsersList")
 
