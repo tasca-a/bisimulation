@@ -33,7 +33,7 @@ class AttackerFragment : GameFragment() {
         attackerFragmentSetup(inflater, container)
 
         // Setup
-        viewModel.roomSetup(args.roomId)
+        viewModel.roomSetup(args.roomId, GameRole.ATTACKER)
 
         setupListeners()
 

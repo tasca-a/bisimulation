@@ -22,7 +22,7 @@ class GameViewModel : ViewModel() {
     private var userId: String = Firebase.auth.currentUser?.uid ?: ""
 
     // Set room ID and activate necessary listeners
-    fun roomSetup(roomId: String) {
+    fun roomSetup(roomId: String, role: GameRole) {
         this.roomId = roomId
 
         //Setup all the listeners
@@ -46,7 +46,7 @@ class GameViewModel : ViewModel() {
 
         // Listen to moves
         FirestoreRepository.getMovesReference(roomId).addSnapshotListener(
-            FsGetLastMoveEventListener(_lastMove, moveList)
+            FsGetLastMoveEventListener(_lastMove, moveList, role)
         )
 
         // Listen to lobby state

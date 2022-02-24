@@ -24,7 +24,6 @@
         </activity>
         <activity
             android:name="com.example.bisimulation.activities.main.MainActivity"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             tools:ignore="LockedOrientationActivity" />

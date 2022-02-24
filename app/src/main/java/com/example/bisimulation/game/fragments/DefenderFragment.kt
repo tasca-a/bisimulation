@@ -33,7 +33,7 @@ class DefenderFragment : GameFragment() {
         defenderFragmentSetup(inflater, container)
 
         // Setup
-        viewModel.roomSetup(args.roomId)
+        viewModel.roomSetup(args.roomId, GameRole.DEFENDER)
 
         setupListeners()
 
