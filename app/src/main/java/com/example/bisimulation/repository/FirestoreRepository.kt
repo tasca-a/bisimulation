@@ -6,6 +6,7 @@ import com.example.bisimulation.callbacks.OnRoomCreationSuccess
 import com.example.bisimulation.model.*
 import com.google.firebase.database.ServerValue
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -14,7 +15,7 @@ import kotlinx.coroutines.tasks.await
 object FirestoreRepository {
     private const val TAG = "FirestoreRepository"
 
-    fun clearCache(){
+    fun clearCache() {
         Firebase.firestore.clearPersistence()
     }
 
@@ -61,6 +62,37 @@ object FirestoreRepository {
         }
     }
 
+    suspend fun getPlayerId(roomId: String, userRole: GameRole): String {
+        val db = Firebase.firestore
+        return try {
+            // Get the p1 role from db
+            val p1Role = db.collection("rooms")
+                .document(roomId)
+                .get()
+                .await()
+                .data?.get("player1role").toString()
+
+            // If the user that made this query has the same role as the p1,
+            // then it must be the p1
+            val request =
+                if (GameRole.valueOf(p1Role) == userRole) {
+                    "player1uid"
+                } else {
+                    "player2uid"
+                }
+
+            // Now that we know who is the user making this query, we return his uid
+            db.collection("rooms")
+                .document(roomId)
+                .get()
+                .await()
+                .data?.get(request).toString()
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            ""
+        }
+    }
+
     fun createRoom(roomId: String, room: Lobby, listener: OnRoomCreationSuccess) {
         val db = Firebase.firestore
         db.collection("rooms").document(roomId).set(room).addOnSuccessListener {
@@ -68,7 +100,7 @@ object FirestoreRepository {
         }
         db.collection("rooms").document(roomId)
             .collection("moves").get().addOnCompleteListener {
-                for (document in it.result.documents){
+                for (document in it.result.documents) {
                     document.reference.delete()
                 }
             }
@@ -124,22 +156,26 @@ object FirestoreRepository {
         )
     }
 
-    fun addVictoryStat(userId: String){
+    fun addVictoryStat(userId: String) {
         val db = Firebase.firestore
-        db.collection("stats").document(userId).update(
-            mapOf(
-                "victories" to ServerValue.increment(1)
-            )
-        )
+        db.collection("stats").document(userId)
+            .update("victories", FieldValue.increment(1))
+//            .update(
+//            mapOf(
+//                "victories" to ServerValue.increment(1)
+//            )
+//        )
     }
 
-    fun addDefeatStat(userId: String){
+    fun addDefeatStat(userId: String) {
         val db = Firebase.firestore
-        db.collection("stats").document(userId).update(
-            mapOf(
-                "losses" to ServerValue.increment(1)
-            )
-        )
+        db.collection("stats").document(userId)
+            .update("losses", FieldValue.increment(1))
+//            .update(
+//            mapOf(
+//                "losses" to ServerValue.increment(1)
+//            )
+//        )
     }
 
     // Game functions
@@ -221,6 +257,6 @@ object FirestoreRepository {
         val db = Firebase.firestore
         return db.collection("rooms").document(roomId).collection("moves")
             .orderBy("creationTime", Query.Direction.DESCENDING)
-            //.limit(1)
+        //.limit(1)
     }
 }

@@ -107,7 +107,7 @@ class AttackerFragment : GameFragment() {
             if (viewModel.turnOf.value == GameRole.ATTACKER)
                 if (viewModel.checkAttackerVictory(move.graph)) {
                     binding.turnTextView.text = resources.getString(R.string.victoryText)
-                    Toast.makeText(context, "Vittoria!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, resources.getString(R.string.victoryText), Toast.LENGTH_SHORT).show()
                     viewModel.setVictory()
                 }
         }
@@ -117,8 +117,12 @@ class AttackerFragment : GameFragment() {
             // If you won, just wait a few seconds and exit.
             // If you lost, display the defeat, wait a few seconds and then exit
             if (staus == GameState.DONE){
-                if (!viewModel.victory)
+                if (!viewModel.victory){
+                    Toast.makeText(context, resources.getString(R.string.defeatText), Toast.LENGTH_SHORT).show()
                     binding.turnTextView.text = resources.getString(R.string.defeatText)
+                    viewModel.updateStats("losses")
+                } else
+                    viewModel.updateStats("victories")
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     lifecycleScope.launchWhenResumed {

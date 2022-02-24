@@ -3,7 +3,6 @@ package com.example.bisimulation.game.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +42,12 @@ class DefenderFragment : GameFragment() {
 
 
     private fun setupListeners() {
+        viewModel.leftGraph.removeObservers(viewLifecycleOwner)
+        viewModel.rightGraph.removeObservers(viewLifecycleOwner)
+        viewModel.specialColor.removeObservers(viewLifecycleOwner)
+        viewModel.turnOf.removeObservers(viewLifecycleOwner)
+        viewModel.lastMove.removeObservers(viewLifecycleOwner)
+
         // Observe graph status changes
         viewModel.leftGraph.observe(viewLifecycleOwner) {
             if (it != null)
@@ -57,19 +62,15 @@ class DefenderFragment : GameFragment() {
         // React to vertex clicks
         binding.leftGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onVertexClicked(vertex: Vertex) {
-                if (viewModel.turnOf.value == GameRole.DEFENDER) {
-                    Log.i("DefenderFragment", "Al che sx! :D ${vertex.id}")
+                if (viewModel.turnOf.value == GameRole.DEFENDER)
                     viewModel.defenderClick("left", vertex)
-                }
             }
         })
 
         binding.rightGraphView.addGraphEventListener(object : GraphEventListener {
             override fun onVertexClicked(vertex: Vertex) {
-                if (viewModel.turnOf.value == GameRole.DEFENDER) {
-                    Log.i("DefenderFragment", "Al che dx! :D ${vertex.id}")
+                if (viewModel.turnOf.value == GameRole.DEFENDER)
                     viewModel.defenderClick("right", vertex)
-                }
             }
         })
 
@@ -107,6 +108,7 @@ class DefenderFragment : GameFragment() {
                 binding.rightGraphView.enableClick = false
             }
 
+            // Check victory!
             if (viewModel.turnOf.value == GameRole.DEFENDER)
                 if (viewModel.checkDefenderVictory()) {
                     binding.turnTextView.text = resources.getString(R.string.victoryText)
@@ -120,8 +122,12 @@ class DefenderFragment : GameFragment() {
             // If you won, just wait a few seconds and exit.
             // If you lost, display the defeat, wait a few seconds and then exit
             if (staus == GameState.DONE){
-                if (!viewModel.victory)
+                if (!viewModel.victory) {
+                    Toast.makeText(context, resources.getString(R.string.defeatText), Toast.LENGTH_SHORT).show()
                     binding.turnTextView.text = resources.getString(R.string.defeatText)
+                    viewModel.updateStats("losses")
+                } else
+                    viewModel.updateStats("victories")
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     lifecycleScope.launchWhenResumed {

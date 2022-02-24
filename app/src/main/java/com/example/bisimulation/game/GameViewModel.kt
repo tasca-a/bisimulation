@@ -3,21 +3,27 @@ package com.example.bisimulation.game
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.bisimulation.model.GameRole
+
 import com.example.bisimulation.model.GameState
 import com.example.bisimulation.model.Graph
 import com.example.bisimulation.model.Move
 import com.example.bisimulation.repository.*
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 
 class GameViewModel : ViewModel() {
 
     private var roomId: String = ""
-    //private var userId: String = ""
+    private var userId: String = Firebase.auth.currentUser?.uid ?: ""
 
     // Set room ID and activate necessary listeners
     fun roomSetup(roomId: String) {
         this.roomId = roomId
-        //this.userId = userId
 
         //Setup all the listeners
         FirestoreRepository.getLobbyReference(roomId).addSnapshotListener(
@@ -73,7 +79,7 @@ class GameViewModel : ViewModel() {
 
         // If there is no selected vertex, it means that we are in the initial
         // configuration phase
-        if (g.getSelectedVertex() == null){
+        if (g.getSelectedVertex() == null) {
             FirestoreRepository.sendMove(
                 roomId, GameRole.ATTACKER, Move(
                     graph = graph,
@@ -133,7 +139,7 @@ class GameViewModel : ViewModel() {
 
         // If there is no selected vertex, it means that we are in the initial
         // configuration phase
-        if (g.getSelectedVertex() == null){
+        if (g.getSelectedVertex() == null) {
             FirestoreRepository.sendMove(
                 roomId, GameRole.DEFENDER, Move(
                     graph = graph,
@@ -302,7 +308,13 @@ class GameViewModel : ViewModel() {
     fun setVictory() {
         victory = true
         FirestoreRepository.setRoomAsDone(roomId)
-        //FirestoreRepository.addVictoryStat(userId)
+    }
+
+    fun updateStats(stat: String){
+        when(stat){
+            "victories" -> FirestoreRepository.addVictoryStat(userId)
+            "losses" -> FirestoreRepository.addDefeatStat(userId)
+        }
     }
 
     private val moveList = mutableListOf<Move>()
