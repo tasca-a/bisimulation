@@ -17,6 +17,9 @@ import com.example.bisimulation.repository.firestoreEventListeners.FsGetRoleEven
 import com.example.bisimulation.repository.firestoreEventListeners.FsGetStatusEventListener
 import com.example.bisimulation.repository.firestoreEventListeners.FsGetStringEventListener
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
+import kotlin.math.sqrt
+import kotlin.random.Random
 
 class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
     var roomId: String = ""
@@ -77,7 +80,7 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
         FirestoreRepository.setP1Role(roomId, role)
     }
 
-    fun setRoomAsZombie(){
+    fun setRoomAsZombie() {
         FirestoreRepository.setRoomAsZombie(roomId)
     }
 
@@ -122,11 +125,22 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
 
     fun gameSetUp() {
         // Graph setup
-        val gl = graphSetupL()
-        val gr = graphSetupR()
+        val gl = graphSetup()//graphSetupL()
+        val gr = graphSetup()//graphSetupR()
 
         // It is always the attacker turn at the beginning
         val turnOf = GameRole.ATTACKER
+
+        // Create a list of all the colors present in the two generated graphs
+        val colorList = mutableListOf<Int>()
+        gl.edges.forEach { edge ->
+            if (edge.color !in colorList)
+                colorList.add(edge.color)
+        }
+        gr.edges.forEach { edge ->
+            if (edge.color !in colorList)
+                colorList.add(edge.color)
+        }
 
         // Select a random special color from the list of colors
         val sc = colorList.random()
@@ -139,6 +153,53 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
             turnOf,
             sc
         )
+    }
+
+    private fun graphSetup(): Graph {
+        // Vertex parameters
+        val MAX_VERTEX = 6
+        val MIN_VERTEX = 4
+
+        val nOfVertices = Random.nextInt(MIN_VERTEX, MAX_VERTEX + 1)
+
+        // Max vertices on a side
+        val sideSize = sqrt(nOfVertices.toFloat()).roundToInt()
+
+        // Create the list of all vertices
+        val vertexList = mutableListOf<Graph.Vertex>()
+
+        var column = 0
+        var row = 0
+        for (i in 1..nOfVertices) {
+            if (column < sideSize){
+                vertexList.add(
+                    Graph.Vertex(i, column + 1, row + 1)
+                )
+                column++
+            } else {
+                row++
+                column = 0
+                vertexList.add(
+                    Graph.Vertex(i, column + 1, row + 1)
+                )
+                column++
+            }
+        }
+
+        // For each vertex, create an edge with another random vertex
+        val graph = Graph()
+        for (vertex1 in vertexList) {
+            val vertex2 = vertexList.filter { it != vertex1 }.random()
+            val color = colorList.random()
+
+            graph.addEdge(
+                Graph.Edge(
+                    vertex1, vertex2, color
+                )
+            )
+        }
+
+        return graph
     }
 
     private fun graphSetupL(): Graph {

@@ -1,6 +1,7 @@
 package com.example.bisimulation.activities.main.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +53,11 @@ class PlayNowFragment : Fragment(), RoomClickListener {
             .build()
 
         //TODO: fix, sometimes it trows a null pointer exception
-        adapter = RoomFirestoreRecyclerAdapter(options, viewModel.uid!!, viewModel.username.value!!, this)
+        try {
+            adapter = RoomFirestoreRecyclerAdapter(options, viewModel.uid!!, viewModel.username.value!!, this)
+        } catch (e: Exception){
+            Log.e("PlayNowFragment", e.message.toString())
+        }
     }
 
     private fun playNowFragmentSetup(

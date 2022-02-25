@@ -113,7 +113,7 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
             var newY = 0
 
             // Check if is NaN to avoid runtime crashes (for reasons idk about)
-            if (!(w * (edge.x / maxX)).isNaN() && !(h * (edge.y / maxY)).isNaN()){
+            if (!(w * (edge.x / maxX)).isNaN() && !(h * (edge.y / maxY)).isNaN()) {
                 newX = (w * (edge.x / maxX)).roundToInt()
                 newY = (h * (edge.y / maxY)).roundToInt()
             }
@@ -162,28 +162,107 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                         val midPointX = (v.from.x + v.to.x) / 2f
                         val midPointY = (v.from.y + v.to.y) / 2f
 
+//                        val hx = midPointX
+                        val hy = v.from.y
+
+                        val zx = v.from.x
+//                        val zy = midPointY
+
+                        var lh = abs(hy - midPointY).roundToInt()
+                        var lz = abs(zx - midPointX).roundToInt()
+
+                        if (lh == 0) lh = lz
+                        if (lz == 0) lz = lh
+
+                        val rh = (lz.toFloat() / lh)
+                        val rz = (lh.toFloat() / lz)
+
+                        // SECOND TRY
+//                        val newPoint1x = midPointX + (loopWidth * rz)
+//                        val newPoint1y = midPointY - (loopWidth * rh)
+//                        val newPoint2x = midPointX - (loopWidth * rz)
+//                        val newPoint2y = midPointY + (loopWidth * rh)
+//
+//                        val x1 = v.from.x
+//                        val y1 = v.from.y
+//                        val x2 = v.to.x
+//                        val y2 = v.to.y
+//
+//                        val a = y2 - y1
+//                        val b = -(x2 - x1)
+//                        val c = -a * x1 - b * y1
+//
+//                        val m = sqrt((a * a + b * b).toFloat())
+//
+//                        val ap = a / m
+//                        val bp = b / m
+//                        val cp = c / m
+//
+//                        val d1 = ap * newPoint1x + bp * newPoint1y + cp
+//                        val d2 = ap * newPoint2x + bp * newPoint2y + cp
+//
+//                        val d = if (abs(d1) < abs(d2))
+//                            d1
+//                        else
+//                            d2
+
                         // Move a point on the perpendicular line
-                        // midpoint in the center of the arc!
-                        var newPointX: Float
+                        val newPointX: Float
                         val newPointY: Float
                         if (xIndex < vIndex) {
-                            newPointX = (2 * midPointX) - v.to.x
-                            newPointY = v.to.y.toFloat() - (abs(v.to.y - v.from.y) / 2f)
+                            // SECOND TRY
+//                            val px: Float
+//                            val py: Float
+//                            if (d == d1){
+//                                px = newPoint1x
+//                                py = newPoint1y
+//                            } else{
+//                                px = newPoint2x
+//                                py = newPoint2y
+//                            }
+//
+//                            newPointX = px - 2 * ap * d
+//                            newPointY = py - 2 * bp * d
 
-                            if (newPointX < v.to.x) {
-                                newPointX += loopWidth
-                            } else {
-                                newPointX -= loopWidth
-                            }
+                            newPointX = midPointX + (loopWidth * rz)
+                            newPointY = midPointY - (loopWidth * rh)
+
+                            // FIRST TRY
+//                            newPointX = (2 * midPointX) - v.to.x
+//                            newPointY = v.to.y.toFloat() - (abs(v.to.y - v.from.y) / 2f)
+//
+//                            if (newPointX < v.to.x) {
+//                                newPointX += loopWidth
+//                            } else {
+//                                newPointX -= loopWidth
+//                            }
                         } else {
-                            newPointX = v.from.x.toFloat()
-                            newPointY = (2 * midPointY) - v.from.y + (abs(v.to.y - v.from.y) / 2f)
+                            // SECOND TRY
+//                            val px: Float
+//                            val py: Float
+//                            if (d == d1){
+//                                px = newPoint1x
+//                                py = newPoint1y
+//                            } else{
+//                                px = newPoint2x
+//                                py = newPoint2y
+//                            }
+//
+//                            newPointX = px - 2 * ap * d
+//                            newPointY = py - 2 * bp * d
+//
+                            newPointX = midPointX - (loopWidth * rz)
+                            newPointY = midPointY + (loopWidth * rh)
 
-                            if (newPointX < v.to.x) {
-                                newPointX += loopWidth
-                            } else {
-                                newPointX -= loopWidth
-                            }
+                            // FIRST TRY
+//                            newPointX = v.from.x.toFloat()
+//                            newPointY = (2 * midPointY) - v.from.y + (abs(v.to.y - v.from.y) / 2f)
+//
+//                            if (newPointX < v.to.x) {
+//                                newPointX += loopWidth
+//                            } else {
+//                                newPointX -= loopWidth
+//                            }
                         }
 
                         // Draw 2 separate segments
@@ -324,65 +403,3 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 interface GraphEventListener {
     fun onVertexClicked(vertex: Vertex)
 }
-
-// TEST GRAPH
-//    private val graph = Graph().apply {
-//
-//        val e1 = Edge(2, 3)
-//        val e2 = Edge(1, 2)
-//        val e3 = Edge(3, 2)
-//        val e4 = Edge(1, 1)
-//        val e5 = Edge(3, 1)
-//
-//        addVertex(Vertex(e1, e2))
-//        addVertex(Vertex(e1, e3))
-//        addVertex(Vertex(e2, e1))
-//        addVertex(Vertex(e3, e1))
-//        addVertex(Vertex(e2, e4))
-//        addVertex(Vertex(e3, e5))
-//        addVertex(Vertex(e5, e4))
-//
-////        val rEdgeCount = Random.nextInt(3, 6)
-////        val edges = arrayListOf<Graph.Edge>()
-////        for (i in 1..rEdgeCount){
-////            edges.add(Edge(
-////                Random.nextInt(1, rEdgeCount),
-////                Random.nextInt(1, rEdgeCount)
-////            ))
-////        }
-////
-////        // (rEdgeCount * (rEdgeCount - 1))
-////        val rVertexCount = Random.nextInt(3, (rEdgeCount * (rEdgeCount - 1)))
-////        for (i in 1..rVertexCount){
-////            val isVertex = Random.nextBoolean()
-////            if (isVertex){
-////                addVertex(
-////                    Vertex(
-////                        edges[Random.nextInt(1, rEdgeCount - 1)],
-////                        edges[Random.nextInt(1, rEdgeCount - 1)]
-////                    )
-////                )
-////            }
-////        }
-//
-//        // Rearrange edges in a grid
-////        val size = edges.size
-////        val sideSize = sqrt(size.toFloat()).roundToInt()
-////
-////        var column = 0
-////        var row = 0
-////
-////        for (e in edges){
-////            if (column < sideSize){
-////                e.x = column + 1
-////                e.y = row + 1
-////                column++
-////            } else {
-////                row++
-////                column = 0
-////                e.x = column + 1
-////                e.y = row + 1
-////                column++
-////            }
-////        }
-//    }
