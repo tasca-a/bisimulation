@@ -63,8 +63,10 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 addEdge(Edge(e2, e1, Color.GREEN))
                 addEdge(Edge(e3, e1, Color.GREEN))
                 addEdge(Edge(e2, e4, Color.BLUE))
+//                addEdge(Edge(e4, e2, Color.BLUE))
                 addEdge(Edge(e3, e5))
                 addEdge(Edge(e5, e4, Color.BLUE))
+//                addEdge(Edge(e4, e5, Color.BLUE))
             }
         }
     }
@@ -158,125 +160,66 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     // If you find a loop, draw a curved line
                     if (x.from == v.to && x.to == v.from) {
                         loop = true
+
+                        // Denominate the point for better comprehension
+                        val fromX = v.from.x.toFloat()
+                        val fromY = v.from.y.toFloat()
+                        val toX = v.to.x.toFloat()
+                        val toY = v.to.y.toFloat()
+
                         // Find the point in the middle
-                        val midPointX = (v.from.x + v.to.x) / 2f
-                        val midPointY = (v.from.y + v.to.y) / 2f
-
-//                        val hx = midPointX
-                        val hy = v.from.y
-
-                        val zx = v.from.x
-//                        val zy = midPointY
-
-                        var lh = abs(hy - midPointY).roundToInt()
-                        var lz = abs(zx - midPointX).roundToInt()
-
-                        if (lh == 0) lh = lz
-                        if (lz == 0) lz = lh
-
-                        val rh = (lz.toFloat() / lh)
-                        val rz = (lh.toFloat() / lz)
-
-                        // SECOND TRY
-//                        val newPoint1x = midPointX + (loopWidth * rz)
-//                        val newPoint1y = midPointY - (loopWidth * rh)
-//                        val newPoint2x = midPointX - (loopWidth * rz)
-//                        val newPoint2y = midPointY + (loopWidth * rh)
-//
-//                        val x1 = v.from.x
-//                        val y1 = v.from.y
-//                        val x2 = v.to.x
-//                        val y2 = v.to.y
-//
-//                        val a = y2 - y1
-//                        val b = -(x2 - x1)
-//                        val c = -a * x1 - b * y1
-//
-//                        val m = sqrt((a * a + b * b).toFloat())
-//
-//                        val ap = a / m
-//                        val bp = b / m
-//                        val cp = c / m
-//
-//                        val d1 = ap * newPoint1x + bp * newPoint1y + cp
-//                        val d2 = ap * newPoint2x + bp * newPoint2y + cp
-//
-//                        val d = if (abs(d1) < abs(d2))
-//                            d1
-//                        else
-//                            d2
+                        val midX = (fromX + toX) / 2f
+                        val midY = (fromY + toY) / 2f
 
                         // Move a point on the perpendicular line
-                        val newPointX: Float
-                        val newPointY: Float
+                        val newX: Float
+                        val newY: Float
+
+                        // Differentiate between the first and the second time the loop is encountered
                         if (xIndex < vIndex) {
-                            // SECOND TRY
-//                            val px: Float
-//                            val py: Float
-//                            if (d == d1){
-//                                px = newPoint1x
-//                                py = newPoint1y
-//                            } else{
-//                                px = newPoint2x
-//                                py = newPoint2y
-//                            }
-//
-//                            newPointX = px - 2 * ap * d
-//                            newPointY = py - 2 * bp * d
+                            // Differentiate between four cases
+                            if (fromX == toX){
+                                newX = midX + loopWidth
+                                newY = midY
+                            } else if (fromY == toY){
+                                newX = midX
+                                newY = midY + loopWidth
+                            } else{
+                                val m = (toY - fromY)/(toX - fromX)
+                                val mPerp = -(1/m)
 
-                            newPointX = midPointX + (loopWidth * rz)
-                            newPointY = midPointY - (loopWidth * rh)
-
-                            // FIRST TRY
-//                            newPointX = (2 * midPointX) - v.to.x
-//                            newPointY = v.to.y.toFloat() - (abs(v.to.y - v.from.y) / 2f)
-//
-//                            if (newPointX < v.to.x) {
-//                                newPointX += loopWidth
-//                            } else {
-//                                newPointX -= loopWidth
-//                            }
+                                newX = (loopWidth / sqrt(1 + (mPerp * mPerp))) + midX
+                                newY = (loopWidth * (mPerp / sqrt(1 + (mPerp * mPerp)))) + midY
+                            }
                         } else {
-                            // SECOND TRY
-//                            val px: Float
-//                            val py: Float
-//                            if (d == d1){
-//                                px = newPoint1x
-//                                py = newPoint1y
-//                            } else{
-//                                px = newPoint2x
-//                                py = newPoint2y
-//                            }
-//
-//                            newPointX = px - 2 * ap * d
-//                            newPointY = py - 2 * bp * d
-//
-                            newPointX = midPointX - (loopWidth * rz)
-                            newPointY = midPointY + (loopWidth * rh)
+                            // Differentiate between four cases
+                            if (fromX == toX){
+                                newX = midX - loopWidth
+                                newY = midY
+                            } else if (fromY == toY){
+                                newX = midX
+                                newY = midY - loopWidth
+                            } else {
+                                val m = (toY - fromY)/(toX - fromX)
+                                val mPerp = -(1/m)
 
-                            // FIRST TRY
-//                            newPointX = v.from.x.toFloat()
-//                            newPointY = (2 * midPointY) - v.from.y + (abs(v.to.y - v.from.y) / 2f)
-//
-//                            if (newPointX < v.to.x) {
-//                                newPointX += loopWidth
-//                            } else {
-//                                newPointX -= loopWidth
-//                            }
+                                newX = ((- loopWidth) / sqrt(1 + (mPerp * mPerp))) + midX
+                                newY = ((- loopWidth) * (mPerp / sqrt(1 + (mPerp * mPerp)))) + midY
+                            }
                         }
 
                         // Draw 2 separate segments
                         drawLine(
                             v.from.x.toFloat(), v.from.y.toFloat(),
-                            newPointX, newPointY,
+                            newX, newY,
                             arrowPaint
                         )
                         drawLine(
-                            newPointX, newPointY,
+                            newX, newY,
                             v.to.x.toFloat(), v.to.y.toFloat(),
                             arrowPaint
                         )
-                        drawArrow(newPointX.roundToInt(), newPointY.roundToInt(), v.to.x, v.to.y)
+                        drawArrow(newX.roundToInt(), newY.roundToInt(), v.to.x, v.to.y)
                     }
                 }
 
@@ -300,9 +243,9 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 graphicEdge.bottom = edge.y + edgeSize
 
                 if (edge.selected)
-                    drawOval(graphicEdge, edgeSelectedPaint)
+                    drawOval(graphicEdge, vertexSelectedPaint)
                 else
-                    drawOval(graphicEdge, edgePaint)
+                    drawOval(graphicEdge, vertexPaint)
             }
         }
     }
@@ -349,12 +292,12 @@ class GraphView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
     // Define all the Paint object we need
-    private val edgePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val vertexPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL_AND_STROKE
         strokeWidth = 1f
         color = Color.BLACK
     }
-    private val edgeSelectedPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val vertexSelectedPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL_AND_STROKE
         strokeWidth = lineWidth
         color = Color.LTGRAY
