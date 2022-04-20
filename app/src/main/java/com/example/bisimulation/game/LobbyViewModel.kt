@@ -1,5 +1,6 @@
 package com.example.bisimulation.game
 
+import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,15 +9,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bisimulation.callbacks.OnConnectionSuccess
 import com.example.bisimulation.callbacks.OnRoomCreationSuccess
-import com.example.bisimulation.model.GameRole
-import com.example.bisimulation.model.GameState
-import com.example.bisimulation.model.Graph
-import com.example.bisimulation.model.Lobby
+import com.example.bisimulation.model.*
 import com.example.bisimulation.repository.FirestoreRepository
 import com.example.bisimulation.repository.firestoreEventListeners.FsGetRoleEventListener
 import com.example.bisimulation.repository.firestoreEventListeners.FsGetStatusEventListener
 import com.example.bisimulation.repository.firestoreEventListeners.FsGetStringEventListener
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
+import java.nio.charset.Charset
+import java.util.*
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlin.random.Random
@@ -125,8 +127,11 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
 
     fun gameSetUp() {
         // Graph setup
-        val gl = graphSetup()//graphSetupL()
-        val gr = graphSetup()//graphSetupR()
+//        val gl = graphSetup()//graphSetupL()
+//        val gr = graphSetup()//graphSetupR()
+
+        val gl = graphSetupJson("left"){ graphSetupL() }
+        val gr = graphSetupJson("right"){ graphSetupR() }
 
         // It is always the attacker turn at the beginning
         val turnOf = GameRole.ATTACKER
@@ -153,6 +158,48 @@ class LobbyViewModel : ViewModel(), OnRoomCreationSuccess, OnConnectionSuccess {
             turnOf,
             sc
         )
+    }
+
+    private fun graphSetupJson(direction: String, fallback: () -> Graph): Graph{
+        var out: Graph
+        if (jsonString.isEmpty()) {
+            out = fallback.invoke()
+        }
+        else{
+            try {
+                out = Graph()
+                val collectionType = object : TypeToken<List<GraphJson>>(){}.type
+                val graph = Gson().fromJson<List<GraphJson>>(jsonString, collectionType)
+                if (direction == "left"){
+                    graph[0].edges.forEach {
+                        out.addEdge(it)
+                    }
+                }
+                if (direction == "right"){
+                    graph[1].edges.forEach {
+                        out.addEdge(it)
+                    }
+                }
+            } catch (e: Exception){
+                Log.e("LobbyViewModel", e.message.toString())
+                out = fallback.invoke()
+            }
+        }
+        return out
+    }
+
+    private var jsonString = ""
+    fun readJsonFromAssets(context: Context) {
+        try {
+            val inputStream = context.assets.open("graphs.json")
+            val size = inputStream.available()
+            val buffer = ByteArray(size)
+            inputStream.read(buffer)
+            inputStream.close()
+            jsonString = String(buffer, Charset.forName("UTF-8"))
+        } catch (e: Exception){
+            Log.e("JsonParsing", e.message.toString())
+        }
     }
 
     private fun graphSetup(): Graph {

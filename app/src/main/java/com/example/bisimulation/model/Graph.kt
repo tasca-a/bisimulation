@@ -126,6 +126,13 @@ class Graph {
     }
     class Edge(val from: Vertex, val to: Vertex, val color: Int = Color.BLACK){
         constructor() : this(Vertex(), Vertex())
+//        constructor(from: Vertex, to: Vertex, color: String) : this(from, to, when(color){
+//            "red" -> Color.RED
+//            "green" -> Color.GREEN
+//            "blue" -> Color.BLUE
+//            "black" -> Color.BLACK
+//            else -> {Color.BLACK}
+//        })
 
         override fun equals(other: Any?): Boolean {
             return (other is Edge) && from == other.from && to == other.to

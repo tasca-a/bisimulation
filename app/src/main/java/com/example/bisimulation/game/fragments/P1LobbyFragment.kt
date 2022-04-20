@@ -105,6 +105,8 @@ class P1LobbyFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        viewModel.readJsonFromAssets(requireContext())
+
         return binding.root
     }
 
